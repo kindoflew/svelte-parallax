@@ -2,7 +2,7 @@
 
 a (very) small component collection for parallax scrolling effects with Svelte.
 
-**NOTE**: This is at 0.1.0 and I'm still working on stuff. I don't think the API will change, but if something is broken, open an issue and let me know!
+**NOTE**: This is at 0.1.x and I'm still working on stuff. I don't think the API will change, but if something is broken, open an issue and let me know!
 
 This package has two parts: 
 * a pair of components, `<Parallax>` and `<ParallaxLayer>` 
