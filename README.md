@@ -32,6 +32,8 @@ npm i -D svelte-parallax
 These components are *heavily* influenced by [react-spring/parallax](https://github.com/pmndrs/react-spring/tree/v9/packages/parallax).
 The API is very similar and functions (mostly) the same under the hood (See [differences](#differences-from-react-spring/parallax) between them).
 
+[Play with a basic demo here](https://svelte.dev/repl/b9b9935c08964edcabfb03cf0a215b66?version=3.35.0)
+
 The `<Parallax>` component is a container whose height will be the height of the viewport * the number of sections you input. `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
 
 ```html
