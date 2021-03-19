@@ -233,6 +233,9 @@ To work locally:
 git clone git@github.com:kindoflew/svelte-parallax
 cd svelte-parallax
 npm install
+# if you want to use the demo page
+cd demo
+npm install
 npm run dev
 ```
 
@@ -242,5 +245,7 @@ Things I Probably Need:
 * **Tests**: Don't really know a lot about testing UI yet, so if that's your thing, feel free to give it a go. Or you can just mess with the components until they break and open an issue!
 
 * **Optimzation**: Didn't want to optimize in advance (YAGNI and Svelte takes care of a lot of it already), but I did notice that on mobile any `<ParallaxLayer>` that has only a `background-image` (no nested content) and a `rate` other than `0` will flicker until it stops moving. Only tested on an iPhone7 and iPhone8 so far. Also, note that `will-change: transform` has had no effect. Don't know much about rendering optimizations, so I'm open to any suggestions!
+
+* **scrollTo**: Was considering having this use `requestAnimationFrame` instead of native `scrollTo`. Not sure where to start with that yet.
 
 * **Refactoring**: I'm sure the code is probably ugly! I have a weird thing for nested ternary operators so there might be one or two of them. Sorry in advance.
