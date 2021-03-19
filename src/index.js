@@ -1,0 +1,3 @@
+export { default as Parallax } from './Parallax.svelte';
+export { default as ParallaxLayer } from './ParallaxLayer.svelte';
+export { default as SimpleParallax } from './SimpleParallax.svelte';
