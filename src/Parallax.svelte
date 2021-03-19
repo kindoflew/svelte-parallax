@@ -2,6 +2,7 @@
   import { setContext } from "svelte";
   import { writable, derived } from "svelte/store";
   import { contextKey } from "./contextKey.js";
+  import "focus-options-polyfill";
 
   // bind:this
   let container;

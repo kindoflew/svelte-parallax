@@ -1,7 +1,7 @@
 {
   "name": "svelte-parallax",
   "author": "Lewis DAvanzo",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "MIT",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
@@ -23,5 +23,8 @@
   "files": [
     "src",
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "focus-options-polyfill": "^1.6.0"
+  }
 }
