@@ -68,12 +68,12 @@ The `<Parallax>` component is a container whose height will be the height of the
 | `style`    | string  | `""`                                  |
 
 
-#### Description
+#### Details
 * `sections`: How many innerHeight-sized sections the container has.
 
 * `config`: Optional [Svelte spring store](https://svelte.dev/docs#spring) configuration, if you want more control over parallax physics.
 
-* `onEnter`: Whether or not to the start effect as soon as container enters viewport. `true`: start effect as soon as container is visible, `false`: wait until container top is at the top of the viewport.
+* `onEnter`: Whether or not to start the effect as soon as container enters viewport. `true`: start effect as soon as container is visible, `false`: wait until container top is at the top of the viewport.
 
 * `disabled`: Reactive disabled value so you can conditionally disable the effects (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
