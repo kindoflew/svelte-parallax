@@ -55,12 +55,15 @@
   }
 
   function translate3dString(coord) {
+    // coordinate for when disabled or horizontal's y-coordinate
+    let lockedCoord = offset * $innerHeight;
+    // translating coordinate
     let _coord = $disabled 
-      ? (horizontal ? 0 : targetPosition) 
+      ? (horizontal ? 0 : lockedCoord) 
       : coord;
 
     return horizontal
-      ? `transform: translate3d(${_coord}px, ${offset * $innerHeight}px, 0);`
+      ? `transform: translate3d(${_coord}px, ${lockedCoord}px, 0);`
       : `transform: translate3d(0, ${_coord}px, 0);`;
   }
 
