@@ -6,8 +6,6 @@
 
   // bind:this
   let container;
-  // overall height of container (innerHeight * sections)
-  let height;
 
   // how many viewport heights the container spans
   export let sections = 1;
@@ -48,12 +46,9 @@
     // top of containter taking into account scrollY
     $top = containerRect.top + $y;
     $containerWidth = containerRect.width;
-    // each section is equal to innerHeight
-    height = $innerHeight * sections;
-
-    
   }
   $: if (container) getContainerDimensions();
+  $: containerHeight = $innerHeight * sections;
 
   export function scrollTo(section, selector) {
     let target = $top + ($innerHeight * (section - 1));
@@ -67,13 +62,13 @@
   }
 
   // if container is in viewport (refactor to intersection observer?)
-  $: $intersecting = $y >= $top - $innerHeight * threshold && $y <= $top + height;
+  $: $intersecting = $y >= $top - $innerHeight * threshold && $y <= $top + containerHeight;
 </script>
 
 <svelte:window
   bind:scrollY={$y}
   bind:innerHeight={$innerHeight}
-  on:resize={getContainerDimensions}
+  on:resize={() => setTimeout(getContainerDimensions, 150)}
 />
 
 <div
@@ -82,7 +77,7 @@
   style="
 	  width: 100%;
 	  {style}
-    height: {height}px;
+    height: {containerHeight}px;
 	"
 >
   <slot />
