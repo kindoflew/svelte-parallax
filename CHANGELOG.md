@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.3
+* bugfix: add correct Y-coordinate for ParallaxLayer when effect is disabled
+* bugfix: add setTimeout to window resize listener
+
 ## 0.1.2
 * add focus-options-polyfill for Safari ({ preventScroll: false })
 * add CHANGELOG
