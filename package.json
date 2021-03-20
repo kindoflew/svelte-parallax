@@ -1,11 +1,12 @@
 {
   "name": "svelte-parallax",
   "author": "Lewis DAvanzo",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
+  "repository": "https://github.com/kindoflew/svelte-parallax",
   "scripts": {
     "dev": "cd ./demo && npm run dev",
     "build": "rollup -c",
