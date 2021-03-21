@@ -29,7 +29,7 @@
   // make disabled reactive so it can be set dynamically by user
   $: $_disabled = disabled;
   // for use in intersecting calculation
-  let threshold = onEnter ? 0 : 1;
+  let threshold = onEnter ? 1 : 0;
   
   // set context of 'props'
   setContext(contextKey, {
