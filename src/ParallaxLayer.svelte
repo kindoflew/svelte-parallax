@@ -51,7 +51,7 @@
       : offset * $innerHeight + targetPosition * rate;
     layerHeight = span * $innerHeight;
 
-    coord = spring(-($scrollTop * rate) + distance, config);
+    coord = spring(distance, config);
   }
 
   function translate3dString(coord) {
