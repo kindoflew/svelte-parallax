@@ -1,8 +1,8 @@
 # svelte-parallax
 
-a (very) small component collection for parallax scrolling effects with Svelte.
+A few of parallax components for Svelte.
 
-**NOTE**: This is at 0.1.x and I'm still working on stuff. I don't think the API will change, but if something is broken, open an issue and let me know!
+**NOTE**: This is at 0.1.x and I'm still working on stuff. It's still possible that the API could change and stuff could break. If something is weird, open an issue and let me know!
 
 This package has two parts: 
 * a pair of components, `<Parallax>` and `<ParallaxLayer>` 
@@ -29,8 +29,8 @@ npm i -D svelte-parallax
 **IF YOU WANT SIMPLE, NO-FRILLS, SQUARESPACE-STYLE PARALLAX SKIP TO [SimpleParallax](#simpleparallax).**
 
 ## Parallax and ParallaxLayer
-These components are *heavily* influenced by [react-spring/parallax](https://github.com/pmndrs/react-spring/tree/v9/packages/parallax).
-The API is very similar and functions (mostly) the same under the hood (See [differences](#differences-from-react-spring/parallax) between them).
+These components are based on [react-spring/parallax](https://github.com/pmndrs/react-spring/tree/v9/packages/parallax).
+The API is very similar and it functions (mostly) the same under the hood (See [differences](#differences-from-react-spring/parallax) between them).
 
 [Play with a basic demo here](https://svelte.dev/repl/b9b9935c08964edcabfb03cf0a215b66?version=3.35.0)
 
@@ -64,6 +64,7 @@ The `<Parallax>` component is a container whose height will be the height of the
 | `sections` | number  | `1`                                   |
 | `config`   | object  | `{ stiffness: 0.017, damping: 0.26 }` |
 | `onEnter`  | boolean | `false`                               |
+| `onExit`   | boolean | `false`                               |
 | `disabled` | boolean | `false`                               |
 | `style`    | string  | `""`                                  |
 
@@ -73,9 +74,11 @@ The `<Parallax>` component is a container whose height will be the height of the
 
 * `config`: Optional [Svelte spring store](https://svelte.dev/docs#spring) configuration, if you want more control over parallax physics.
 
-* `onEnter`: Whether or not to start the effect as soon as container enters viewport. `true`: start effect as soon as container is visible, `false`: wait until container top is at the top of the viewport.
+* `onEnter`: Whether or not to start the effect when the container enters the viewport. `true`: start effect as soon as container is visible, `false`: wait until container top is at the top of the viewport.
 
-* `disabled`: Reactive disabled value so you can conditionally disable the effects (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
+* `onExit`: Whether or not to end the effect when the container exits the viewport. `true`: wait until container is completely out of viewport to stop, `false`: end effect as soon as bottom of container clears bottom of viewport.
+
+* `disabled`: Whether or not the effect is disabled (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
 * `style`: The `style` attribute of the container is exposed so you can do pretty much whatever you want. Messing with `height`, `position` or `overflow` *might* break stuff, but you do you.
 
@@ -131,7 +134,7 @@ If you *really* need to use something besides buttons or links for `scrollTo` ma
 #### Details
 * `rate`: Rate the layer will scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up (left if horizontal) and negative, down (right if horizontal). `0` will scroll normally.
 
-* `offset`: Offset from the top of the container when the layer is completely in the viewport. Can be a float (`0.5` will place the layer halfway down the first section). Should be `<= sections - 1`.
+* `offset`: Offset from the top of the container when the layer is completely in the viewport, starting at 0. Can be a float (`0.5` will place the layer halfway down the first section).
 
 * `span`: How many sections the layer will span. Probably shouldn't be `<= 0` or `> sections`.
 
@@ -147,15 +150,13 @@ If you *really* need to use something besides buttons or links for `scrollTo` ma
 
 * `will-change`: I decided not to set `will-change: transform` on every `<ParallaxLayer>` because you quickly hit a memory limit (atleast in Firefox) and [it's not recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change). If you have performance issues, this can be added as necessary to the `style` prop.
 
-* `style`: Optionally, if you hate inline styles, `<Parallax>` and `<ParallaxLayer>` have classes exposed (`.parallax-container` and `.parallax-layer` respectively) so you could target them with something like `:global(.parallax-container)` if that's more your style.
-
 
 ### Differences from react-spring/parallax
 * Some of the prop names are changed for no reason other than that I like them more. If you are coming from react, `span = factor`, `sections = pages`, `rate = speed`.
 
-* react-spring/parallax is a scrollable container, svelte-parallax is not, so you are scrolling the actual page. This means that svelte-parallax can be anywhere on your page and only have the browser scrollbar visible.
+* react-spring/parallax is a scrollable container, svelte-parallax is not (you are scrolling the actual page). This means that svelte-parallax can be anywhere on your page and only have the browser scrollbar visible.
 
-* react-spring/parallax has a `horizontal` prop on the container component, svelte-parallax does not. This is mostly because of the point mentioned above — this is not a scrollable container, so you'd have to scroll the actual browser window horizontally, which is gross to me. (I am considering making another container component that would use `position: sticky` and scroll horizontally based on `scrollY`, but I'm still not sure about it.)
+* react-spring/parallax has a `horizontal` prop on the container component, svelte-parallax does not. This is mostly because of the point mentioned above — this is not a scrollable container, so you'd have to scroll the actual browser window horizontally, which is gross to me.
 
 * svelte-parallax has a `horizontal` prop on `<ParallaxLayer>`, react-spring/parallax does not. I don't know if people will actually use it, but I like the idea of stuff popping in from the sides.
 
@@ -185,7 +186,7 @@ This component is your run of the mill, Squarespace-style parallax effect. No be
 [Demo](https://svelte.dev/repl/12bc2038f4d54becaf896d65bc22e691?version=3.35.0)
 
 
-**NOTE**: To be explicit: **YOU DO NOT USE `<ParallaxLayer>` IN `<SimpleParallax>`**. I mean, I think it'd still work, but that's not how it's designed.
+**NOTE**: To be explicit: **YOU DO NOT USE `<ParallaxLayer>` IN `<SimpleParallax>`**.
 
 ### Props
 
@@ -225,7 +226,7 @@ Parallax effects can be jarring for those sensitive to too much visual motion. B
 **NOTE**: For SvelteKit/Sapper with SSR you'd have to do that behind an `if (process.browser)` or `if (typeof window !== 'undefined')` check.
 
 ## Contributing
-Contributions are welcome! I'm pretty new to web development myself, so I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too.
+Contributions are welcome! I'm pretty new to web development myself, so I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too. (I have a weird thing for nested ternary operators so there might be one or two of them. Sorry in advance.)
 
 To work locally:
 
@@ -244,8 +245,4 @@ This will run a dev server on localhost:5000. The source lives in `src` and `dem
 Things I Probably Need:
 * **Tests**: Don't really know a lot about testing UI yet, so if that's your thing, feel free to give it a go. Or you can just mess with the components until they break and open an issue!
 
-* **Optimzation**: Didn't want to optimize in advance (YAGNI and Svelte takes care of a lot of it already), but I did notice that on mobile any `<ParallaxLayer>` that has only a `background-image` (no nested content) and a `rate` other than `0` will flicker until it stops moving. Only tested on an iPhone7 and iPhone8 so far. Also, note that `will-change: transform` has had no effect. Don't know much about rendering optimizations, so I'm open to any suggestions!
-
-* **scrollTo**: Was considering having this use `requestAnimationFrame` instead of native `scrollTo`. Not sure where to start with that yet.
-
-* **Refactoring**: I'm sure the code is probably ugly! I have a weird thing for nested ternary operators so there might be one or two of them. Sorry in advance.
+* **Optimzations**: Didn't want to optimize in advance (YAGNI and Svelte takes care of a lot of it already), but I did notice that on mobile any `<ParallaxLayer>` that has only a `background-image` (no nested content) and a `rate` other than `0` will flicker until it stops moving. Only tested on an iPhone7 and iPhone8 so far. Also, note that `will-change: transform` has had no effect. Don't know much about rendering optimizations, so I'm open to any suggestions!
