@@ -1,5 +1,5 @@
 <script>
-  import { setContext } from "svelte";
+  import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
   import { contextKey } from "./contextKey.js";
   import "focus-options-polyfill";
@@ -19,6 +19,7 @@
   export let style = "";
 
   // initialize 'props'
+  const ready = writable(false);
   const y = writable(0);
   const top = writable(0);
   const scrollTop = derived([y, top], ([$y, $top]) => $y - $top);
@@ -33,22 +34,29 @@
   
   // set context of 'props'
   setContext(contextKey, {
+    ready,
+    scrollTop,
+    intersecting,
+    innerHeight,
+    containerWidth,
     config,
     _disabled,
-    scrollTop,
-    containerWidth,
-    innerHeight,
-    intersecting
   });
 
-  function getContainerDimensions() {
+  onMount(() => {
+    $ready = true;
+  });
+
+  $: containerHeight = $innerHeight * sections;
+  $: if ($ready) setContainerDimensions();
+  // if container is in viewport (refactor to intersection observer?)
+  $: $intersecting = $y >= $top - $innerHeight * threshold && $y < $top + containerHeight;
+
+  function setContainerDimensions() {
     let containerRect = container.getBoundingClientRect();
-    // top of containter taking into account scrollY
     $top = containerRect.top + $y;
     $containerWidth = containerRect.width;
   }
-  $: if (container) getContainerDimensions();
-  $: containerHeight = $innerHeight * sections;
 
   export function scrollTo(section, selector) {
     let target = $top + ($innerHeight * (section - 1));
@@ -56,29 +64,26 @@
       top: target,
       behavior: disabled ? "auto" : "smooth"
     });
-    if (selector) {
+    if (selector) { 
       document.querySelector(selector).focus({ preventScroll: true })
     }
   }
-
-  // if container is in viewport (refactor to intersection observer?)
-  $: $intersecting = $y >= $top - $innerHeight * threshold && $y <= $top + containerHeight;
 </script>
 
 <svelte:window
   bind:scrollY={$y}
   bind:innerHeight={$innerHeight}
-  on:resize={() => setTimeout(getContainerDimensions, 150)}
+  on:resize={() => setTimeout(setContainerDimensions, 150)}
 />
 
 <div
   class="parallax-container"
   bind:this={container}
   style="
-	  width: 100%;
-	  {style}
+    width: 100%;
+    {style}
     height: {containerHeight}px;
-	"
+  "
 >
   <slot />
 </div>

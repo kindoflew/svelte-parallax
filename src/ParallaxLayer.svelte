@@ -3,9 +3,6 @@
   import { spring } from "svelte/motion";
   import { contextKey } from "./contextKey.js";
 
-  // bind:this
-  let layer;
-
   // rate that the layer scrolls relative to scrollY
   export let rate = 0.5;
   // offset from top of container when layer is in viewport
@@ -19,18 +16,17 @@
 
   // get 'props' from Parallax
   let { 
+    ready,
+    scrollTop,
+    intersecting,
+    innerHeight,
+    containerWidth,
     config,
     _disabled: disabled,
-    scrollTop,
-    containerWidth,
-    innerHeight,
-    intersecting
   } = getContext(contextKey);
 
   // spring store to hold changing scroll coordinate
-  let coord;
-  // position layer will be when scrolled into viewport
-  let targetPosition;
+  const coord = spring(undefined, config);
   // distance between starting position and targetPosition
   let distance;
   // height of layer, determined by innerHeight and span
@@ -39,20 +35,26 @@
   // hold reference to original rate here for resizing
   let _rate = rate;
 
-  function initLayer() {
-    // horizontal rate is relative to percentage of $innerHeight scrolled
+  // set distance and height
+  $: if ($ready) setLayer($innerHeight, $containerWidth);
+  // initial position
+  $: if ($ready && !$intersecting && $scrollTop < 0) $coord = distance;
+  // update coordinate as page is scrolled 
+  $: if ($ready && $intersecting) $coord = -($scrollTop * rate) + distance;
+  // translate layer according to coordinate
+  $: translate = translate3dString($coord);
+	  
+  function setLayer(innerHeight, containerWidth) {
     if (horizontal) {
-      rate = _rate * ($containerWidth / $innerHeight);
+      rate = _rate * (containerWidth / innerHeight);
     }
-
-    targetPosition = Math.floor(offset) * $innerHeight;
+ 
+    let targetScroll = Math.floor(offset) * innerHeight; 
     distance = horizontal
-      ? (rate > 0 ? $containerWidth : -$containerWidth)
-      : offset * $innerHeight + targetPosition * rate;
-    layerHeight = span * $innerHeight;
-
-    coord = spring(distance, config);
-  }
+      ? (rate > 0 ? containerWidth : -containerWidth) 
+      : offset * innerHeight + targetScroll * rate;  
+    layerHeight = span * innerHeight;
+  } 
 
   function translate3dString(coord) {
     // coordinate for when disabled or horizontal's y-coordinate
@@ -66,15 +68,11 @@
       ? `transform: translate3d(${_coord}px, ${lockedCoord}px, 0);`
       : `transform: translate3d(0, ${_coord}px, 0);`;
   }
-
-  $: if (layer) $innerHeight, $containerWidth, initLayer();
-  $: if (layer && $intersecting) $coord = -($scrollTop * rate) + distance;
-  $: translate = translate3dString($coord);
 </script>
 
+{#if ready}
 <div
   class="parallax-item"
-  bind:this={layer}
   style="
     width: 100%;
     {style}
@@ -84,7 +82,7 @@
 >
   <slot />
 </div>
-
+{/if}
 <style>
   .parallax-item {
     position: absolute;
