@@ -11,8 +11,10 @@
   export let sections = 1;
   // default spring config
   export let config = { stiffness: 0.017, damping: 0.26 };
-  // whether or not effect starts as soon as container enters viewport
+  // whether or not effect starts when container enters viewport
   export let onEnter = false;
+  // whether or not effect ends when container exits viewport
+  export let onExit = false;
   // disable parallax effect, layers will be frozen at targetPosition
   export let disabled = false;
   // expose style attribute
@@ -30,7 +32,8 @@
   // make disabled reactive so it can be set dynamically by user
   $: $_disabled = disabled;
   // for use in intersecting calculation
-  let threshold = onEnter ? 1 : 0;
+  let enterThreshold = onEnter ? 1 : 0;
+  let exitThreshold = onExit ? 0 : 1;
   
   // set context of 'props'
   setContext(contextKey, {
@@ -50,7 +53,10 @@
   $: containerHeight = $innerHeight * sections;
   $: if ($ready) setContainerDimensions();
   // if container is in viewport (refactor to intersection observer?)
-  $: $intersecting = $y >= $top - $innerHeight * threshold && $y < $top + containerHeight;
+  $: $intersecting = (
+    $y >= ($top - $innerHeight * enterThreshold) && 
+    $y <= ($top + containerHeight - $innerHeight * exitThreshold)
+    );
 
   function setContainerDimensions() {
     let containerRect = container.getBoundingClientRect();
