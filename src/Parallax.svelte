@@ -1,7 +1,9 @@
 <script>
   import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
+  import { quadInOut } from "svelte/easing";
   import { contextKey } from "./contextKey.js";
+  import { scrollTo as svelteScrollTo } from "svelte-scrollto";
   import "focus-options-polyfill";
 
   // bind:this
@@ -54,9 +56,9 @@
   $: if ($ready) setContainerDimensions();
   // if container is in viewport (refactor to intersection observer?)
   $: $intersecting = (
-    $y >= ($top - $innerHeight * enterThreshold) && 
-    $y <= ($top + containerHeight - $innerHeight * exitThreshold)
-    );
+       $y >= ($top - $innerHeight * enterThreshold) && 
+       $y <= ($top + containerHeight - $innerHeight * exitThreshold)
+     );
 
   function setContainerDimensions() {
     let containerRect = container.getBoundingClientRect();
@@ -64,15 +66,25 @@
     $containerWidth = containerRect.width;
   }
 
-  export function scrollTo(section, selector) {
+  export function scrollTo(section, { selector = '', duration = 1400, easing = quadInOut } = {}) {
     let target = $top + ($innerHeight * (section - 1));
-    window.scrollTo({
-      top: target,
-      behavior: disabled ? "auto" : "smooth"
-    });
-    if (selector) { 
-      document.querySelector(selector).focus({ preventScroll: true })
+
+    const focusTarget = () => {
+      document.querySelector(selector).focus({ preventScroll: true });
     }
+
+    if (disabled) {
+      window.scrollTo({top: target});
+      selector && focusTarget();
+      return;
+    }
+
+    svelteScrollTo({
+      y: target, 
+      duration,
+      easing,
+      onDone: selector ? focusTarget : () => {}
+    });
   }
 </script>
 
