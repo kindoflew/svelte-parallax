@@ -1,6 +1,7 @@
 <script>
   import Parallax from '../../src/Parallax.svelte';
   import ParallaxLayer from '../../src/ParallaxLayer.svelte';
+  import { linear } from "svelte/easing";
 
   let disabled = false;
   let parallax;
@@ -24,7 +25,7 @@
 
   <ParallaxLayer rate=1 style="background-color: pink; {flexCenter} flex-direction: column;">
     <h1>svelte-parallax!</h1>
-    <button class="bottom-btn" on:click={() => parallax.scrollTo(3, '.top-btn')}>Scroll to bottom</button>
+    <button class="bottom-btn" on:click={() => parallax.scrollTo(3, {selector: '.top-btn', easing: linear, duration: 800})}>Scroll to bottom</button>
     <p>CAUTION: obnoxious parallax stuff ahead. click disable button if you prefer reduced motion.</p>
     
   </ParallaxLayer>
@@ -38,7 +39,7 @@
   <ParallaxLayer offset=2 rate=-1.5 horizontal style="background-color: orangered;"/>
 
   <ParallaxLayer offset=2 rate=2 style="background-color: pink; {flexCenter}">
-    <button class="top-btn" on:click={() => parallax.scrollTo(1, '.bottom-btn')}>Scroll to top</button>
+    <button class="top-btn" on:click={() => parallax.scrollTo(1, {selector: '.bottom-btn'})}>Scroll to top</button>
   </ParallaxLayer>
 </Parallax>
 
@@ -102,8 +103,8 @@
       src={url('server')} 
       alt='' class="server" 
       style="width: 20%;" 
-      on:click={() => parallax2.scrollTo(2, '.bash')}
-      on:keyup={(e) => e.key === 'Enter' && parallax.scrollTo(2, '.bash')}
+      on:click={() => parallax2.scrollTo(2, {selector: '.bash'})}
+      on:keyup={(e) => e.key === 'Enter' && parallax2.scrollTo(2, {selector: '.bash'})}
       tabindex=0
     >
   </ParallaxLayer>
@@ -118,8 +119,8 @@
       alt=''
       class="bash"
       style="width: 40%;"  
-      on:click={() => parallax2.scrollTo(3, '.clients-main')}
-      on:keyup={(e) => e.key === 'Enter' && parallax.scrollTo(3, '.clients-main')} 
+      on:click={() => parallax2.scrollTo(3, {selector: '.clients-main'})}
+      on:keyup={(e) => e.key === 'Enter' && parallax2.scrollTo(3, {selector: '.clients-main'})} 
       tabindex=0
     >
   </ParallaxLayer>
@@ -133,8 +134,8 @@
       src={url('clients-main')} 
       alt='' class="clients-main" 
       style="width: 40%;" 
-      on:click={() => parallax2.scrollTo(1, '.server')}
-      on:keyup={(e) => e.key === 'Enter' && parallax.scrollTo(1, '.server')}
+      on:click={() => parallax2.scrollTo(1, {selector: '.server'})}
+      on:keyup={(e) => e.key === 'Enter' && parallax2.scrollTo(1, {selector: '.server'})}
       tabindex=0
     >
   </ParallaxLayer>
