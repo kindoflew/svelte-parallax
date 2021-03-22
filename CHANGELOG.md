@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.5
+* refactoring: change initialization of ParallaxLayer to depend on container being mounted
+* feature: add onExit prop to Parallax
+
 ## 0.1.4
 * bugfix: fix onEnter
 * bugfix: correct initial position of ParallaxLayers
