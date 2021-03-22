@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.6
+* move focus-options-polyfill to devDependency
+* refactor scrollTo to use svelte-scrollto
+* BREAKING CHANGE: change the second parameter of scrollTo function from string to options object
+* update README to reflect breaking change
+
 ## 0.1.5
 * refactoring: change initialization of ParallaxLayer to depend on container being mounted
 * feature: add onExit prop to Parallax
