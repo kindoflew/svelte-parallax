@@ -83,13 +83,31 @@ The `<Parallax>` component is a container whose height will be the height of the
 * `style`: The `style` attribute of the container is exposed so you can do pretty much whatever you want. Messing with `height`, `position` or `overflow` *might* break stuff, but you do you.
 
 ### `scrollTo`
-Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `div` probably shouldn't be a button or anchor link), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweight a little boilerplate.
+Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `div` probably shouldn't be a button or anchor link), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweight a little boilerplate. 
+
+`scrollTo` uses [svelte-scrollto](https://github.com/langbamit/svelte-scrollto) to animate scrolling, instead of relying on the native browser implementation. Because of this, you can have smooth, custom scrolling regardless of browser support for `scroll-behavior`.
 
 
-| Parameters      | Type              | Description                                      |
-| --------------- | ----------------- | ------------------------------------------------ |
-| `section`       | number            | The section to scroll to                         |
-| `selector`      | string (optional) | CSS selector of element to focus on after scroll |
+| Parameters          | Type   | Description                     |
+| ------------------- | ------ | ------------------------------- |
+| `section`           | number | The section to scroll to        |
+| `config` (optional) | object | Scroll animation config options |  
+
+
+<br/>
+
+#### `config` object:
+| Key        | Type     | Description                                      | Default     |
+| ---------- | -------- | ------------------------------------------------ | ----------- |
+| `selector` | string   | CSS selector of element to focus on after scroll | `""`        |
+| `duration` | number   | Duration of scroll in milliseconds               | `1400`      |
+| `easing`   | function | Easing function (import from 'svelte/easing')    | `quadInOut` |
+
+<br/>
+
+Once again, everything in `config` is optional.
+
+Example setup:
 
 ```HTML
 <script>
@@ -99,18 +117,24 @@ Rather than have a click listener on an entire `<ParallaxLayer>` (which I think 
   let parallax;
 </script>
                     <!-- bind to component instance -->
-<Parallax sections={3} bind:this={parallax}>
+<Parallax sections={2} bind:this={parallax}>
 
-  <ParallaxLayer offset={0}>
-                                   <!-- function is a method on component instance -->
-    <button class='horse-btn' on:click={() => parallax.scrollTo(2, '.top-btn')}>
+  <ParallaxLayer>
+                      <!-- function is a method on component instance -->
+    <button 
+      class='horse-btn' 
+      on:click={() => parallax.scrollTo(2, { selector: '.top-btn', duration: 1000 })}
+    >
       Scroll to horse
     </button>
   </ParallaxLayer>
 
   <ParallaxLayer offset={1}>
     <img src='horse.jpg' alt='a horse'>
-    <button class="top-btn" on:click={() => parallax.scrollTo(1, '.horse-btn')}>
+    <button 
+      class="top-btn" 
+      on:click={() => parallax.scrollTo(1, { selector: '.horse-btn', duration: 2000 })}
+    >
       Scroll to top
     </button>
   </ParallaxLayer>
