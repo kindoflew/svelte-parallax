@@ -1,6 +1,6 @@
 # svelte-parallax
 
-A few of parallax components for Svelte.
+A (very) small parallax component collection for Svelte.
 
 **NOTE**: This is at 0.1.x and I'm still working on stuff. It's still possible that the API could change and stuff could break. If something is weird, open an issue and let me know!
 
