@@ -10,22 +10,24 @@
   let height;
   let translate = "";
 
-  function getTop() {
-    top = container.getBoundingClientRect().top + y;
-  }
-
   onMount(() => {
     getTop();
   });
 
+  function getTop() {
+    top = container.getBoundingClientRect().top + y;
+  }
+
   $: intersecting = y > top - height && y < top + height;
-  $: if (intersecting && !disabled) translate = `translate3d(0, ${-(y - top) * rate}px, 0)`;
+  $: if (!intersecting && !disabled && y <= top - height) translate = `transform: translate3d(0, ${height * rate}px, 0);`;
+  $: if (intersecting && !disabled) translate = `transform: translate3d(0, ${-(y - top) * rate}px, 0);`;
+  $: if (disabled) translate = `transform: translate3d(0, 0, 0);`;
 </script>
 
 <svelte:window bind:scrollY={y} on:resize={getTop} />
 
 <div class="simple-parallax-container" bind:this={container} bind:offsetHeight={height}>
-  <div class="simple-parallax-item" style="-ms-transform: {translate}; -webkit-transform: {translate}; transform: {translate};">
+  <div class="simple-parallax-item" style="{translate}">
     <slot />
   </div>
 </div>
