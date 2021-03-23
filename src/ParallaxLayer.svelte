@@ -64,19 +64,21 @@
       : coord;
 
     return horizontal
-      ? `transform: translate3d(${_coord}px, ${lockedCoord}px, 0);`
-      : `transform: translate3d(0, ${_coord}px, 0);`;
+      ? `translate3d(${_coord}px, ${lockedCoord}px, 0);`
+      : `translate3d(0, ${_coord}px, 0);`;
   }
 </script>
 
 {#if ready}
   <div
-    class="parallax-item"
+    class="parallax-layer"
     style="
       width: 100%;
       {style}
       height: {layerHeight}px;
-      {translate}
+      -ms-transform: {translate}
+      -webkit-transform: {translate}
+      transform: {translate}
     "
   >
     <slot />
@@ -84,7 +86,7 @@
 {/if}
 
 <style>
-  .parallax-item {
+  .parallax-layer {
     position: absolute;
     box-sizing: border-box;
   }
