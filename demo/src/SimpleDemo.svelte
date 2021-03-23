@@ -4,6 +4,8 @@
 	let disabled = false;
 </script>
 
+<button class="disable" on:click={() => disabled = !disabled}>disable</button>
+
 <header>
 	<h2>Title</h2>
 	<nav>
@@ -83,4 +85,11 @@
 		height: 170%;
 		position: relative;
 	}
+
+  .disable {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+  }
 </style>

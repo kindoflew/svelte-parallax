@@ -10,7 +10,7 @@
 </script>
 
 <button class="disable" on:click={() => disabled = !disabled}>disable</button>
-<!-- <div style="height:20rem; width: 30rem;"></div> -->
+<div style="height:20rem; width: 30rem;"></div>
 
 <Parallax sections=3 disabled={disabled} bind:this={parallax} >
   <ParallaxLayer rate=-1.5 span=2 style="background-color: orange;" />

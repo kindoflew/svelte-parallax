@@ -1,7 +1,4 @@
 <script>
-  import Parallax from '../../src/Parallax.svelte';
-  import ParallaxLayer from '../../src/ParallaxLayer.svelte';
-  import { linear } from "svelte/easing";
   import BasicDemo from "./BasicDemo.svelte";
   import ReactDemo from "./ReactDemo.svelte";
   import MultiDemo from "./MultiDemo.svelte";
@@ -9,6 +6,7 @@
   import { Route } from "tinro";
 
 </script>
+<Route path="/">
 <nav>
   <ul>
     <li>
@@ -25,6 +23,7 @@
     </li>
   </ul>
 </nav>
+</Route>
 <Route path="/basic-demo"><BasicDemo /></Route>
 <Route path="/react-demo"><ReactDemo /></Route>
 <Route path="/multi-demo"><MultiDemo /></Route>
@@ -44,5 +43,6 @@
     list-style: none;
     display: flex;
     justify-content: space-between;
+    margin: 0;
   }
 </style>
