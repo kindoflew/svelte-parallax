@@ -27,16 +27,16 @@
 
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
-  // distance between starting position and targetPosition
+  // distance between starting position and target position
   let distance;
-  // height of layer, determined by innerHeight and span
-  let layerHeight;
 
-  // hold reference to original rate here for resizing
+  // hold reference to original rate here for resizing if horizontal
   let _rate = rate;
 
-  // set distance and height
-  $: if ($ready) setLayer($innerHeight, $containerWidth);
+  // set height
+  $: layerHeight = span * $innerHeight;
+  //set distance
+  $: if ($ready) distance = setDistance($innerHeight, $containerWidth);
   // initial position
   $: if ($ready && !$intersecting && $scrollTop < 0) $coord = distance;
   // update coordinate as page is scrolled 
@@ -44,16 +44,15 @@
   // translate layer according to coordinate
   $: translate = translate3dString($coord);
 	  
-  function setLayer(innerHeight, containerWidth) {
-    if (horizontal) {
-      rate = _rate * (containerWidth / innerHeight);
-    }
- 
+  function setDistance(innerHeight, containerWidth) {
+    // horizontal rate is proportional to amount of innerHeight scrolled
+    if (horizontal) rate = _rate * (containerWidth / innerHeight);
+    // how many sections are scrolled before layer is at it's offset position, relative to viewport
     let targetScroll = Math.floor(offset) * innerHeight; 
-    distance = horizontal
+
+    return horizontal
       ? (rate > 0 ? containerWidth : -containerWidth) 
-      : offset * innerHeight + targetScroll * rate;  
-    layerHeight = span * innerHeight;
+      : offset * innerHeight + targetScroll * rate;
   } 
 
   function translate3dString(coord) {
@@ -71,22 +70,22 @@
 </script>
 
 {#if ready}
-<div
-  class="parallax-item"
-  style="
-    width: 100%;
-    {style}
-    height: {layerHeight}px;
-    {translate}
-  "
->
-  <slot />
-</div>
+  <div
+    class="parallax-item"
+    style="
+      width: 100%;
+      {style}
+      height: {layerHeight}px;
+      {translate}
+    "
+  >
+    <slot />
+  </div>
 {/if}
+
 <style>
   .parallax-item {
     position: absolute;
-    background-size: auto;
     box-sizing: border-box;
   }
 </style>
