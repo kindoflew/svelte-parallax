@@ -53,14 +53,14 @@
   });
 
   $: containerHeight = $innerHeight * sections;
-  $: if ($ready) setContainerDimensions();
+  $: if ($ready) getContainerDimensions();
   // if container is in viewport (refactor to intersection observer?)
   $: $intersecting = (
        $y >= ($top - $innerHeight * enterThreshold) && 
        $y <= ($top + containerHeight - $innerHeight * exitThreshold)
      );
 
-  function setContainerDimensions() {
+  function getContainerDimensions() {
     let containerRect = container.getBoundingClientRect();
     $top = containerRect.top + $y;
     $containerWidth = containerRect.width;
@@ -72,7 +72,7 @@
     const focusTarget = () => {
       document.querySelector(selector).focus({ preventScroll: true });
     }
-
+    // don't animate scroll if disabled
     if (disabled) {
       window.scrollTo({top: target});
       selector && focusTarget();
@@ -91,7 +91,7 @@
 <svelte:window
   bind:scrollY={$y}
   bind:innerHeight={$innerHeight}
-  on:resize={() => setTimeout(setContainerDimensions, 150)}
+  on:resize={() => setTimeout(getContainerDimensions, 150)}
 />
 
 <div
