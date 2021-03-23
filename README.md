@@ -2,7 +2,7 @@
 
 A (very) small parallax component collection for Svelte.
 
-**NOTE**: This is at 0.1.x and I'm still working on stuff. It's still possible that the API could change and stuff could break. If something is weird, open an issue and let me know!
+**NOTE**: This is at 0.1.x and I'm still working on stuff. It's possible that the API could change or something could break. If anything is weird, open an issue and let me know!
 
 This package has two parts: 
 * a pair of components, `<Parallax>` and `<ParallaxLayer>` 
@@ -223,10 +223,10 @@ This component is your run of the mill, Squarespace-style parallax effect. No be
 #### Details
 * `rate`: Rate of scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up and negative, down. `0` will scroll normally.
 
-* `disabled`: Whether or not the effect is disabled. If set to true, your content will stay in the position it would be when when `scrollY` is equal to the top of the container.
+* `disabled`: Whether or not the effect is disabled. If set to true, your content will not be translated at all.
 
 
-**NOTE**: Mentioned above, but worth repeating: `rate` will affect the initial position of your parallaxing content, so you may have to tweak some styles (i.e., `position: relative` and alter `top` or `bottom`).
+**NOTE**: Mentioned above, but worth repeating: `rate` will affect the initial position of your parallaxing content, so you may have to tweak some styles on your content (i.e., `position: relative` and alter `top` or `bottom`).
 
 **ANOTHER NOTE**: Each `<SimpleParallax>` has it's own `<svelte:window bind:scrollY>` so it's recommended to not have a million of them on one page. It's set up this way to avoid you having to hook up your own listener and passing it as a prop.
 

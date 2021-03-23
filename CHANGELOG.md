@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 0.1.8
+* refactor: ParallaxLayer initialization
+* add vendor prefixes for transform rules
+* rename SimpleParallax class names to avoid clashing with Parallax/ParallaxLayer
+* bugfix: SimpleParallax initial and disabled positions are now correct
+
+## 0.1.7
+* typo in README
+
 ## 0.1.6
 * move focus-options-polyfill to devDependency
 * refactor scrollTo to use svelte-scrollto
