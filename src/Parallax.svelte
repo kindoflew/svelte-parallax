@@ -97,17 +97,14 @@
 <div
   class="parallax-container"
   bind:this={container}
-  style="
-    width: 100%;
-    {style}
-    height: {containerHeight}px;
-  "
+  style="{style} height: {containerHeight}px;"
 >
   <slot />
 </div>
 
 <style>
   .parallax-container {
+    width: 100%;
     position: relative;
     overflow: hidden;
     -ms-transform: translate3d(0, 0, 0);
