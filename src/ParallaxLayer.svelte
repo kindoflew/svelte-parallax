@@ -29,20 +29,24 @@
   const coord = spring(undefined, config);
   // distance between starting position and target position
   let distance;
+  // span * innerHeight
+  let layerHeight;
 
   // hold reference to original rate here for resizing if horizontal
   let _rate = rate;
 
-  // set height
-  $: layerHeight = span * $innerHeight;
-  //set distance
-  $: if ($ready) distance = setDistance($innerHeight, $containerWidth);
+  $: if ($ready) {
+       // set height
+       layerHeight = span * $innerHeight;
+       // set distance
+       distance = setDistance($innerHeight, $containerWidth);
+     }
   // initial position
   $: if ($ready && !$intersecting && $scrollTop < 0) $coord = distance;
   // update coordinate as page is scrolled 
   $: if ($ready && $intersecting) $coord = -($scrollTop * rate) + distance;
   // translate layer according to coordinate
-  $: translate = translate3dString($coord);
+  $: translate = translate3dString($coord, $disabled);
 	  
   function setDistance(innerHeight, containerWidth) {
     // horizontal rate is proportional to amount of innerHeight scrolled
@@ -55,17 +59,17 @@
       : offset * innerHeight + targetScroll * rate;
   } 
 
-  function translate3dString(coord) {
+  function translate3dString(coord, disabled) {
     // coordinate for when disabled or horizontal's y-coordinate
     let lockedCoord = offset * $innerHeight;
-    // translating coordinate
-    let _coord = $disabled 
-      ? (horizontal ? 0 : lockedCoord) 
-      : coord;
 
+    if (disabled) {
+      return `translate3d(0, ${lockedCoord}px, 0);`
+    }
+    
     return horizontal
-      ? `translate3d(${_coord}px, ${lockedCoord}px, 0);`
-      : `translate3d(0, ${_coord}px, 0);`;
+      ? `translate3d(${coord}px, ${lockedCoord}px, 0);`
+      : `translate3d(0, ${coord}px, 0);`;
   }
 </script>
 
@@ -73,7 +77,6 @@
   <div
     class="parallax-layer"
     style="
-      width: 100%;
       {style}
       height: {layerHeight}px;
       -ms-transform: {translate}
@@ -87,6 +90,7 @@
 
 <style>
   .parallax-layer {
+    width: 100%;
     position: absolute;
     box-sizing: border-box;
   }
