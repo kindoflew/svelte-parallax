@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.9
+* bugfix: disabled works correctly now
+* refactored a few more things in ParallaxLayer
+
 ## 0.1.8
 * refactor: ParallaxLayer initialization
 * add vendor prefixes for transform rules
