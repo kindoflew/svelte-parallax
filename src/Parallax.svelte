@@ -23,8 +23,8 @@
   export let style = "";
 
   // for use in scrollTop 
-  $: enter = onEnter ? -$innerHeight : 0;
-  $: exit = onExit ? sections * $innerHeight : (sections - 1) * $innerHeight;
+  $: enter = onEnter ? 1 : 0;
+  $: exit = onExit ? 0 : 1;
 
   // initialize context stores
   const ready = writable(false);
@@ -32,12 +32,15 @@
   const top = writable(0);
   const innerHeight = writable(0);
   const containerWidth = writable(0);
-  // TODO: refactor to intersection observer?
+  // TODO: use intersection observer?
   const scrollTop = derived([y, top], ([$y, $top], set) => {
-    if ($y - $top <= enter) {
-      set(enter);
-    } else if ($y - $top >= exit) {
-      set(exit);
+    const min = 0 - $innerHeight * enter;
+    const max = $innerHeight * sections - $innerHeight * exit;
+
+    if ($y - $top < min) {
+      set(min);
+    } else if ($y - $top > max) {
+      set(max);
     } else {
       set($y - $top);
     }

@@ -59,7 +59,7 @@
     // coordinate for when disabled or horizontal's y-coordinate
     let lockedCoord = offset * $innerHeight;
 
-    if (disabled || !$ready) {
+    if (disabled) {
       return `translate3d(0, ${lockedCoord}px, 0);`
     }
     
@@ -72,13 +72,7 @@
 {#if ready}
   <div
     class="parallax-layer"
-    style="
-      {style}
-      height: {layerHeight}px;
-      -ms-transform: {translate}
-      -webkit-transform: {translate}
-      transform: {translate}
-    "
+    style="{style} height: {layerHeight}px; -ms-transform: {translate} -webkit-transform: {translate} transform: {translate}"
   >
     <slot />
   </div>
