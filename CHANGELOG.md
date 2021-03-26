@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.10
+* DEPRECATED: SimpleParallax is deprecated moving forward. I realized you can do the same effect easily with Parallax/ParallaxLayer so I'm adding it to the new Recipes section of the README. I'll keep the component in the package with a notice for awhile.
+* add Recipes section to README
+* Parallax: refactor intersecting calculations to just use scrollTop store
+* ParallaxLayer: refactor out unneeded checks because of Parallax refactor
+
 ## 0.1.9
 * bugfix: disabled works correctly now
 * refactored a few more things in ParallaxLayer
