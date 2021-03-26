@@ -47,7 +47,7 @@
   function setDistance(innerHeight, containerWidth) {
     // horizontal rate is proportional to amount of innerHeight scrolled
     if (horizontal) rate = _rate * (containerWidth / innerHeight);
-    // how many sections are scrolled before layer is at it's offset position, relative to viewport
+    // how many sections are scrolled before layer is at it's target position
     let targetScroll = Math.floor(offset) * innerHeight; 
 
     return horizontal
