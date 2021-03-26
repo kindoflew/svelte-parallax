@@ -10,9 +10,9 @@
 </script>
 
 <button class="disable" on:click={() => disabled = !disabled}>disable</button>
-<div style="height:20rem; width: 30rem;"></div>
+<div style="height:30rem; width: 30rem;"></div>
 
-<Parallax sections=3 disabled={disabled} bind:this={parallax} >
+<Parallax sections=3 disabled={disabled} bind:this={parallax} style={"background-color: #0bdb8c;"} >
   <ParallaxLayer rate=-1.5 span=2 style="background-color: orange;" />
    
   <ParallaxLayer rate=2 offset=1.5 style="background-color: brown;" />
@@ -39,13 +39,9 @@
   </ParallaxLayer>
 </Parallax>
 
+<div style="height:30rem; width: 30rem;"></div>
+
 <style>
-  :global(body) {
-    background-color: #0bdb8c;
-    color: #313131;
-    font-family: monospace;
-    position: static;
-  }
   h1 {
     font-size: 4rem;
   }
