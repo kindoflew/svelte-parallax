@@ -14,13 +14,12 @@
   // expose style attribute
   export let style = "";
 
-  // get 'props' from Parallax
+  // get context stores from Parallax
   let { 
     ready,
-    scrollTop,
-    intersecting,
     innerHeight,
     containerWidth,
+    scrollTop,
     config,
     _disabled: disabled,
   } = getContext(contextKey);
@@ -29,9 +28,8 @@
   const coord = spring(undefined, config);
   // distance between starting position and target position
   let distance;
-  // span * innerHeight
+  // self-explanatory
   let layerHeight;
-
   // hold reference to original rate here for resizing if horizontal
   let _rate = rate;
 
@@ -41,10 +39,8 @@
        // set distance
        distance = setDistance($innerHeight, $containerWidth);
      }
-  // initial position
-  $: if ($ready && !$intersecting && $scrollTop < 0) $coord = distance;
   // update coordinate as page is scrolled 
-  $: if ($ready && $intersecting) $coord = -($scrollTop * rate) + distance;
+  $: if ($ready) $coord = -($scrollTop * rate) + distance;
   // translate layer according to coordinate
   $: translate = translate3dString($coord, $disabled);
 	  
@@ -63,7 +59,7 @@
     // coordinate for when disabled or horizontal's y-coordinate
     let lockedCoord = offset * $innerHeight;
 
-    if (disabled) {
+    if (disabled || !$ready) {
       return `translate3d(0, ${lockedCoord}px, 0);`
     }
     

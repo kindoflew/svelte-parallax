@@ -22,47 +22,51 @@
   // expose style attribute
   export let style = "";
 
-  // initialize 'props'
+  // for use in scrollTop 
+  $: enter = onEnter ? -$innerHeight : 0;
+  $: exit = onExit ? sections * $innerHeight : (sections - 1) * $innerHeight;
+
+  // initialize context stores
   const ready = writable(false);
   const y = writable(0);
   const top = writable(0);
-  const scrollTop = derived([y, top], ([$y, $top]) => $y - $top);
-  const intersecting = writable(false);
   const innerHeight = writable(0);
   const containerWidth = writable(0);
+  // TODO: refactor to intersection observer?
+  const scrollTop = derived([y, top], ([$y, $top], set) => {
+    if ($y - $top <= enter) {
+      set(enter);
+    } else if ($y - $top >= exit) {
+      set(exit);
+    } else {
+      set($y - $top);
+    }
+  });
+  // make disabled a store so it's reactive in ParallaxLayer
   const _disabled = writable(false);
-  // make disabled reactive so it can be set dynamically by user
   $: $_disabled = disabled;
-  // for use in intersecting calculation
-  let enterThreshold = onEnter ? 1 : 0;
-  let exitThreshold = onExit ? 0 : 1;
   
   // set context of 'props'
   setContext(contextKey, {
     ready,
-    scrollTop,
-    intersecting,
     innerHeight,
     containerWidth,
+    scrollTop,
     config,
     _disabled,
   });
 
   onMount(() => {
+    getContainerDimensions();
     $ready = true;
   });
 
-  $: containerHeight = $innerHeight * sections;
-  $: if ($ready) getContainerDimensions();
-  // if container is in viewport (refactor to intersection observer?)
-  $: $intersecting = (
-       $y >= ($top - $innerHeight * enterThreshold) && 
-       $y <= ($top + containerHeight - $innerHeight * exitThreshold)
-     );
-
   function getContainerDimensions() {
+    // set height first
+		container.style.height = `${$innerHeight * sections}px`;
+
     let containerRect = container.getBoundingClientRect();
-    $top = containerRect.top + $y;
+    $top = containerRect.top + window.pageYOffset;
     $containerWidth = containerRect.width;
   }
 
@@ -97,7 +101,7 @@
 <div
   class="parallax-container"
   bind:this={container}
-  style="{style} height: {containerHeight}px;"
+  style="{style}"
 >
   <slot />
 </div>
