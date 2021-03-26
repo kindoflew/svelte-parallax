@@ -49,7 +49,7 @@
   const _disabled = writable(false);
   $: $_disabled = disabled;
   
-  // set context of 'props'
+  // set context of stores
   setContext(contextKey, {
     ready,
     innerHeight,
