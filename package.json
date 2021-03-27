@@ -1,7 +1,7 @@
 {
   "name": "svelte-parallax",
   "author": "Lewis DAvanzo",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "license": "MIT",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
@@ -21,7 +21,11 @@
     "svelte-scrollto": "^0.2.0"
   },
   "keywords": [
-    "svelte"
+    "svelte",
+    "sveltekit",
+    "sapper",
+    "parallax",
+    "spring"
   ],
   "files": [
     "src",

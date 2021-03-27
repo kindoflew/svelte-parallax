@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.1.11
+* bugfix: scroll animation is now cancellable when user scrolls or clicks
+* add temporary fork of svelte-scrollto until PR is merged
+
 ## 0.1.10
 * DEPRECATED: SimpleParallax is deprecated moving forward. I realized you can do the same effect easily with Parallax/ParallaxLayer so I'm adding it to the new Recipes section of the README. I'll keep the component in the package with a notice for awhile.
 * add Recipes section to README
