@@ -1,3 +1,4 @@
+// temporary fork from https://github.com/langbamit/svelte-scrollto
 let supportsPassive = false
 try {
   let opts = Object.defineProperty({}, 'passive', {
