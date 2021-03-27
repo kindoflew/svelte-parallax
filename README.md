@@ -252,8 +252,8 @@ You could even have multiple parallaxing layers with static divs in between like
   </ParallaxLayer>
   <ParallaxLayer rate={-0.4} offset={2}>
     <img 
-      src="horse.jpg"
-      alt="a horse"
+      src="bird.jpg"
+      alt="a bird"
     />
   </ParallaxLayer>
        <!-- Rate is 0, offset is between the two parallaxing layers above -->
