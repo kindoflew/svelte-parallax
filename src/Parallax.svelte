@@ -3,7 +3,7 @@
   import { writable, derived } from "svelte/store";
   import { quadInOut } from "svelte/easing";
   import { contextKey } from "./contextKey.js";
-  import { scrollTo as svelteScrollTo } from "svelte-scrollto";
+  import { scrollTo as svelteScrollTo } from "./scroll-fork/svelteScrollTo.js";
   import "focus-options-polyfill";
 
   // bind:this
@@ -23,8 +23,8 @@
   export let style = "";
 
   // for use in scrollTop 
-  $: enter = onEnter ? 1 : 0;
-  $: exit = onExit ? 0 : 1;
+  let enter = onEnter ? 1 : 0;
+  let exit = onExit ? 0 : 1;
 
   // initialize context stores
   const ready = writable(false);
@@ -34,15 +34,16 @@
   const containerWidth = writable(0);
   // TODO: use intersection observer?
   const scrollTop = derived([y, top], ([$y, $top], set) => {
+    const step = $y - $top;
     const min = 0 - $innerHeight * enter;
     const max = $innerHeight * sections - $innerHeight * exit;
-
-    if ($y - $top < min) {
+    
+    if (step < min) {
       set(min);
-    } else if ($y - $top > max) {
+    } else if (step > max) {
       set(max);
     } else {
-      set($y - $top);
+      set(step);
     }
   });
   // make disabled a store so it's reactive in ParallaxLayer
@@ -66,7 +67,7 @@
 
   function getContainerDimensions() {
     // set height first
-		container.style.height = `${$innerHeight * sections}px`;
+    container.style.height = `${$innerHeight * sections}px`;
 
     let containerRect = container.getBoundingClientRect();
     $top = containerRect.top + window.pageYOffset;
