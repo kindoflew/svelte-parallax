@@ -74,7 +74,7 @@
     $containerWidth = containerRect.width;
   }
 
-  export function scrollTo(section, { selector = '', duration = 1400, easing = quadInOut } = {}) {
+  export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
     let target = $top + ($innerHeight * (section - 1));
 
     const focusTarget = () => {

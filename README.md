@@ -15,7 +15,7 @@ A spring-based parallax component for Svelte. (Well, it's actually two component
   * [Tips](#tips)
   * [Differences from react-spring/parallax](#differences-from-react-springparallax)
 * [Recipes](#recipes)
-* ~~[SimpleParallax](#simpleparallax)~~ DEPRECATED
+* ~~[SimpleParallax](#simpleparallax-deprecated)~~ DEPRECATED
 * [Contributing](#contributing)
 
 <br/>
@@ -107,7 +107,7 @@ Rather than have a click listener on an entire `<ParallaxLayer>` (which I think 
 | Key        | Type     | Description                                      | Default     |
 | ---------- | -------- | ------------------------------------------------ | ----------- |
 | `selector` | string   | CSS selector of element to focus on after scroll | `""`        |
-| `duration` | number   | Duration of scroll in milliseconds               | `1400`      |
+| `duration` | number   | Duration of scroll in milliseconds               | `500`      |
 | `easing`   | function | Easing function (import from 'svelte/easing')    | `quadInOut` |
 
 <br/>
@@ -177,7 +177,7 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 ### Tips
 * `rate`: The `rate` prop will affect the initial position of `<ParallaxLayer>` because of the way the motion formulas work. A suggested workflow would be intially setting `disabled=true` on `<Parallax>` and placing content where you want it to *end up*. After that, remove `disabled` and then tweak rate and style until the motion is how you'd like it.
 
-* `z-index`: `<ParallaxLayer>`s are organized on the z-axis like normal — later elements are placed on top of earlier elements. If you don't want to mess with z-index (and who does?) make sure to place all content that should always be visible/clickable towards the bottom of `<Parallax>`. Y-axis order is unaffected by this because that is decided by `offset`.
+* `z-index`: `<ParallaxLayer>`s are absolutely positioned so they are organized on the z-axis in the order they are written in the HTML. If you don't want to mess with z-index (and who does?) make sure to place all content that should always be visible/clickable towards the bottom of `<Parallax>`. y-axis order is unaffected by this because that is decided by `offset`.
 
 * `will-change`: I decided not to set `will-change: transform` on every `<ParallaxLayer>` because you quickly hit a memory limit (atleast in Firefox) and [it's not recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change). If you have performance issues, this can be added as necessary to the `style` prop.
 
@@ -220,7 +220,7 @@ Parallax effects can be jarring for those sensitive to too much visual motion. B
 </Parallax>
 ```
 
-**NOTE**: For SvelteKit/Sapper with SSR you'd have to do that behind an `if (process.browser)` or `if (typeof window !== 'undefined')` check.
+**NOTE**: For SvelteKit/Sapper with SSR you'd have to do that in `onMount` or behind an `if (process.browser)` or `if (typeof window !== 'undefined')` check.
 
 <br/>
 
@@ -260,8 +260,6 @@ You could even have multiple parallaxing layers with static divs in between like
   <ParallaxLayer rate={0} offset={1} style={"background-color:lightblue;"} />
 </Parallax>
 ```
-
-[Demo](https://svelte.dev/repl/8afe479073024755a1cc158293310c0e?version=3.35.0)
 
 <br/>
 
