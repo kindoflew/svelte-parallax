@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.13
+* bugfix: change 'keyup' to 'keydown' in abortEvents listener list in scrollTo. 'keyup' was interfering with the click listener to start the animation if it was started by pressing the enter key. 
+
+## 0.1.12
+* reduce default duration of scrollTo
+
 ## 0.1.11
 * bugfix: scroll animation is now cancellable when user scrolls or clicks
 * add temporary fork of svelte-scrollto until PR is merged
