@@ -10,8 +10,8 @@ A spring-based parallax component for Svelte. (Well, it's actually two component
 * [Install](#install)
 * [svelte-parallax](#svelte-parallax)
   * [`<Parallax>`](#parallax)
-  * [`scrollTo`](#scrollto)
   * [`<ParallaxLayer>`](#parallaxlayer)
+  * [`scrollTo`](#scrollto)
   * [Tips](#tips)
   * [Differences from react-spring/parallax](#differences-from-react-springparallax)
 * [Recipes](#recipes)
@@ -89,6 +89,30 @@ The `<Parallax>` component is a container whose height will be the height of the
 
 <br/>
 
+### `<ParallaxLayer>`
+
+| Props           | Type    | Default |
+| --------------- | ------- | ------- |
+| `rate`          | number  | `0.5`   |
+| `offset`        | number  | `0`     |
+| `span`          | number  | `1`     |
+| `horizontal`    | boolean | `false` |
+| `style`         | string  | `""`    |
+
+
+#### Details
+* `rate`: Rate the layer will scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up (left if horizontal) and negative, down (right if horizontal). `0` will scroll normally.
+
+* `offset`: Offset from the top of the container when the layer is completely in the viewport, starting at 0. Can be a float (`0.5` will place the layer halfway down the first section).
+
+* `span`: How many innerHeight-sized sections the layer will span.
+
+* `horizontal`: Whether or not the layer will scroll horizontally. If true, the layer will start out of the viewport and scroll into view (left for positive rate, right for negative). Rate formula is different for horizontal and is determined by the percentage of `innerHeight` scrolled related to the container's width. A rate of `0` will cause the layer to remain out of view.
+
+* `style`: Style attribute is also exposed for this component.
+
+<br/>
+
 ### `scrollTo`
 Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `<div>` probably shouldn't be a button), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweight a little boilerplate. 
 
@@ -150,30 +174,6 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 <br/>
 
-### `<ParallaxLayer>`
-
-| Props           | Type    | Default |
-| --------------- | ------- | ------- |
-| `rate`          | number  | `0.5`   |
-| `offset`        | number  | `0`     |
-| `span`          | number  | `1`     |
-| `horizontal`    | boolean | `false` |
-| `style`         | string  | `""`    |
-
-
-#### Details
-* `rate`: Rate the layer will scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up (left if horizontal) and negative, down (right if horizontal). `0` will scroll normally.
-
-* `offset`: Offset from the top of the container when the layer is completely in the viewport, starting at 0. Can be a float (`0.5` will place the layer halfway down the first section).
-
-* `span`: How many innerHeight-sized sections the layer will span.
-
-* `horizontal`: Whether or not the layer will scroll horizontally. If true, the layer will start out of the viewport and scroll into view (left for positive rate, right for negative). Rate formula is different for horizontal and is determined by the percentage of `innerHeight` scrolled related to the container's width. A rate of `0` will cause the layer to remain out of view.
-
-* `style`: Style attribute is also exposed for this component.
-
-<br/>
-
 ### Tips
 * `rate`: The `rate` prop will affect the initial position of `<ParallaxLayer>` because of the way the motion formulas work. A suggested workflow would be intially setting `disabled=true` on `<Parallax>` and placing content where you want it to *end up*. After that, remove `disabled` and then tweak rate and style until the motion is how you'd like it.
 
@@ -186,7 +186,7 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 ### Differences from react-spring/parallax
 * Some of the prop names are changed for no reason other than that I like them more. If you are coming from react, `span = factor`, `sections = pages`, `rate = speed`.
 
-* react-spring/parallax is a scrollable container, svelte-parallax is not (you are scrolling the actual page). This means that svelte-parallax can be anywhere on your page and only have the browser scrollbar visible.
+* react-spring/parallax is a scrollable container, svelte-parallax is not (you are scrolling the actual page). This means that svelte-parallax can be anywhere on the page and the only scrollbar will be the browser's.
 
 * react-spring/parallax has a `horizontal` prop on the container component, svelte-parallax does not. This is mostly because of the point mentioned above — this is not a scrollable container, so you'd have to scroll the actual browser window horizontally, which is gross to me.
 
