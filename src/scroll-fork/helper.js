@@ -1,4 +1,4 @@
-// temporary fork from https://github.com/langbamit/svelte-scrollto
+// temporary fork of https://github.com/langbamit/svelte-scrollto
 let supportsPassive = false
 try {
   let opts = Object.defineProperty({}, 'passive', {
@@ -19,7 +19,7 @@ export default {
   extend(...args) {
     return Object.assign(...args);
   },
-  addScrollListeners(element, events, handler, opts = { passive: false }) {
+  addListeners(element, events, handler, opts = { passive: false }) {
     if (!(events instanceof Array)) {
      events = [events]
    }
@@ -31,7 +31,7 @@ export default {
      )
    }
  },
- removeScrollListeners(element, events, handler) {
+ removeListeners(element, events, handler) {
    if (!(events instanceof Array)) {
      events = [events]
    }

@@ -1,4 +1,4 @@
-// temporary fork from https://github.com/langbamit/svelte-scrollto
+// temporary fork of https://github.com/langbamit/svelte-scrollto
 import { cubicInOut } from "svelte/easing";
 import { noop, loop, now } from "svelte/internal";
 import _ from "./helper.js";
@@ -21,7 +21,7 @@ const abortEvents = [
   'wheel',
   'DOMMouseScroll',
   'mousewheel',
-  'keyup',
+  'keydown',
   'touchmove',
 ];
 
@@ -77,7 +77,7 @@ const _scrollTo = options => {
       started = true;
       onStart(element, {x, y});
     }
-    _.addScrollListeners(container, abortEvents, stop, { passive: true });
+    _.addListeners(container, abortEvents, stop, { passive: true });
   }
 
   function tick(progress) {
@@ -90,8 +90,7 @@ const _scrollTo = options => {
 
   function stop() {
     scrolling = false;
-    _.removeScrollListeners(container, abortEvents, stop);
-    
+    _.removeListeners(container, abortEvents, stop);
   }
 
   loop(now => {
@@ -193,15 +192,13 @@ export const makeScrollToAction = scrollToFunc => {
         typeof current === "string" ? { element: current } : current
       );
     };
-    node.addEventListener("click", handle);
-    node.addEventListener("touchstart", handle);
+    _.addListeners(node, ["click", "touchstart"], handle);
     return {
       update(options) {
         current = options;
       },
       destroy() {
-        node.removeEventListener("click", handle);
-        node.removeEventListener("touchstart", handle);
+        _.removeListeners(node, ["click", "touchstart"], handle);
       }
     };
   };
