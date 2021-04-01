@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.2.0
+* BREAKING CHANGE: remove horizontal prop from ParallaxLayer. I don't think it works well without additional parameters passed from the user and I want to keep the API minimal (atleast at first). Plus, I'd rather have fewer features at release than have something that doesn't work right and have to remove/change it after.
+* BREAKING CHANGE: remove SimpleParallax from the package. If someone really wants that particular component you can always copy it from a previous version.
+
 ## 0.1.13
 * bugfix: change 'keyup' to 'keydown' in abortEvents listener list in scrollTo. 'keyup' was interfering with the click listener to start the animation if it was started by pressing the enter key. 
 

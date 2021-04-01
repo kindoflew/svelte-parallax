@@ -2,7 +2,7 @@
 
 A spring-based parallax component for Svelte. (Well, it's actually two components.)
 
-**NOTE**: This is at 0.1.x and I'm still working on stuff. It's possible that the API could change or something could break. If anything is weird, open an issue and let me know!
+**NOTE**: This is at 0.2.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
 
 <br/>
 
@@ -15,7 +15,6 @@ A spring-based parallax component for Svelte. (Well, it's actually two component
   * [Tips](#tips)
   * [Differences from react-spring/parallax](#differences-from-react-springparallax)
 * [Recipes](#recipes)
-* ~~[SimpleParallax](#simpleparallax-deprecated)~~ DEPRECATED
 * [Contributing](#contributing)
 
 <br/>
@@ -34,11 +33,11 @@ The API is very similar and it functions (mostly) the same under the hood (See [
 
 <br/>
 
-[Play with a basic demo here](https://svelte.dev/repl/b9b9935c08964edcabfb03cf0a215b66?version=3.35.0)
+[Play with a basic demo here](https://svelte.dev/repl/917289a96f564f3788dcb6400f44a8bc?version=3.37.0)
 
 <br/>
 
-The `<Parallax>` component is a container whose height will be the height of the viewport * the number of sections you input. `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
+The `<Parallax>` component is a container whose height will be the height of the viewport times the number of `sections`. `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
 
 ```html
 <script>
@@ -52,7 +51,7 @@ The `<Parallax>` component is a container whose height will be the height of the
     <img src='horse.jpg' alt='a horse'>
   </ParallaxLayer>
 
-  <ParallaxLayer rate={1} offset={1.5} horizontal>
+  <ParallaxLayer rate={1} offset={1.75}>
     <img src='bird.jpg' alt='a bird'>
   </ParallaxLayer>
 
@@ -96,18 +95,15 @@ The `<Parallax>` component is a container whose height will be the height of the
 | `rate`          | number  | `0.5`   |
 | `offset`        | number  | `0`     |
 | `span`          | number  | `1`     |
-| `horizontal`    | boolean | `false` |
 | `style`         | string  | `""`    |
 
 
 #### Details
-* `rate`: Rate the layer will scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up (left if horizontal) and negative, down (right if horizontal). `0` will scroll normally.
+* `rate`: Rate the layer will scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up and negative, down. `0` will scroll normally.
 
 * `offset`: Offset from the top of the container when the layer is completely in the viewport, starting at 0. Can be a float (`0.5` will place the layer halfway down the first section).
 
 * `span`: How many innerHeight-sized sections the layer will span.
-
-* `horizontal`: Whether or not the layer will scroll horizontally. If true, the layer will start out of the viewport and scroll into view (left for positive rate, right for negative). Rate formula is different for horizontal and is determined by the percentage of `innerHeight` scrolled related to the container's width. A rate of `0` will cause the layer to remain out of view.
 
 * `style`: Style attribute is also exposed for this component.
 
@@ -186,11 +182,9 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 ### Differences from react-spring/parallax
 * Some of the prop names are changed for no reason other than that I like them more. If you are coming from react, `span = factor`, `sections = pages`, `rate = speed`.
 
-* react-spring/parallax is a scrollable container, svelte-parallax is not (you are scrolling the actual page). This means that svelte-parallax can be anywhere on the page and the only scrollbar will be the browser's.
+* react-spring/parallax is a scrollable container, svelte-parallax is not (you are scrolling the actual page). This means that svelte-parallax can be anywhere on the page and also that the only scrollbar will be the browser's.
 
 * react-spring/parallax has a `horizontal` prop on the container component, svelte-parallax does not. This is mostly because of the point mentioned above — this is not a scrollable container, so you'd have to scroll the actual browser window horizontally, which is gross to me.
-
-* svelte-parallax has a `horizontal` prop on `<ParallaxLayer>`, react-spring/parallax does not. I don't know if people will actually use it, but I like the idea of stuff popping in from the sides.
 
 
 All that being said, I'd like to thank anyone and everyone who made react-spring/parallax, without whom this package would not exist.
@@ -262,54 +256,6 @@ You could even have multiple parallaxing layers with static divs in between like
 ```
 
 <br/>
-
-## ~~SimpleParallax~~ DEPRECATED
-**NOTICE**: Deprecated in 0.1.10 in favor of focusing on the main two components. Will keep this around for awhile incase anyone has actually downloaded this already. Use the [Squarespace-style recipe](#squarespace-style) instead.
-
-
-This component is your run of the mill, Squarespace-style parallax effect. No bells or whistles, you can just nest your content inside it:
-
-```html
-<script>
-  import { SimpleParallax } from 'svelte-parallax';
-</script>
-
-<SimpleParallax>
-  <img src="horse.jpg" alt="a horse">
-</SimpleParallax>
-```
-
-**NOTE**: To be explicit: **YOU DO NOT USE `<ParallaxLayer>` IN `<SimpleParallax>`**.
-
-<br/>
-
-[Demo](https://svelte.dev/repl/12bc2038f4d54becaf896d65bc22e691?version=3.35.0)
-
-<br/>
-
-
-### Props
-
-| Props      | Type    | Default |
-| ---------- | ------- | ------- |
-| `rate`     | number  | `-0.4`  |
-| `disabled` | boolean | `false` |
-
-
-#### Details
-* `rate`: Rate of scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up and negative, down. `0` will scroll normally.
-
-* `disabled`: Whether or not the effect is disabled. If set to true, your content will not be translated at all.
-
-<br/>
-
-**NOTE**: Mentioned above, but worth repeating: `rate` will affect the initial position of your parallaxing content, so you may have to tweak some styles on your content (i.e., `position: relative` and alter `top` or `bottom`).
-
-**ANOTHER NOTE**: Each `<SimpleParallax>` has it's own `<svelte:window bind:scrollY>` so it's recommended to not have a million of them on one page. It's set up this way to avoid you having to hook up your own listener and passing it as a prop.
-
-<br/>
-
-
 
 ## Contributing
 Contributions are welcome! I'm pretty new to web development myself, so I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too. (I have a weird thing for nested ternary operators so there might be one or two of them. Sorry in advance.)
