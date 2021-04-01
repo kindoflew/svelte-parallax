@@ -9,8 +9,6 @@
   export let offset = 0;
   // how many sections the layer spans
   export let span = 1;
-  // whether the layer should scroll horizontally
-  export let horizontal = false;
   // expose style attribute
   export let style = "";
 
@@ -18,7 +16,6 @@
   let { 
     ready,
     innerHeight,
-    containerWidth,
     scrollTop,
     config,
     _disabled: disabled,
@@ -30,43 +27,26 @@
   let distance;
   // self-explanatory
   let layerHeight;
-  // hold reference to original rate here for resizing if horizontal
-  let _rate = rate;
 
   $: if ($ready) {
        // set height
        layerHeight = span * $innerHeight;
        // set distance
-       distance = setDistance($innerHeight, $containerWidth);
+       distance = setDistance($innerHeight);
      }
   // update coordinate as page is scrolled 
   $: if ($ready) $coord = -($scrollTop * rate) + distance;
   // translate layer according to coordinate
-  $: translate = translate3dString($coord, $disabled);
+  $: translate = $disabled 
+      ? `translate3d(0, ${offset * $innerHeight}px, 0);`
+      : `translate3d(0, ${$coord}px, 0);`;
 	  
-  function setDistance(innerHeight, containerWidth) {
-    // horizontal rate is proportional to amount of innerHeight scrolled
-    if (horizontal) rate = _rate * (containerWidth / innerHeight);
+  function setDistance(innerHeight) {
     // how many sections are scrolled before layer is at it's target position
     let targetScroll = Math.floor(offset) * innerHeight; 
 
-    return horizontal
-      ? (rate > 0 ? containerWidth : -containerWidth) 
-      : offset * innerHeight + targetScroll * rate;
+    return offset * innerHeight + targetScroll * rate;
   } 
-
-  function translate3dString(coord, disabled) {
-    // coordinate for when disabled or horizontal's y-coordinate
-    let lockedCoord = offset * $innerHeight;
-
-    if (disabled) {
-      return `translate3d(0, ${lockedCoord}px, 0);`
-    }
-    
-    return horizontal
-      ? `translate3d(${coord}px, ${lockedCoord}px, 0);`
-      : `translate3d(0, ${coord}px, 0);`;
-  }
 </script>
 
 {#if ready}

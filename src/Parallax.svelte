@@ -31,7 +31,6 @@
   const y = writable(0);
   const top = writable(0);
   const innerHeight = writable(0);
-  const containerWidth = writable(0);
   // TODO: use intersection observer?
   const scrollTop = derived([y, top], ([$y, $top], set) => {
     const step = $y - $top;
@@ -54,7 +53,6 @@
   setContext(contextKey, {
     ready,
     innerHeight,
-    containerWidth,
     scrollTop,
     config,
     _disabled,
@@ -68,10 +66,7 @@
   function getContainerDimensions() {
     // set height first
     container.style.height = `${$innerHeight * sections}px`;
-
-    let containerRect = container.getBoundingClientRect();
-    $top = containerRect.top + window.pageYOffset;
-    $containerWidth = containerRect.width;
+    $top = container.getBoundingClientRect().top + window.pageYOffset;
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
