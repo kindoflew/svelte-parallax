@@ -15,7 +15,7 @@
   <ParallaxLayer offset=1 rate=1 style="background-color: #805E73;" />
   <ParallaxLayer offset=2 rate=1 style="background-color: #87BCDE;" />
   
-  <ParallaxLayer offset=0 rate=0 span=3 style="background-image: { url('stars', true) }; background-size: 'cover';"/>
+  <ParallaxLayer offset=0 rate=0 span=3 style="background-image: { url('stars', true) }; background-size: cover; background-repeat: no-repeat;"/>
 
   <ParallaxLayer offset=1.3  rate=-0.3>
     <img src={url('satellite4')} alt='' style="width: 15%; margin-left: 70%;">

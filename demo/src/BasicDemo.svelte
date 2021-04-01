@@ -1,62 +1,96 @@
 <script>
-  import Parallax from '../../src/Parallax.svelte';
-  import ParallaxLayer from '../../src/ParallaxLayer.svelte';
-  import { linear } from "svelte/easing";
+  import Parallax from "../../src/Parallax.svelte";
+  import ParallaxLayer from "../../src/ParallaxLayer.svelte";
 
-  let disabled = false;
   let parallax;
-
-  let flexCenter = "display: flex; justify-content: center; align-items: center;";
+  let disabled = false;
+  let fancy = "fancy".split("");
 </script>
 
-<button class="disable" on:click={() => disabled = !disabled}>disable</button>
-<div style="height:30rem; width: 30rem;"></div>
+<button class="disable" on:click={() => (disabled = !disabled)}>disable</button>
 
-<Parallax sections=3 disabled={disabled} bind:this={parallax} style={"background-color: #0bdb8c;"} >
-  <ParallaxLayer rate=-1.5 span=2 style="background-color: orange;" />
-   
-  <ParallaxLayer rate=2 offset=1.5 style="background-color: brown;" />
+<!-- <div style="height:20rem; width: 30rem;"></div> -->
 
-  <ParallaxLayer offset=0.5 horizontal rate=-1 style="background-color: lightblue;"/>
+<Parallax sections={3} bind:this={parallax} {disabled}>
+  {#each fancy as char, index (index)}
+    <ParallaxLayer
+      rate={(index + 1) / (fancy.length - 1)}
+      offset={1}
+      style="margin-left: {38 +
+        index *
+          5}%; display: flex; justify-content: flex-start; align-items: center;"
+    >
+      <p class="fancy">
+        {char}
+      </p>
+    </ParallaxLayer>
+  {/each}
 
-  <ParallaxLayer rate=1 style="background-color: pink; {flexCenter} flex-direction: column;">
+  <ParallaxLayer
+    offset={1}
+    rate={-2.5}
+    style="display: flex; justify-content: flex-end;"
+  >
+    <div
+      style="background-color: lightblue; opacity: 0.5; width: 50%; height: 100%;"
+    />
+  </ParallaxLayer>
+
+  <ParallaxLayer
+    offset={1}
+    rate={2.5}
+    style="display: flex; justify-content: flex-start;"
+  >
+    <div
+      style="background-color: yellow; opacity: 0.5; width: 50%; height: 100%;"
+    />
+  </ParallaxLayer>
+
+  <ParallaxLayer
+    rate="1"
+    style="background-color: pink; display: flex; justify-content: center; align-items: center; flex-direction: column;"
+  >
     <h1>svelte-parallax!</h1>
-    <button class="bottom-btn" on:click={() => parallax.scrollTo(3, {selector: '.top-btn', easing: linear, duration: 800})}>Scroll to bottom</button>
-    <p>CAUTION: obnoxious parallax stuff ahead. click disable button if you prefer reduced motion.</p>
-    
-  </ParallaxLayer>
-  
-  <ParallaxLayer offset=1.5 horizontal rate=1.5 style="background-color: yellow;"/>
-
-  <ParallaxLayer offset=1 rate=1 horizontal style="background-color: green; {flexCenter}">
-    <p class="white">wooooosh!</p>
+    <button
+      class="bottom-btn"
+      on:click={() =>
+        parallax.scrollTo(3, { selector: ".top-btn", duration: 4000 })}
+    >
+      Click me!
+    </button>
   </ParallaxLayer>
 
-  <ParallaxLayer offset=2 rate=-1.5 horizontal style="background-color: orangered;"/>
-
-  <ParallaxLayer offset=2 rate=2 style="background-color: pink; {flexCenter}">
-    <button class="top-btn" on:click={() => parallax.scrollTo(1, {selector: '.bottom-btn'})}>Scroll to top</button>
+  <ParallaxLayer
+    offset="2"
+    rate="2"
+    style="background-color: pink; display: flex; justify-content: center; align-items: center;"
+  >
+    <button
+      class="top-btn"
+      on:click={() =>
+        parallax.scrollTo(1, { selector: ".bottom-btn", duration: 1000 })}
+    >
+      Scroll to top
+    </button>
   </ParallaxLayer>
 </Parallax>
 
-<div style="height:30rem; width: 30rem;"></div>
-
+<!-- <div style="height:20rem; width: 30rem;"></div> -->
 <style>
+  :global(body) {
+    padding: 0;
+    background-color: #0bdb8c;
+    color: #313131;
+    font-family: monospace;
+  }
+
   h1 {
-    font-size: 4rem;
-  }
-
-  p {
-    font-size: 1.5rem;
-  }
-
-  .white {
-    color: #e0e0e0;
-    font-size: 3rem;
+    font-size: 2rem;
   }
 
   button {
-    font-size: 2rem;
+    font-size: 1rem;
+    cursor: pointer;
   }
 
   button:focus {
@@ -68,5 +102,9 @@
     top: 1rem;
     left: 1rem;
     z-index: 10;
+  }
+
+  .fancy {
+    font-size: 2.5rem;
   }
 </style>
