@@ -55,10 +55,10 @@
   // set context for ParallaxLayer
   setContext(contextKey, {
     ready,
-		config,
-		addLayer: (layer) => {
-			layers.update((layers) => [...layers, layer])
-		}
+    config,
+    addLayer: (layer) => {
+      layers.update((layers) => [...layers, layer])
+    }
   });
 
   onMount(() => {
