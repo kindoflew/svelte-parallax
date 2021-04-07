@@ -101,7 +101,7 @@ The `<Parallax>` component is a container whose height will be the height of the
 #### Details
 * `rate`: Rate the layer will scroll relative to `scrollY`. Can be positive or negative: positive will translate the layer up and negative, down. `0` will scroll normally.
 
-* `offset`: Offset from the top of the container when the layer is completely in the viewport, starting at 0. Can be a float (`0.5` will place the layer halfway down the first section).
+* `offset`: Offset from the top of the container when the layer's section completely fills the viewport. Can be a float (`0.5` will place the layer halfway down the first section when the first section takes up the whole viewport).
 
 * `span`: How many innerHeight-sized sections the layer will span.
 
@@ -258,7 +258,7 @@ You could even have multiple parallaxing layers with static divs in between like
 <br/>
 
 ## Contributing
-Contributions are welcome! I'm pretty new to web development myself, so I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too. (I have a weird thing for nested ternary operators so there might be one or two of them. Sorry in advance.)
+Contributions are welcome! I'm pretty new to web development myself, so I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too.
 
 To work locally:
 

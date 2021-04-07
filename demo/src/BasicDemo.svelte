@@ -11,7 +11,7 @@
 
 <!-- <div style="height:20rem; width: 30rem;"></div> -->
 
-<Parallax sections={3} bind:this={parallax} {disabled}>
+<Parallax sections={3} style="background-color: #0bdb8c;" bind:this={parallax} {disabled} >
   {#each fancy as char, index (index)}
     <ParallaxLayer
       rate={(index + 1) / (fancy.length - 1)}
@@ -79,7 +79,6 @@
 <style>
   :global(body) {
     padding: 0;
-    background-color: #0bdb8c;
     color: #313131;
     font-family: monospace;
   }
