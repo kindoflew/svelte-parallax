@@ -45,28 +45,34 @@
       set(step);
     }
   });
-  // make disabled a store so it's reactive in ParallaxLayer
-  const _disabled = writable(false);
-  $: $_disabled = disabled;
+  // array of objects with update functions from each ParallaxLayer
+  const layers = writable([]);
+  // update positions from parent
+  $: $layers.forEach(layer => {
+    layer.setPosition($innerHeight, $scrollTop, disabled);
+  });
   
-  // set context of stores
+  // set context for ParallaxLayer
   setContext(contextKey, {
     ready,
-    innerHeight,
-    scrollTop,
-    config,
-    _disabled,
+		config,
+		addLayer: (layer) => {
+			layers.update((layers) => [...layers, layer])
+		}
   });
 
   onMount(() => {
-    getContainerDimensions();
+    setDimensions();
     $ready = true;
   });
 
-  function getContainerDimensions() {
-    // set height first
+  function setDimensions() {
     container.style.height = `${$innerHeight * sections}px`;
     $top = container.getBoundingClientRect().top + window.pageYOffset;
+    // set each ParallaxLayer's height
+    $layers.forEach(layer => {
+      layer.setHeight($innerHeight);
+    });
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
@@ -77,7 +83,7 @@
     }
     // don't animate scroll if disabled
     if (disabled) {
-      window.scrollTo({top: target});
+      window.scrollTo({ top: target });
       selector && focusTarget();
       return;
     }
@@ -94,7 +100,7 @@
 <svelte:window
   bind:scrollY={$y}
   bind:innerHeight={$innerHeight}
-  on:resize={() => setTimeout(getContainerDimensions, 150)}
+  on:resize={() => setTimeout(setDimensions, 150)}
 />
 
 <div

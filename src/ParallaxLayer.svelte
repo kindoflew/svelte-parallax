@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { spring } from "svelte/motion";
   import { contextKey } from "./contextKey.js";
 
@@ -12,47 +12,54 @@
   // expose style attribute
   export let style = "";
 
-  // get context stores from Parallax
-  let { 
+  // get context from Parallax
+  let {
     ready,
-    innerHeight,
-    scrollTop,
     config,
-    _disabled: disabled,
+    addLayer
   } = getContext(contextKey);
 
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
-  // distance between starting position and target position
-  let distance;
   // self-explanatory
   let layerHeight;
 
-  $: if ($ready) {
-       // set height
-       layerHeight = span * $innerHeight;
-       // set distance
-       distance = setDistance($innerHeight);
-     }
-  // update coordinate as page is scrolled 
-  $: if ($ready) $coord = -($scrollTop * rate) + distance;
   // translate layer according to coordinate
-  $: translate = $disabled 
-      ? `translate3d(0, ${offset * $innerHeight}px, 0);`
-      : `translate3d(0, ${$coord}px, 0);`;
-	  
-  function setDistance(innerHeight) {
-    // how many sections are scrolled before layer is at it's target position
-    let targetScroll = Math.floor(offset) * innerHeight; 
+  $: translate = `translate3d(0, ${$coord}px, 0);`;
 
-    return offset * innerHeight + targetScroll * rate;
-  } 
+  onMount(() => {
+    // register layer with parent
+    addLayer({ setPosition, setHeight });
+  });
+
+  function setPosition(innerHeight, scrollTop, disabled) {
+    // amount to scroll before layer is at target position
+    let targetScroll = Math.floor(offset) * innerHeight;
+    // distance to target position
+    let distance = offset * innerHeight + targetScroll * rate;
+    // current position of layer
+    let current = disabled 
+      ? offset * innerHeight 
+      : -(scrollTop * rate) + distance;
+
+    coord.update(() => current, { hard: disabled });
+  }
+
+  function setHeight(innerHeight) {
+    layerHeight = span * innerHeight;
+  }
 </script>
 
 {#if ready}
   <div
     class="parallax-layer"
-    style="{style} height: {layerHeight}px; -ms-transform: {translate} -webkit-transform: {translate} transform: {translate}"
+    style="
+      {style} 
+      height: {layerHeight}px; 
+      -ms-transform: {translate} 
+      -webkit-transform: {translate} 
+      transform: {translate}
+    "
   >
     <slot />
   </div>
