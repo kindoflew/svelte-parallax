@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.2
+* very small refactors, no functionality changed
+
 ## 0.2.1
 REFACTOR:
   * Parallax and ParallaxLayer are now more decoupled from eachother
