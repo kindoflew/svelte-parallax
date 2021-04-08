@@ -58,7 +58,7 @@
 
   // update each ParallaxLayer's position
   $: $layers.forEach(layer => {
-      layer.setPosition($innerHeight, $scrollTop, disabled);
+       layer.setPosition($innerHeight, $scrollTop, disabled);
      });
 
   onMount(() => {
