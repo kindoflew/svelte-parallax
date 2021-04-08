@@ -42,7 +42,7 @@
       ? offset * innerHeight 
       : -(scrollTop * rate) + distance;
 
-    coord.update(() => current, { hard: disabled });
+    coord.set(current, { hard: disabled });
   }
 
   function setHeight(innerHeight) {
