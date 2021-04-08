@@ -26,8 +26,9 @@
   let enter = onEnter ? 1 : 0;
   let exit = onExit ? 0 : 1;
 
-  // initialize context stores
+  // initialize stores
   const ready = writable(false);
+  const layers = writable([]);
   const y = writable(0);
   const top = writable(0);
   const innerHeight = writable(0);
@@ -45,12 +46,6 @@
       set(step);
     }
   });
-  // array of objects with update functions from each ParallaxLayer
-  const layers = writable([]);
-  // update positions from parent
-  $: $layers.forEach(layer => {
-    layer.setPosition($innerHeight, $scrollTop, disabled);
-  });
   
   // set context for ParallaxLayer
   setContext(contextKey, {
@@ -60,6 +55,11 @@
       layers.update((layers) => [...layers, layer])
     }
   });
+
+  // update each ParallaxLayer's position
+  $: $layers.forEach(layer => {
+      layer.setPosition($innerHeight, $scrollTop, disabled);
+     });
 
   onMount(() => {
     setDimensions();

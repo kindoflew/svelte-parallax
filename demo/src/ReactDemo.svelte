@@ -9,7 +9,7 @@
 </script>
 
 <button class="disable" on:click={() => disabled = !disabled}>disable</button>
-<div style="height:20rem; width: 30rem;"></div>
+<!-- <div style="height:20rem; width: 30rem;"></div> -->
 
 <Parallax sections=3 style="background-color: #253237;" {disabled} bind:this={parallax2}>
   <ParallaxLayer offset=1 rate=1 style="background-color: #805E73;" />
