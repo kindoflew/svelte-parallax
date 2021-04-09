@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.3
+* bugfix: add missing $ to ready flag in ParallaxLayer
+
 ## 0.2.2
 * very small refactors, no functionality changed
 
