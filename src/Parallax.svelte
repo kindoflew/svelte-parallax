@@ -52,7 +52,7 @@
     ready,
     config,
     addLayer: (layer) => {
-      layers.update((layers) => [...layers, layer])
+      layers.update((layers) => [...layers, layer]);
     }
   });
 

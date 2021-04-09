@@ -50,7 +50,7 @@
   }
 </script>
 
-{#if ready}
+{#if $ready}
   <div
     class="parallax-layer"
     style="
