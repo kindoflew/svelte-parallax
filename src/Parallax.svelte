@@ -8,7 +8,9 @@
 
   // bind:this
   let container;
-
+  // bind:innerHeight
+  let innerHeight;
+  
   // how many viewport heights the container spans
   export let sections = 1;
   // default spring config
@@ -22,21 +24,17 @@
   // expose style attribute
   export let style = "";
 
-  // for use in scrollTop 
-  let enter = onEnter ? 1 : 0;
-  let exit = onExit ? 0 : 1;
-
-  // initialize stores
-  const ready = writable(false);
-  const layers = writable([]);
+  // fake intersection observer
   const y = writable(0);
   const top = writable(0);
-  const innerHeight = writable(0);
-  // TODO: use intersection observer?
+
+  const enter = onEnter ? 1 : 0;
+  const exit = onExit ? 0 : 1;
+  
   const scrollTop = derived([y, top], ([$y, $top], set) => {
     const step = $y - $top;
-    const min = 0 - $innerHeight * enter;
-    const max = $innerHeight * sections - $innerHeight * exit;
+    const min = 0 - innerHeight * enter;
+    const max = innerHeight * sections - innerHeight * exit;
     
     if (step < min) {
       set(min);
@@ -46,37 +44,38 @@
       set(step);
     }
   });
+
+  // eventual array of child objects
+  const layers = writable([]);
   
-  // set context for ParallaxLayer
+  // set context for ParallaxLayers
   setContext(contextKey, {
-    ready,
     config,
     addLayer: (layer) => {
-      layers.update((layers) => [...layers, layer]);
+      layers.update(layers => [...layers, layer]);
     }
   });
 
   // update each ParallaxLayer's position
   $: $layers.forEach(layer => {
-       layer.setPosition($innerHeight, $scrollTop, disabled);
+       layer.setPosition($scrollTop, innerHeight, disabled);
      });
 
   onMount(() => {
     setDimensions();
-    $ready = true;
   });
 
   function setDimensions() {
-    container.style.height = `${$innerHeight * sections}px`;
+    container.style.height = `${innerHeight * sections}px`;
     $top = container.getBoundingClientRect().top + window.pageYOffset;
     // set each ParallaxLayer's height
     $layers.forEach(layer => {
-      layer.setHeight($innerHeight);
+      layer.setHeight(innerHeight);
     });
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
-    let target = $top + ($innerHeight * (section - 1));
+    const target = $top + (innerHeight * (section - 1));
 
     const focusTarget = () => {
       document.querySelector(selector).focus({ preventScroll: true });
@@ -99,7 +98,7 @@
 
 <svelte:window
   bind:scrollY={$y}
-  bind:innerHeight={$innerHeight}
+  bind:innerHeight={innerHeight}
   on:resize={() => setTimeout(setDimensions, 150)}
 />
 

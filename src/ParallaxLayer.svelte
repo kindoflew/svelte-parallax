@@ -14,7 +14,6 @@
 
   // get context from Parallax
   let {
-    ready,
     config,
     addLayer
   } = getContext(contextKey);
@@ -32,13 +31,13 @@
     addLayer({ setPosition, setHeight });
   });
 
-  function setPosition(innerHeight, scrollTop, disabled) {
+  function setPosition(scrollTop, innerHeight, disabled) {
     // amount to scroll before layer is at target position
-    let targetScroll = Math.floor(offset) * innerHeight;
+    const targetScroll = Math.floor(offset) * innerHeight;
     // distance to target position
-    let distance = offset * innerHeight + targetScroll * rate;
+    const distance = offset * innerHeight + targetScroll * rate;
     // current position of layer
-    let current = disabled 
+    const current = disabled 
       ? offset * innerHeight 
       : -(scrollTop * rate) + distance;
 
@@ -50,20 +49,18 @@
   }
 </script>
 
-{#if $ready}
-  <div
-    class="parallax-layer"
-    style="
-      {style} 
-      height: {layerHeight}px; 
-      -ms-transform: {translate} 
-      -webkit-transform: {translate} 
+<div
+  class="parallax-layer"
+  style="
+      {style}
+      height: {layerHeight}px;
+      -ms-transform: {translate}
+      -webkit-transform: {translate}
       transform: {translate}
     "
-  >
-    <slot />
-  </div>
-{/if}
+>
+  <slot />
+</div>
 
 <style>
   .parallax-layer {
