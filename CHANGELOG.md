@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.4
+* refactor: get rid of $ready flag and change innerHeight from a store to a regular prop and reorganize
+
 ## 0.2.3
 * bugfix: add missing $ to ready flag in ParallaxLayer
 
