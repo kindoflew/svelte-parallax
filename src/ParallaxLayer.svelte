@@ -15,7 +15,8 @@
   // get context from Parallax
   let {
     config,
-    addLayer
+    addLayer,
+    removeLayer
   } = getContext(contextKey);
 
   // spring store to hold changing scroll coordinate
@@ -28,7 +29,12 @@
 
   onMount(() => {
     // register layer with parent
-    addLayer({ setPosition, setHeight });
+    const layer = { setPosition, setHeight };
+    addLayer(layer);
+
+    return () => {
+      removeLayer(layer);
+    }
   });
 
   function setPosition(scrollTop, innerHeight, disabled) {

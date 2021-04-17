@@ -41,19 +41,26 @@
     set(step);
   });
 
-  // eventual array of child objects
-  const layers = writable([]);
+  // eventual set of child objects
+  const layers = new Set();
   
   // set context for ParallaxLayers
   setContext(contextKey, {
     config,
     addLayer: (layer) => {
-      layers.update(layers => [...layers, layer]);
+      layers.add(layer);
+    },
+    removeLayer: (layer) => {
+      layers.delete(layer);
     }
   });
 
-  // update each ParallaxLayer's position
-  $: $layers.forEach(layer => {
+  $: layers.forEach(layer => {
+       layer.setHeight(innerHeight);
+     });
+
+  
+  $: layers.forEach(layer => {
        layer.setPosition($scrollTop, innerHeight, disabled);
      });
 
@@ -64,10 +71,6 @@
   function setDimensions() {
     container.style.height = `${innerHeight * sections}px`;
     $top = container.getBoundingClientRect().top + window.pageYOffset;
-    // set each ParallaxLayer's height
-    $layers.forEach(layer => {
-      layer.setHeight(innerHeight);
-    });
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
