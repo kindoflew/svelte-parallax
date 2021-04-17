@@ -32,17 +32,13 @@
   const exit = onExit ? 0 : 1;
   
   const scrollTop = derived([y, top], ([$y, $top], set) => {
-    const step = $y - $top;
+    const dy = $y - $top;
     const min = 0 - innerHeight * enter;
     const max = innerHeight * sections - innerHeight * exit;
-    
-    if (step < min) {
-      set(min);
-    } else if (step > max) {
-      set(max);
-    } else {
-      set(step);
-    }
+    // sorry
+    const step = dy < min ? min : (dy > max ? max : dy);
+
+    set(step);
   });
 
   // eventual array of child objects
