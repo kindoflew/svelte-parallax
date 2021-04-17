@@ -98,7 +98,7 @@
 <svelte:window
   bind:scrollY={$y}
   bind:innerHeight={innerHeight}
-  on:resize={() => setTimeout(setDimensions, 150)}
+  on:resize={() => setTimeout(setDimensions, 0)}
 />
 
 <div
