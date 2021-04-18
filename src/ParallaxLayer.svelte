@@ -33,6 +33,7 @@
     addLayer(layer);
 
     return () => {
+      // clean up
       removeLayer(layer);
     }
   });
