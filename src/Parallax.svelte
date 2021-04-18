@@ -2,6 +2,7 @@
   import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
   import { quadInOut } from "svelte/easing";
+  import { writableSet } from "./writableSet.js";
   import { contextKey } from "./contextKey.js";
   import { scrollTo as svelteScrollTo } from "./scroll-fork/svelteScrollTo.js";
   import "focus-options-polyfill";
@@ -42,7 +43,7 @@
   });
 
   // eventual set of child objects
-  const layers = new Set();
+  const layers = writableSet();
   
   // set context for ParallaxLayers
   setContext(contextKey, {
@@ -55,12 +56,12 @@
     }
   });
 
-  $: layers.forEach(layer => {
+  $: $layers.forEach(layer => {
        layer.setHeight(innerHeight);
      });
 
   
-  $: layers.forEach(layer => {
+  $: $layers.forEach(layer => {
        layer.setPosition($scrollTop, innerHeight, disabled);
      });
 
