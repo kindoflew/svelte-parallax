@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.2.5
+* Parallax: refactor scrollTop to be more DRY
+* Parallax: refactor layers array to a set
+* ParallaxLayers: now delete themselves from layers set on unmount. This also means ParallaxLayers can now be dynamically added and removed
+* Parallax: moved layer.setHeight calls from setDimensions to their own reactive statement (so layer reactivity isn't dependent on resizing)
+* Parallax: reduced setTimeout of resize callback to 0
+
 ## 0.2.4
 * refactor: get rid of $ready flag and change innerHeight from a store to a regular prop and reorganize
 
@@ -11,7 +18,7 @@
 
 ## 0.2.1
 REFACTOR:
-  * Parallax and ParallaxLayer are now more decoupled from eachother
+  * make Parallax and ParallaxLayer a little less tightly coupled
   * ParallaxLayer registers itself with Parallax in onMount
   * Parallax now calls all position and height update functions for each ParallaxLayer
 
