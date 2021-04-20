@@ -2,7 +2,8 @@
   import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
   import { quadInOut } from "svelte/easing";
-  import { contextKey } from "./contextKey.js";
+  import { writableSet } from "./utils/writableSet.js";
+  import { contextKey } from "./utils/contextKey.js";
   import { scrollTo as svelteScrollTo } from "./scroll-fork/svelteScrollTo.js";
   import "focus-options-polyfill";
 
@@ -32,31 +33,34 @@
   const exit = onExit ? 0 : 1;
   
   const scrollTop = derived([y, top], ([$y, $top], set) => {
-    const step = $y - $top;
+    const dy = $y - $top;
     const min = 0 - innerHeight * enter;
     const max = innerHeight * sections - innerHeight * exit;
-    
-    if (step < min) {
-      set(min);
-    } else if (step > max) {
-      set(max);
-    } else {
-      set(step);
-    }
+    // sorry
+    const step = dy < min ? min : dy > max ? max : dy;
+
+    set(step);
   });
 
-  // eventual array of child objects
-  const layers = writable([]);
+  // eventual set of child objects
+  const layers = writableSet(new Set());
   
   // set context for ParallaxLayers
   setContext(contextKey, {
     config,
     addLayer: (layer) => {
-      layers.update(layers => [...layers, layer]);
+      layers.add(layer);
+    },
+    removeLayer: (layer) => {
+      layers.delete(layer);
     }
   });
 
-  // update each ParallaxLayer's position
+  $: $layers.forEach(layer => {
+       layer.setHeight(innerHeight);
+     });
+
+  
   $: $layers.forEach(layer => {
        layer.setPosition($scrollTop, innerHeight, disabled);
      });
@@ -68,27 +72,23 @@
   function setDimensions() {
     container.style.height = `${innerHeight * sections}px`;
     $top = container.getBoundingClientRect().top + window.pageYOffset;
-    // set each ParallaxLayer's height
-    $layers.forEach(layer => {
-      layer.setHeight(innerHeight);
-    });
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
-    const target = $top + (innerHeight * (section - 1));
+    const scrollTarget = $top + (innerHeight * (section - 1));
 
     const focusTarget = () => {
       document.querySelector(selector).focus({ preventScroll: true });
     }
     // don't animate scroll if disabled
     if (disabled) {
-      window.scrollTo({ top: target });
+      window.scrollTo({ top: scrollTarget });
       selector && focusTarget();
       return;
     }
 
     svelteScrollTo({
-      y: target, 
+      y: scrollTarget, 
       duration,
       easing,
       onDone: selector ? focusTarget : () => {}
@@ -99,7 +99,7 @@
 <svelte:window
   bind:scrollY={$y}
   bind:innerHeight={innerHeight}
-  on:resize={() => setTimeout(setDimensions, 150)}
+  on:resize={() => setTimeout(setDimensions, 0)}
 />
 
 <div

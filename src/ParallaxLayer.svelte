@@ -1,7 +1,7 @@
 <script>
   import { getContext, onMount } from "svelte";
   import { spring } from "svelte/motion";
-  import { contextKey } from "./contextKey.js";
+  import { contextKey } from "./utils/contextKey.js";
 
   // rate that the layer scrolls relative to scrollY
   export let rate = 0.5;
@@ -15,7 +15,8 @@
   // get context from Parallax
   let {
     config,
-    addLayer
+    addLayer,
+    removeLayer
   } = getContext(contextKey);
 
   // spring store to hold changing scroll coordinate
@@ -28,7 +29,13 @@
 
   onMount(() => {
     // register layer with parent
-    addLayer({ setPosition, setHeight });
+    const layer = { setPosition, setHeight };
+    addLayer(layer);
+
+    return () => {
+      // clean up
+      removeLayer(layer);
+    }
   });
 
   function setPosition(scrollTop, innerHeight, disabled) {

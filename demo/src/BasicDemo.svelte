@@ -4,7 +4,9 @@
 
   let parallax;
   let disabled = false;
+  let show = true;
   let fancy = "fancy".split("");
+  // disabled = !disabled show = !show
 </script>
 
 <button class="disable" on:click={() => (disabled = !disabled)}>disable</button>
@@ -45,7 +47,7 @@
       style="background-color: yellow; opacity: 0.5; width: 50%; height: 100%;"
     />
   </ParallaxLayer>
-
+{#if show}
   <ParallaxLayer
     rate="1"
     style="background-color: pink; display: flex; justify-content: center; align-items: center; flex-direction: column;"
@@ -59,7 +61,7 @@
       Click me!
     </button>
   </ParallaxLayer>
-
+{/if}
   <ParallaxLayer
     offset="2"
     rate="2"
