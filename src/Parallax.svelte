@@ -2,8 +2,8 @@
   import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
   import { quadInOut } from "svelte/easing";
-  import { writableSet } from "./writableSet.js";
-  import { contextKey } from "./contextKey.js";
+  import { writableSet } from "./utils/writableSet.js";
+  import { contextKey } from "./utils/contextKey.js";
   import { scrollTo as svelteScrollTo } from "./scroll-fork/svelteScrollTo.js";
   import "focus-options-polyfill";
 
@@ -37,13 +37,13 @@
     const min = 0 - innerHeight * enter;
     const max = innerHeight * sections - innerHeight * exit;
     // sorry
-    const step = dy < min ? min : (dy > max ? max : dy);
+    const step = dy < min ? min : dy > max ? max : dy;
 
     set(step);
   });
 
   // eventual set of child objects
-  const layers = writableSet();
+  const layers = writableSet(new Set());
   
   // set context for ParallaxLayers
   setContext(contextKey, {
@@ -75,20 +75,20 @@
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
-    const target = $top + (innerHeight * (section - 1));
+    const scrollTarget = $top + (innerHeight * (section - 1));
 
     const focusTarget = () => {
       document.querySelector(selector).focus({ preventScroll: true });
     }
     // don't animate scroll if disabled
     if (disabled) {
-      window.scrollTo({ top: target });
+      window.scrollTo({ top: scrollTarget });
       selector && focusTarget();
       return;
     }
 
     svelteScrollTo({
-      y: target, 
+      y: scrollTarget, 
       duration,
       easing,
       onDone: selector ? focusTarget : () => {}

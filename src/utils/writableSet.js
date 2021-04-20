@@ -5,12 +5,12 @@ export function writableSet(value = new Set()) {
 
   const wrap = (method) => {
     return (...args) => {
-      let ret;
+      let output;
       store.update((value) => {
-        ret = value[method](...args);
+        output = value[method](...args);
         return value;
       });
-      return ret;
+      return output;
     };
   };
   return {
