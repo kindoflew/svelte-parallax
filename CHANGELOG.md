@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.6
+* refactor a few small things for better organization
+
 ## 0.2.5
 * Parallax: refactor scrollTop to be more DRY
 * Parallax: refactor layers array to a set
