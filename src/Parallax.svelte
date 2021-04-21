@@ -42,10 +42,17 @@
     set(step);
   });
 
-  // eventual set of child objects
+  // update ParallaxLayers from parent
   const layers = writableSet(new Set());
   
-  // set context for ParallaxLayers
+  $: $layers.forEach(layer => {
+       layer.setHeight(innerHeight);
+     });
+
+  $: $layers.forEach(layer => {
+       layer.setPosition($scrollTop, innerHeight, disabled);
+     });
+
   setContext(contextKey, {
     config,
     addLayer: (layer) => {
@@ -56,20 +63,12 @@
     }
   });
 
-  $: $layers.forEach(layer => {
-       layer.setHeight(innerHeight);
-     });
-
-  
-  $: $layers.forEach(layer => {
-       layer.setPosition($scrollTop, innerHeight, disabled);
-     });
-
   onMount(() => {
     setDimensions();
   });
 
   function setDimensions() {
+    // set height here for edge case with more than one Parallax on page
     container.style.height = `${innerHeight * sections}px`;
     $top = container.getBoundingClientRect().top + window.pageYOffset;
   }
