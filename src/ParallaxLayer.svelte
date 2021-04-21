@@ -21,15 +21,28 @@
 
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
-  // self-explanatory
-  let layerHeight;
+  // layer height
+  let height;
 
-  // translate layer according to coordinate
-  $: translate = `translate3d(0, ${$coord}px, 0);`;
+  const layer = { 
+    setPosition: (scrollTop, innerHeight, disabled) => {
+      // amount to scroll before layer is at target position
+      const targetScroll = Math.floor(offset) * innerHeight;
+      // distance to target position
+      const distance = offset * innerHeight + targetScroll * rate;
+      const current = disabled 
+        ? offset * innerHeight 
+        : -(scrollTop * rate) + distance;
+
+      coord.set(current, { hard: disabled });
+    },
+    setHeight: (innerHeight) => {
+      height = span * innerHeight;
+    }
+  };
 
   onMount(() => {
     // register layer with parent
-    const layer = { setPosition, setHeight };
     addLayer(layer);
 
     return () => {
@@ -38,29 +51,15 @@
     }
   });
 
-  function setPosition(scrollTop, innerHeight, disabled) {
-    // amount to scroll before layer is at target position
-    const targetScroll = Math.floor(offset) * innerHeight;
-    // distance to target position
-    const distance = offset * innerHeight + targetScroll * rate;
-    // current position of layer
-    const current = disabled 
-      ? offset * innerHeight 
-      : -(scrollTop * rate) + distance;
-
-    coord.set(current, { hard: disabled });
-  }
-
-  function setHeight(innerHeight) {
-    layerHeight = span * innerHeight;
-  }
+  // translate layer according to coordinate
+  $: translate = `translate3d(0, ${$coord}px, 0);`;
 </script>
 
 <div
   class="parallax-layer"
   style="
       {style}
-      height: {layerHeight}px;
+      height: {height}px;
       -ms-transform: {translate}
       -webkit-transform: {translate}
       transform: {translate}
