@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.6
+* bugfix: move focus-options-polyfill from devDependencies to dependencies
+
 ## 0.2.5
 * Parallax: refactor scrollTop to be more DRY
 * Parallax: refactor layers array to a set
