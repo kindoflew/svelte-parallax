@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.2.7
+* bugfix: move focus-options-polyfill from devDependencies to dependencies
+
 ## 0.2.6
 * refactor a few small things for better organization
 
