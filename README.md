@@ -28,7 +28,7 @@ npm i -D svelte-parallax
 <br/>
 
 ## svelte-parallax
-This package is based on [react-spring/parallax](https://github.com/pmndrs/react-spring/tree/v9/packages/parallax).
+This package is based on [react-spring/parallax](https://github.com/pmndrs/react-spring/tree/master/packages/parallax).
 The API is very similar and it functions (mostly) the same under the hood (See [differences](#differences-from-react-spring/parallax) between them).
 
 <br/>
@@ -44,7 +44,7 @@ The `<Parallax>` component is a container whose height will be the height of the
   import { Parallax, ParallaxLayer } from 'svelte-parallax';
 </script>
 
-<Parallax sections={3}>
+<Parallax sections={3} config={{stiffness: 0.2, damping: 0.3}}>
   <ParallaxLayer rate={0} span={3} style={"background-color: orange;"} />
 
   <ParallaxLayer rate={-0.5} offset={1}>
@@ -110,7 +110,7 @@ The `<Parallax>` component is a container whose height will be the height of the
 <br/>
 
 ### `scrollTo`
-Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `<div>` probably shouldn't be a button), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweight a little boilerplate. 
+Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `<div>` probably shouldn't be a button), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweigh a little boilerplate. 
 
 `scrollTo` uses [svelte-scrollto](https://github.com/langbamit/svelte-scrollto) to animate scrolling, instead of relying on the native browser implementation. Because of this, you can have smooth, custom scrolling regardless of browser support for `scroll-behavior`.
 
@@ -177,6 +177,8 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 * `will-change`: I decided not to set `will-change: transform` on every `<ParallaxLayer>` because you quickly hit a memory limit (atleast in Firefox) and [it's not recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change). If you have performance issues, this can be added as necessary to the `style` prop.
 
+* `scrollY`: svelte-parallax uses Svelte's `scrollY` and `innerHeight` bindings in its motion functions, so it will not work if placed inside a scrollable element (like a `div` with `overflow: scroll`). I don't have plans to change this right now, but if enough people ask for it, who knows?
+
 <br/>
 
 ### Differences from react-spring/parallax
@@ -190,7 +192,7 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 All that being said, I'd like to thank anyone and everyone who made react-spring/parallax, without whom this package would not exist.
 
 #### Side-by-side example:
-* [original react-spring/parallax demo](https://codesandbox.io/s/nwq4j1j6lm?from-embed)
+* [original react-spring/parallax demo](https://codesandbox.io/s/github/pmndrs/react-spring/tree/master/demo/src/sandboxes/parallax-vert)
 
 * [svelte-parallax version](https://svelte.dev/repl/1504d411044745a186004855521a89c7?version=3.35.0)
 
@@ -272,7 +274,7 @@ npm install
 npm run dev
 ```
 
-This will run a dev server on localhost:5000. The source lives in `src` and `demo` is there for live feedback while working.
+This will run a dev server on localhost:5000. The source lives in `src` and `demo` is there for live feedback while working. (After `demo` dependencies have been installed, `npm run dev` will also work from the root folder.)
 
 Things I Probably Need:
 * **Tests**: Don't really know a lot about testing UI yet, so if that's your thing, feel free to give it a go. Or you can just mess with the components until they break and open an issue!
