@@ -188,6 +188,8 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 * react-spring/parallax has a `horizontal` prop on the container component, svelte-parallax does not. This is mostly because of the point mentioned above — this is not a scrollable container, so you'd have to scroll the actual browser window horizontally, which is gross to me.
 
+* react-spring/parallax has a `sticky` prop on `ParallaxLayer` (that I implemented!), svelte-parallax does not. I'm working on bringing it here too, but it's tricky because CSS hates fun.
+
 
 All that being said, I'd like to thank anyone and everyone who made react-spring/parallax, without whom this package would not exist.
 
@@ -260,7 +262,7 @@ You could even have multiple parallaxing layers with static divs in between like
 <br/>
 
 ## Contributing
-Contributions are welcome! I'm pretty new to web development myself, so I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too.
+Contributions are welcome! I'm keeping everything in JavaScript for now and I've tried to comment a lot to make jumping in easier. There really isn't a whole lot to the JavaScript parts so that helps too.
 
 To work locally:
 
@@ -277,6 +279,5 @@ npm run dev
 This will run a dev server on localhost:5000. The source lives in `src` and `demo` is there for live feedback while working. (After `demo` dependencies have been installed, `npm run dev` will also work from the root folder.)
 
 Things I Probably Need:
-* **Tests**: Don't really know a lot about testing UI yet, so if that's your thing, feel free to give it a go. Or you can just mess with the components until they break and open an issue!
 
 * **Optimzations**: Didn't want to optimize in advance (YAGNI and Svelte takes care of a lot of it already), but I did notice that on mobile any `<ParallaxLayer>` that has only a `background-image` (no nested content) and a `rate` other than `0` will flicker until it stops moving. Only tested on an iPhone7 and iPhone8 so far. Also, note that `will-change: transform` has had no effect. Don't know much about rendering optimizations, so I'm open to any suggestions!
