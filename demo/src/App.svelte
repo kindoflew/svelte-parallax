@@ -2,6 +2,7 @@
   import BasicDemo from "./BasicDemo.svelte";
   import ReactDemo from "./ReactDemo.svelte";
   import MultiDemo from "./MultiDemo.svelte";
+  import TestDemo from "./TestDemo.svelte";
   import { Route } from "tinro";
 
 </script>
@@ -23,6 +24,7 @@
 <Route path="/basic-demo"><BasicDemo /></Route>
 <Route path="/react-demo"><ReactDemo /></Route>
 <Route path="/multi-demo"><MultiDemo /></Route>
+<Route path="/test-demo"><TestDemo /></Route>
 
 <style>
   :global(body) {
