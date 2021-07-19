@@ -9,7 +9,7 @@ describe("Parallax", () => {
       .should('have.attr', 'style')
       .should('contain', `transform: translate3d(0, ${HEIGHT * 2}px, 0)`);
 
-    cy.scrollTo(0, 660);
+    cy.scrollTo(0, HEIGHT);
 
     cy.get('.parallax-layer', {timeout: 3000})
       .should('have.attr', 'style')
