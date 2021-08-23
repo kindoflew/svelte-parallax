@@ -3,13 +3,13 @@
   import { spring } from "svelte/motion";
   import { contextKey } from "./utils/contextKey.js";
 
-  // rate that the layer scrolls relative to scrollY
+  /** rate that the layer scrolls relative to `scrollY` */
   export let rate = 0.5;
-  // offset from top of container when layer is in viewport
+  /** offset from top of container when layer is in viewport */
   export let offset = 0;
-  // how many sections the layer spans
+  /** how many sections the layer spans */
   export let span = 1;
-  // expose style attribute
+  /** style attribute for layer. don't forget your semi-colons! */
   export let style = "";
 
   // get context from Parallax

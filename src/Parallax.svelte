@@ -12,19 +12,19 @@
   // bind:innerHeight
   let innerHeight;
   
-  // how many viewport heights the container spans
+  /** the number of viewport height-sized sections the container spans */
   export let sections = 1;
-  // default spring config
+  /** spring config object */
   export let config = { stiffness: 0.017, damping: 0.26 };
-  // threshold of effect start/end when container enters/exits viewport
+  /** threshold of effect start/end when container enters/exits viewport */
   export let threshold = { top: 1, bottom: 1 };
-  // disable parallax effect, layers will be frozen at target position
+  /** disable parallax effect, layers will be frozen at target position */
   export let disabled = false;
-  // expose style attribute
+  /** style attribute for container. don't forget your semi-colons! */
   export let style = "";
-  // DEPRECATED: use threshold.enter
+  /** DEPRECATED: use `threshold.enter` */
   export let onEnter = undefined;
-  // DEPRECATED: use threshold.exit
+  /** DEPRECATED: use `threshold.exit` */
   export let onExit = undefined;
 
   // bind:scrollY
