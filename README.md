@@ -2,7 +2,9 @@
 
 A spring-based parallax component for Svelte. (Well, it's actually two components.)
 
-**NOTE**: This is at 0.2.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
+**NOTE**: This is at 0.3.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
+
+**DEPRECATED**: From v0.3.0 on, `onEnter` and `onExit` are being replaced with `threshold`. See [Parallax](#parallax) and [CHANGELOG](https://github.com/kindoflew/svelte-parallax/blob/main/CHANGELOG.md) for details.
 
 <br/>
 
@@ -63,14 +65,13 @@ The `<Parallax>` component is a container whose height will be the height of the
 
 ### `<Parallax>`
 
-| Props      | Type    | Default                               |
-| ---------- | ------- | ------------------------------------- |
-| `sections` | number  | `1`                                   |
-| `config`   | object  | `{ stiffness: 0.017, damping: 0.26 }` |
-| `onEnter`  | boolean | `false`                               |
-| `onExit`   | boolean | `false`                               |
-| `disabled` | boolean | `false`                               |
-| `style`    | string  | `""`                                  |
+| Props       | Type    | Default                               |
+| ----------- | ------- | ------------------------------------- |
+| `sections`  | number  | `1`                                   |
+| `config`    | object  | `{ stiffness: 0.017, damping: 0.26 }` |
+| `threshold` | object  | `{ top: 1, bottom: 1 }`               |
+| `disabled`  | boolean | `false`                               |
+| `style`     | string  | `""`                                  |
 
 
 #### Details
@@ -78,9 +79,7 @@ The `<Parallax>` component is a container whose height will be the height of the
 
 * `config`: Optional [Svelte spring store](https://svelte.dev/docs#spring) configuration, if you want more control over parallax physics.
 
-* `onEnter`: Whether or not to start the effect when the container enters the viewport. `true`: start effect as soon as container is visible, `false`: wait until container top is at the top of the viewport.
-
-* `onExit`: Whether or not to end the effect when the container exits the viewport. `true`: wait until container is completely out of viewport to stop, `false`: end effect as soon as bottom of container clears bottom of viewport.
+* `threshold`: Adds a threshold above/below `Parallax` that is equal to the height of the viewport multiplied by the value, each one should be a number between `0` and `1`. `threshold.top = 1`: the effect will be active whenever the top of the container is at or above the *top* of the viewport, `threshold.top = 0`: effect will be active whenever the top of the container is at or above the *bottom* of the viewport. `threshold.bottom` is similar, but on the other end -- `1`: active when bottom of container is at or below the *bottom* of the viewport, `0`: active when bottom is at or below the *top* of the viewport.
 
 * `disabled`: Whether or not the effect is disabled (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
@@ -127,7 +126,7 @@ Rather than have a click listener on an entire `<ParallaxLayer>` (which I think 
 | Key        | Type     | Description                                      | Default     |
 | ---------- | -------- | ------------------------------------------------ | ----------- |
 | `selector` | string   | CSS selector of element to focus on after scroll | `""`        |
-| `duration` | number   | Duration of scroll in milliseconds               | `500`      |
+| `duration` | number   | Duration of scroll in milliseconds               | `500`       |
 | `easing`   | function | Easing function (import from 'svelte/easing')    | `quadInOut` |
 
 <br/>
@@ -224,10 +223,14 @@ Parallax effects can be jarring for those sensitive to too much visual motion. B
 
 ### Squarespace-style
 
-For simple, no-frills parallax effects, you can set `stiffness` and `damping` to `1` which will cancel out the spring effect, and then set both `onEnter` and `onExit` on `<Parallax>` so the effect will be enabled whenever the container is in the viewport.
+For simple, no-frills parallax effects, you can set `stiffness` and `damping` to `1` which will cancel out the spring effect, and then set `threshold` properties to `0` so the effect will be enabled whenever the container is in the viewport.
 
 ```html
-<Parallax onEnter onExit config={{stiffness: 1, damping: 1}} sections={1}>
+<Parallax 
+  config={{ stiffness: 1, damping: 1 }} 
+  threshold={{ top: 0, bottom: 0 }} 
+  sections={1}
+>
   <ParallaxLayer rate={-0.4}>
     <img 
       src="horse.jpg"
@@ -241,7 +244,11 @@ For simple, no-frills parallax effects, you can set `stiffness` and `damping` to
 You could even have multiple parallaxing layers with static divs in between like this:
 
 ```html
-<Parallax onEnter onExit config={{stiffness: 1, damping: 1}} sections={3}>
+<Parallax 
+  config={{ stiffness: 1, damping: 1 }} 
+  threshold={{ top: 0, bottom: 0 }} 
+  sections={3}
+>
   <ParallaxLayer rate={-0.4}>
     <img 
       src="horse.jpg"

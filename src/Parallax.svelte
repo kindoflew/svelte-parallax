@@ -16,39 +16,44 @@
   export let sections = 1;
   // default spring config
   export let config = { stiffness: 0.017, damping: 0.26 };
-  // whether or not effect starts when container enters viewport
-  export let onEnter = false;
-  // whether or not effect ends when container exits viewport
-  export let onExit = false;
-  // disable parallax effect, layers will be frozen at targetPosition
+  // threshold of effect start/end when container enters/exits viewport
+  export let threshold = { top: 1, bottom: 1 };
+  // disable parallax effect, layers will be frozen at target position
   export let disabled = false;
   // expose style attribute
   export let style = "";
+  // DEPRECATED: use threshold.enter
+  export let onEnter = undefined;
+  // DEPRECATED: use threshold.exit
+  export let onExit = undefined;
 
-  // fake intersection observer
+  // bind:scrollY
   const y = writable(0);
+  // top coord of Parallax container
   const top = writable(0);
 
-  const enter = onEnter ? 1 : 0;
-  const exit = onExit ? 0 : 1;
-  
+  // this is only here until legacy onEnter/onExit API is removed
+  const legacyEnter = onEnter ? 0 : 1;
+  const legacyExit = onExit ? 0 : 1;
+  const enter = onEnter === undefined ? threshold.top : legacyEnter;
+  const exit = onExit === undefined ? threshold.bottom : legacyExit;
+
+  // fake intersection observer
   const scrollTop = derived([y, top], ([$y, $top], set) => {
     const dy = $y - $top;
-    const min = 0 - innerHeight * enter;
+    const min = 0 - innerHeight + innerHeight * enter;
     const max = innerHeight * sections - innerHeight * exit;
     // sorry
     const step = dy < min ? min : dy > max ? max : dy;
-
     set(step);
   });
 
-  // update ParallaxLayers from parent
+  // eventually filled with ParallaxLayer objects
   const layers = writableSet(new Set());
-  
+  // update ParallaxLayers from parent
   $: $layers.forEach(layer => {
        layer.setHeight(innerHeight);
      });
-
   $: $layers.forEach(layer => {
        layer.setPosition($scrollTop, innerHeight, disabled);
      });
