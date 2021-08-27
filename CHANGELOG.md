@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.3.1
+* bugfix: removed `postinstall` script as it was borking actual component installation
+
 ## 0.3.0
 * DEPRECATED: `onEnter` and `onExit` are being replaced with `threshold` prop. This is mostly because the common convention seems to be that `on<VERB>` props usually take a function and standards are important. Also, `threshold` will take numbers instead of booleans so the user has more control over when effects are active. To switch from old to new, `onEnter=true` is now `threshold={{top: 0}}` and `onExit=true` is `threshold={{bottom: 0}}`.
 * add JSDoc comments to props because they are fancy.
