@@ -11,8 +11,6 @@
 
 <button class="disable" on:click={() => (disabled = !disabled)}>disable</button>
 
-<!-- <div style="height:20rem; width: 30rem;"></div> -->
-
 <Parallax sections={3} style="background-color: #0bdb8c;" bind:this={parallax} {disabled} >
   {#each fancy as char, index (index)}
     <ParallaxLayer
@@ -77,14 +75,7 @@
   </ParallaxLayer>
 </Parallax>
 
-<!-- <div style="height:20rem; width: 30rem;"></div> -->
 <style>
-  :global(body) {
-    padding: 0;
-    color: #313131;
-    font-family: monospace;
-  }
-
   h1 {
     font-size: 2rem;
   }
