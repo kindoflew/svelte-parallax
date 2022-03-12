@@ -12,8 +12,10 @@
   // bind:innerHeight
   let innerHeight;
   
-  /** the number of viewport height-sized sections the container spans */
+  /** the number of sections the container spans */
   export let sections = 1;
+  /** the height of a section, defaults to window.innerHeight */
+  export let sectionHeight = undefined;
   /** spring config object */
   export let config = { stiffness: 0.017, damping: 0.26 };
   /** threshold of effect start/end when container enters/exits viewport */
@@ -22,15 +24,17 @@
   export let disabled = false;
   /** style attribute for container. don't forget your semi-colons! */
   export let style = "";
-  /** DEPRECATED: use `threshold.enter` */
+  /** DEPRECATED: use `threshold.top` */
   export let onEnter = undefined;
-  /** DEPRECATED: use `threshold.exit` */
+  /** DEPRECATED: use `threshold.bottom` */
   export let onExit = undefined;
 
   // bind:scrollY
   const y = writable(0);
   // top coord of Parallax container
   const top = writable(0);
+  // height of a section
+  const height = writable(0);
 
   // this is only here until legacy onEnter/onExit API is removed
   const legacyEnter = onEnter ? 0 : 1;
@@ -39,10 +43,10 @@
   const exit = onExit === undefined ? threshold.bottom : legacyExit;
 
   // fake intersection observer
-  const scrollTop = derived([y, top], ([$y, $top], set) => {
+  const scrollTop = derived([y, top, height], ([$y, $top, $height], set) => {
     const dy = $y - $top;
-    const min = 0 - innerHeight + innerHeight * enter;
-    const max = innerHeight * sections - innerHeight * exit;
+    const min = 0 - $height + $height * enter;
+    const max = $height * sections - $height * exit;
     // sorry
     const step = dy < min ? min : dy > max ? max : dy;
     set(step);
@@ -52,11 +56,12 @@
   const layers = writableSet(new Set());
   // update ParallaxLayers from parent
   $: $layers.forEach(layer => {
-       layer.setHeight(innerHeight);
+       layer.setHeight($height);
      });
   $: $layers.forEach(layer => {
-       layer.setPosition($scrollTop, innerHeight, disabled);
+       layer.setPosition($scrollTop, $height, disabled);
      });
+  $: if ($height !== 0) (sectionHeight, setDimensions());
 
   setContext(contextKey, {
     config,
@@ -74,12 +79,13 @@
 
   function setDimensions() {
     // set height here for edge case with more than one Parallax on page
-    container.style.height = `${innerHeight * sections}px`;
+    $height = sectionHeight ? sectionHeight : innerHeight;
+    container.style.height = `${$height * sections}px`;
     $top = container.getBoundingClientRect().top + window.pageYOffset;
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
-    const scrollTarget = $top + (innerHeight * (section - 1));
+    const scrollTarget = $top + ($height * (section - 1));
 
     const focusTarget = () => {
       document.querySelector(selector).focus({ preventScroll: true });

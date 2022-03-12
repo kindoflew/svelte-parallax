@@ -39,7 +39,7 @@ The API is very similar and it functions (mostly) the same under the hood (See [
 
 <br/>
 
-The `<Parallax>` component is a container whose height will be the height of the viewport times the number of `sections`. `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
+The `<Parallax>` component is a container whose height will be the number of `sections` you choose multiplied by the `sectionHeight` (defaults to `window.innerHeight`, which should be good for most use cases). `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
 
 ```html
 <script>
@@ -65,17 +65,20 @@ The `<Parallax>` component is a container whose height will be the height of the
 
 ### `<Parallax>`
 
-| Props       | Type    | Default                               |
-| ----------- | ------- | ------------------------------------- |
-| `sections`  | number  | `1`                                   |
-| `config`    | object  | `{ stiffness: 0.017, damping: 0.26 }` |
-| `threshold` | object  | `{ top: 1, bottom: 1 }`               |
-| `disabled`  | boolean | `false`                               |
-| `style`     | string  | `""`                                  |
+| Props            | Type    | Default                               |
+| ---------------- | ------- | ------------------------------------- |
+| `sections`       | number  | `1`                                   |
+| `sectionHeight`  | number  | `window.innerHeight`                  |
+| `config`         | object  | `{ stiffness: 0.017, damping: 0.26 }` |
+| `threshold`      | object  | `{ top: 1, bottom: 1 }`               |
+| `disabled`       | boolean | `false`                               |
+| `style`          | string  | `""`                                  |
 
 
 #### Details
-* `sections`: How many innerHeight-sized sections the container has.
+* `sections`: How many sections the container has.
+
+* `sectionHeight`: The height of an individual section. Defaults to `window.innerHeight`, using Svelte's `bind:innerHeight`.
 
 * `config`: Optional [Svelte spring store](https://svelte.dev/docs#spring) configuration, if you want more control over parallax physics.
 
@@ -111,7 +114,7 @@ The `<Parallax>` component is a container whose height will be the height of the
 ### `scrollTo`
 Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `<div>` probably shouldn't be a button), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweigh a little boilerplate. 
 
-`scrollTo` uses [svelte-scrollto](https://github.com/langbamit/svelte-scrollto) to animate scrolling, instead of relying on the native browser implementation. Because of this, you can have smooth, custom scrolling regardless of browser support for `scroll-behavior`.
+`scrollTo` uses a fork of [svelte-scrollto](https://github.com/langbamit/svelte-scrollto) to animate scrolling, instead of relying on the native browser implementation. Because of this, you can have smooth, custom scrolling regardless of browser support for `scroll-behavior`.
 
 
 | Parameters          | Type   | Description                     |
@@ -176,7 +179,7 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 * `will-change`: I decided not to set `will-change: transform` on every `<ParallaxLayer>` because you quickly hit a memory limit (atleast in Firefox) and [it's not recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change). If you have performance issues, this can be added as necessary to the `style` prop.
 
-* `scrollY`: svelte-parallax uses Svelte's `scrollY` and `innerHeight` bindings in its motion functions, so it will not work if placed inside a scrollable element (like a `div` with `overflow: scroll`). I don't have plans to change this right now, but if enough people ask for it, who knows?
+* `scrollY`: svelte-parallax uses Svelte's `bind:scrollY` in its motion functions, so it will not work if placed inside a scrollable element (like a `div` with `overflow: scroll`). I don't have plans to change this right now, but if enough people ask for it, who knows?
 
 <br/>
 
@@ -278,7 +281,9 @@ git clone git@github.com:kindoflew/svelte-parallax
 cd svelte-parallax
 npm install
 # if you want to use the demo app
-npm run dev
+cd demo
+npm install
+npm run dev # can also be run from root folder once installed
 ```
 
 This will run a dev server on localhost:5000. The source lives in `src` and `demo` is there for live feedback while working.

@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.3.2
+* feature: added `sectionHeight` prop to `Parallax`. The value still defaults to `window.innerHeight` (using Svelte's `bind:innerHeight`), but this should resolve #17.
+
 ## 0.3.1
 * bugfix: removed `postinstall` script as it was borking actual component installation
 
