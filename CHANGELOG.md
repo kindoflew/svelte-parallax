@@ -1,18 +1,18 @@
 # CHANGELOG
 
 ## 0.4.0
-* feature: added `sectionHeight` prop to `Parallax`. The value still defaults to `window.innerHeight` (using Svelte's `bind:innerHeight`), but this should resolve [#17](https://github.com/kindoflew/svelte-parallax/issues/17).
-* feature: added `onProgress` prop to `Parallax`. Takes a function that recieves a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }`. The two `<component>Progress` values are floats between `0` and `1`. Resolves [#16](https://github.com/kindoflew/svelte-parallax/issues/16).
+* [FEATURE]: added `sectionHeight` prop to `Parallax`. The value still defaults to `window.innerHeight` (using Svelte's `bind:innerHeight`), but this should resolve [#17](https://github.com/kindoflew/svelte-parallax/issues/17).
+* [FEATURE]: added `onProgress` prop to `Parallax`. Takes a function that recieves a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }`. The two `<component>Progress` values are floats between `0` and `1`. Resolves [#16](https://github.com/kindoflew/svelte-parallax/issues/16).
 
 ## 0.3.1
-* bugfix: removed `postinstall` script as it was borking actual component installation
+* [BUGFIX]: removed `postinstall` script as it was borking actual component installation
 
 ## 0.3.0
-* DEPRECATED: `onEnter` and `onExit` are being replaced with `threshold` prop. This is mostly because the common convention seems to be that `on<VERB>` props usually take a function and standards are important. Also, `threshold` will take numbers instead of booleans so the user has more control over when effects are active. To switch from old to new, `onEnter=true` is now `threshold={{ top: 0 }}` and `onExit=true` is `threshold={{ bottom: 0 }}`.
+* [DEPRECATED]: `onEnter` and `onExit` are being replaced with `threshold` prop. This is mostly because the common convention seems to be that `on<VERB>` props usually take a function and standards are important. Also, `threshold` will take numbers instead of booleans so the user has more control over when effects are active. To switch from old to new, `onEnter=true` is now `threshold={{ top: 0 }}` and `onExit=true` is `threshold={{ bottom: 0 }}`.
 * add JSDoc comments to props because they are fancy.
 
 ## 0.2.7
-* bugfix: move focus-options-polyfill from devDependencies to dependencies
+* [BUGFIX]: move focus-options-polyfill from devDependencies to dependencies
 
 ## 0.2.6
 * refactor a few small things for better organization
@@ -28,7 +28,7 @@
 * refactor: get rid of $ready flag and change innerHeight from a store to a regular prop and reorganize
 
 ## 0.2.3
-* bugfix: add missing $ to ready flag in ParallaxLayer
+* [BUGFIX]: add missing $ to ready flag in ParallaxLayer
 
 ## 0.2.2
 * very small refactors, no functionality changed
@@ -40,34 +40,34 @@ REFACTOR:
   * Parallax now calls all position and height update functions for each ParallaxLayer
 
 ## 0.2.0
-* BREAKING CHANGE: remove horizontal prop from ParallaxLayer. I don't think it works well without additional parameters passed from the user and I want to keep the API minimal (atleast at first). Plus, I'd rather have fewer features at release than have something that doesn't work right and have to remove/change it after.
-* BREAKING CHANGE: remove SimpleParallax from the package. If someone really wants that particular component you can always copy it from a previous version.
+* [BREAKING CHANGE]: remove horizontal prop from ParallaxLayer. I don't think it works well without additional parameters passed from the user and I want to keep the API minimal (atleast at first). Plus, I'd rather have fewer features at release than have something that doesn't work right and have to remove/change it after.
+* [BREAKING CHANGE]: remove SimpleParallax from the package. If someone really wants that particular component you can always copy it from a previous version.
 
 ## 0.1.13
-* bugfix: change 'keyup' to 'keydown' in abortEvents listener list in scrollTo. 'keyup' was interfering with the click listener to start the animation if it was started by pressing the enter key. 
+* [BUGFIX]: change 'keyup' to 'keydown' in abortEvents listener list in scrollTo. 'keyup' was interfering with the click listener to start the animation if it was started by pressing the enter key. 
 
 ## 0.1.12
 * reduce default duration of scrollTo
 
 ## 0.1.11
-* bugfix: scroll animation is now cancellable when user scrolls or clicks
+* [BUGFIX]: scroll animation is now cancellable when user scrolls or clicks
 * add temporary fork of svelte-scrollto until PR is merged
 
 ## 0.1.10
-* DEPRECATED: SimpleParallax is deprecated moving forward. I realized you can do the same effect easily with Parallax/ParallaxLayer so I'm adding it to the new Recipes section of the README. I'll keep the component in the package with a notice for awhile.
+* [DEPRECATED]: SimpleParallax is deprecated moving forward. I realized you can do the same effect easily with Parallax/ParallaxLayer so I'm adding it to the new Recipes section of the README. I'll keep the component in the package with a notice for awhile.
 * add Recipes section to README
 * Parallax: refactor intersecting calculations to just use scrollTop store
 * ParallaxLayer: refactor out unneeded checks because of Parallax refactor
 
 ## 0.1.9
-* bugfix: disabled works correctly now
+* [BUGFIX]: disabled works correctly now
 * refactored a few more things in ParallaxLayer
 
 ## 0.1.8
 * refactor: ParallaxLayer initialization
 * add vendor prefixes for transform rules
 * rename SimpleParallax class names to avoid clashing with Parallax/ParallaxLayer
-* bugfix: SimpleParallax initial and disabled positions are now correct
+* [BUGFIX]: SimpleParallax initial and disabled positions are now correct
 
 ## 0.1.7
 * typo in README
@@ -75,7 +75,7 @@ REFACTOR:
 ## 0.1.6
 * move focus-options-polyfill to devDependency
 * refactor scrollTo to use svelte-scrollto
-* BREAKING CHANGE: change the second parameter of scrollTo function from string to options object
+* [BREAKING CHANGE]: change the second parameter of scrollTo function from string to options object
 * update README to reflect breaking change
 
 ## 0.1.5
@@ -83,12 +83,12 @@ REFACTOR:
 * feature: add onExit prop to Parallax
 
 ## 0.1.4
-* bugfix: fix onEnter
-* bugfix: correct initial position of ParallaxLayers
+* [BUGFIX]: fix onEnter
+* [BUGFIX]: correct initial position of ParallaxLayers
 
 ## 0.1.3
-* bugfix: add correct Y-coordinate for ParallaxLayer when effect is disabled
-* bugfix: add setTimeout to window resize listener
+* [BUGFIX]: add correct Y-coordinate for ParallaxLayer when effect is disabled
+* [BUGFIX]: add setTimeout to window resize listener
 
 ## 0.1.2
 * add focus-options-polyfill for Safari ({ preventScroll: false })

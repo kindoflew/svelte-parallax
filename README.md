@@ -39,7 +39,7 @@ The API is very similar and it functions (mostly) the same under the hood (See [
 
 <br/>
 
-The `<Parallax>` component is a container whose height will be the number of `sections` you choose multiplied by the `sectionHeight` (defaults to `window.innerHeight`, which should be good for most use cases). `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
+The `<Parallax>` component is a container whose height will be the number of `sections` you choose multiplied by the `sectionHeight` prop (defaults to `window.innerHeight`, which should be good for most use cases). `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
 
 ```html
 <script>
@@ -85,7 +85,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `threshold`: Adds a threshold above/below `Parallax` that is equal to the height of the viewport multiplied by the value, each one should be a number between `0` and `1`. `threshold.top = 1`: the effect will be active whenever the top of the container is at or above the *top* of the viewport, `threshold.top = 0`: effect will be active whenever the top of the container is at or above the *bottom* of the viewport. `threshold.bottom` is similar, but on the other end -- `1`: active when bottom of container is at or below the *bottom* of the viewport, `0`: active when bottom is at or below the *top* of the viewport.
 
-* `onProgress`: Takes a function that recieves a `progress` object (See below).
+* `onProgress`: Takes a function that recieves a `progress` object ([See below](#onprogress)).
 
 * `disabled`: Whether or not the effect is disabled (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
@@ -136,7 +136,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 </Parallax>
 ```
 
-
+**NOTE**: `parallaxProgress` will be `0` whenever the top of the container is at or *below* the top of the viewport. It will be `1` when the bottom of the container is at or *above* the bottom of the viewport.
 
 <br/>
 
