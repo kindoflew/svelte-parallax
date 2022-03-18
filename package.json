@@ -1,7 +1,7 @@
 {
   "name": "svelte-parallax",
   "author": "Lewis DAvanzo",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "license": "MIT",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
@@ -11,7 +11,7 @@
     "dev": "cd ./demo && npm run dev",
     "cy:run": "cypress run",
     "cy:open": "cypress open",
-    "test": "start-server-and-test dev 5000 cy:open",
+    "test": "start-server-and-test dev 5000 cy:run",
     "build": "rollup -c",
     "prepublishOnly": "npm run build"
   },
