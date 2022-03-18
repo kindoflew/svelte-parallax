@@ -1,10 +1,14 @@
 # CHANGELOG
 
+## 0.4.0
+* feature: added `sectionHeight` prop to `Parallax`. The value still defaults to `window.innerHeight` (using Svelte's `bind:innerHeight`), but this should resolve [#17](https://github.com/kindoflew/svelte-parallax/issues/17).
+* feature: added `onProgress` prop to `Parallax`. Takes a function that recieves a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }`. The two `<component>Progress` values are floats between `0` and `1`. Resolves [#16](https://github.com/kindoflew/svelte-parallax/issues/16).
+
 ## 0.3.1
 * bugfix: removed `postinstall` script as it was borking actual component installation
 
 ## 0.3.0
-* DEPRECATED: `onEnter` and `onExit` are being replaced with `threshold` prop. This is mostly because the common convention seems to be that `on<VERB>` props usually take a function and standards are important. Also, `threshold` will take numbers instead of booleans so the user has more control over when effects are active. To switch from old to new, `onEnter=true` is now `threshold={{top: 0}}` and `onExit=true` is `threshold={{bottom: 0}}`.
+* DEPRECATED: `onEnter` and `onExit` are being replaced with `threshold` prop. This is mostly because the common convention seems to be that `on<VERB>` props usually take a function and standards are important. Also, `threshold` will take numbers instead of booleans so the user has more control over when effects are active. To switch from old to new, `onEnter=true` is now `threshold={{ top: 0 }}` and `onExit=true` is `threshold={{ bottom: 0 }}`.
 * add JSDoc comments to props because they are fancy.
 
 ## 0.2.7

@@ -6,12 +6,22 @@
   let disabled = false;
   let show = true;
   let fancy = "fancy".split("");
+  const handleProgress = (progress) => {
+    console.log(progress.parallaxProgress, progress.section, progress.sectionProgress);
+  };
   // disabled = !disabled show = !show
 </script>
 
 <button class="disable" on:click={() => (disabled = !disabled)}>disable</button>
 
-<Parallax sections={3} style="background-color: #0bdb8c;" bind:this={parallax} {disabled} >
+<!-- <div style="height:20rem; width: 30rem;"></div> -->
+
+<Parallax 
+  sections={3} 
+  style="background-color: #0bdb8c;" 
+  bind:this={parallax} {disabled} 
+  onProgress={handleProgress}
+>
   {#each fancy as char, index (index)}
     <ParallaxLayer
       rate={(index + 1) / (fancy.length - 1)}

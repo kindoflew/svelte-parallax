@@ -27,4 +27,20 @@ describe("Parallax", () => {
     cy.wait(3000);
     cy.window().its('scrollY').should('equal', HEIGHT);
   });
+
+  it("should call onProgress with expected values", () => {
+    cy.get('.progress-details').should('contain', '0 1 0');
+
+    cy.scrollTo(0, HEIGHT / 2);
+
+    cy.get('.progress-details').should('contain', '0.25 1 0.5');
+
+    cy.scrollTo(0, HEIGHT);
+
+    cy.get('.progress-details').should('contain', '0.5 2 0');
+
+    cy.scrollTo('bottom');
+
+    cy.get('.progress-details').should('contain', '1 3 0');
+  });
 });
