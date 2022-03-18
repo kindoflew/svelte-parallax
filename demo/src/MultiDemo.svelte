@@ -11,7 +11,6 @@
 </script>
 
 <button class="disable" on:click={() => disabled = !disabled}>disable</button>
-<div style="height:20rem; width: 30rem;"></div>
 
 <Parallax sections={3} bind:this={parallax} {disabled}>
   {#each fancy as char, index (index)}

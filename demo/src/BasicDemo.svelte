@@ -85,14 +85,7 @@
   </ParallaxLayer>
 </Parallax>
 
-<!-- <div style="height:20rem; width: 30rem;"></div> -->
 <style>
-  :global(body) {
-    padding: 0;
-    color: #313131;
-    font-family: monospace;
-  }
-
   h1 {
     font-size: 2rem;
   }
