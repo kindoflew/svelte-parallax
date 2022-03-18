@@ -2,7 +2,7 @@
 
 A spring-based parallax component for Svelte. (Well, it's actually two components.)
 
-**NOTE**: This is at 0.3.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
+**NOTE**: This is at 0.4.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
 
 **DEPRECATED**: From v0.3.0 on, `onEnter` and `onExit` are being replaced with `threshold`. See [Parallax](#parallax) and [CHANGELOG](https://github.com/kindoflew/svelte-parallax/blob/main/CHANGELOG.md) for details.
 
@@ -65,14 +65,15 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 ### `<Parallax>`
 
-| Props            | Type    | Default                               |
-| ---------------- | ------- | ------------------------------------- |
-| `sections`       | number  | `1`                                   |
-| `sectionHeight`  | number  | `window.innerHeight`                  |
-| `config`         | object  | `{ stiffness: 0.017, damping: 0.26 }` |
-| `threshold`      | object  | `{ top: 1, bottom: 1 }`               |
-| `disabled`       | boolean | `false`                               |
-| `style`          | string  | `""`                                  |
+| Props            | Type     | Default                               |
+| ---------------- | -------- | ------------------------------------- |
+| `sections`       | number   | `1`                                   |
+| `sectionHeight`  | number   | `window.innerHeight`                  |
+| `config`         | object   | `{ stiffness: 0.017, damping: 0.26 }` |
+| `threshold`      | object   | `{ top: 1, bottom: 1 }`               |
+| `onProgress`     | function | `undefined`                           |
+| `disabled`       | boolean  | `false`                               |
+| `style`          | string   | `""`                                  |
 
 
 #### Details
@@ -84,9 +85,58 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `threshold`: Adds a threshold above/below `Parallax` that is equal to the height of the viewport multiplied by the value, each one should be a number between `0` and `1`. `threshold.top = 1`: the effect will be active whenever the top of the container is at or above the *top* of the viewport, `threshold.top = 0`: effect will be active whenever the top of the container is at or above the *bottom* of the viewport. `threshold.bottom` is similar, but on the other end -- `1`: active when bottom of container is at or below the *bottom* of the viewport, `0`: active when bottom is at or below the *top* of the viewport.
 
+* `onProgress`: Takes a function that recieves a `progress` object (See below).
+
 * `disabled`: Whether or not the effect is disabled (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
 * `style`: The `style` attribute of the container is exposed so you can do pretty much whatever you want. Messing with `height`, `position` or `overflow` *might* break stuff, but you do you.
+
+##### `onProgress`
+
+| Property              | Type   |
+| --------------------- | ------ |
+| `parallaxProgress`    | float  |
+| `section`             | number |
+| `sectionProgress`     | float  |
+
+* `parallaxProgress`: Represents the progress of the entire `Parallax` container scrolled, represented as a float between `0` and `1`. Starts at `0` when the top of the `Parallax` container is at the top of the viewport, ends at `1` when the bottom of the `Parallax` container is at the bottom of the viewport.
+
+* `section`: the number of the current section
+
+* `sectionProgress`: Represents the scroll progress of the current `section`, represented as a float between `0` and `1`. Starts at `0` when the top of the `section` is at the top of the viewport, ends at `1` when the bottom of the `section` is at the top of the viewport (**NOTE**: not the same behavior as `parallaxProgress`).
+
+**Example Usage**:
+
+```HTML
+<script>
+  import { Parallax, ParallaxLayer } from 'svelte-parallax';
+
+  // for bind:this. name can be anything
+  let parallax;
+
+  let rotate;
+  let percentScrolled;
+
+  const handleProgress = (progress) => {
+    const { parallaxProgress, section, sectionProgress } = progress;
+
+    if (section === 2) {
+      rotate = sectionProgress * 360;
+    }
+    percentScrolled = Math.floor(parallaxProgress * 100);
+  };
+</script>
+<h1 style="position: fixed;">
+  {perecentScrolled}% scrolled so far!
+</h1>
+                    <!-- bind to component instance -->
+<Parallax sections={3} bind:this={parallax} onProgress={handleProgress}>
+  <ParallaxLayer offset={1} style={`transform: rotate(${rotate})`} />
+  ...
+</Parallax>
+```
+
+
 
 <br/>
 
