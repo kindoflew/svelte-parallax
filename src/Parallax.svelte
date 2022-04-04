@@ -56,27 +56,41 @@
     set(step);
   });
 
+  let parallaxProgress = writable(0)
+  let section = writable(0)
+  let sectionProgress = writable(0)
+
   const getProgress = (scrollTop, height) => {
     // subtract height because progress doesn't start until top of container is at top of viewport
     const scrollHeight = (height * sections) - height;
-    const parallaxProgress = scrollTop / scrollHeight;
+    let _parallaxProgress = scrollTop / scrollHeight;
     const containerHeight = height * sections;
-    const section = Math.floor((scrollTop / containerHeight) * sections);
-    const sectionScrollTop = scrollTop - (height * section);
-    const sectionProgress = sectionScrollTop / height;
+    let _section = Math.floor((scrollTop / containerHeight) * sections);
+    const sectionScrollTop = scrollTop - (height * _section);
+    const _sectionProgress = sectionScrollTop / height;
 
     // stop updating parallaxProgress to avoid values greater than 1
     // stop updating section because we're adding 1 (sections aren't zero-indexed, but the math is)
     // continue updating sectionProgress in case value is needed beyond the bottom of the container
     const end = scrollTop >= scrollHeight;
-    onProgress({
-      parallaxProgress: end ? 1 : parallaxProgress,
-      section: end ? sections : section + 1,
-      sectionProgress,
-    })
+
+    _parallaxProgress = end ? 1 : _parallaxProgress
+    _section = end ? sections : _section + 1
+
+    parallaxProgress.set(_parallaxProgress)
+    section.set(_section)
+    sectionProgress.set(_sectionProgress)
+
+    if (onProgress) {
+      onProgress({
+        parallaxProgress: _parallaxProgress,
+        section: _section,
+        sectionProgress: _sectionProgress,
+      })
+    }
   };
 
-  $: if (onProgress && $height > 0 && $scrollTop >= 0) getProgress($scrollTop, $height);
+  $: if ($height > 0 && $scrollTop >= 0) getProgress($scrollTop, $height);
 
   // eventually filled with ParallaxLayer objects
   const layers = writableSet(new Set());
@@ -96,7 +110,10 @@
     },
     removeLayer: (layer) => {
       layers.delete(layer);
-    }
+    },
+    parallaxProgress,
+    section,
+    sectionProgress,
   });
 
   onMount(() => {
@@ -124,7 +141,7 @@
     }
 
     svelteScrollTo({
-      y: scrollTarget, 
+      y: scrollTarget,
       duration,
       easing,
       onDone: selector ? focusTarget : () => {}
@@ -134,15 +151,11 @@
 
 <svelte:window
   bind:scrollY={$y}
-  bind:innerHeight={innerHeight}
+  bind:innerHeight
   on:resize={() => setTimeout(setDimensions, 0)}
 />
 
-<div
-  class="parallax-container"
-  bind:this={container}
-  style="{style}"
->
+<div class="parallax-container" bind:this={container} {style}>
   <slot />
 </div>
 

@@ -16,7 +16,10 @@
   let {
     config,
     addLayer,
-    removeLayer
+    removeLayer,
+    parallaxProgress,
+    section,
+    sectionProgress,
   } = getContext(contextKey);
 
   // spring store to hold changing scroll coordinate
@@ -24,14 +27,14 @@
   // layer height
   let height;
 
-  const layer = { 
+  const layer = {
     setPosition: (scrollTop, innerHeight, disabled) => {
       // amount to scroll before layer is at target position
       const targetScroll = Math.floor(offset) * innerHeight;
       // distance to target position
       const distance = offset * innerHeight + targetScroll * rate;
-      const current = disabled 
-        ? offset * innerHeight 
+      const current = disabled
+        ? offset * innerHeight
         : -(scrollTop * rate) + distance;
 
       coord.set(current, { hard: disabled });
@@ -65,7 +68,11 @@
       transform: {translate}
     "
 >
-  <slot />
+  <slot
+    parallaxProgress={$parallaxProgress}
+    section={$section}
+    sectionProgress={$sectionProgress}
+  />
 </div>
 
 <style>
