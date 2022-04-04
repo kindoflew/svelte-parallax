@@ -9,8 +9,6 @@
   export let offset = 0;
   /** how many sections the layer spans */
   export let span = 1;
-  /** style attribute for layer. don't forget your semi-colons! */
-  export let style = "";
 
   // get context from Parallax
   let {
@@ -24,14 +22,14 @@
   // layer height
   let height;
 
-  const layer = { 
+  const layer = {
     setPosition: (scrollTop, innerHeight, disabled) => {
       // amount to scroll before layer is at target position
       const targetScroll = Math.floor(offset) * innerHeight;
       // distance to target position
       const distance = offset * innerHeight + targetScroll * rate;
-      const current = disabled 
-        ? offset * innerHeight 
+      const current = disabled
+        ? offset * innerHeight
         : -(scrollTop * rate) + distance;
 
       coord.set(current, { hard: disabled });
@@ -56,9 +54,10 @@
 </script>
 
 <div
-  class="parallax-layer"
+  {...$$restProps}
+  class="parallax-layer {$$restProps.class ? $$restProps.class : ''}"
   style="
-      {style}
+      {$$restProps.style ? $$restProps.style : ''};
       height: {height}px;
       -ms-transform: {translate}
       -webkit-transform: {translate}
