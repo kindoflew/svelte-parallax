@@ -103,9 +103,8 @@
 
   function setDimensions() {
     // set height here for edge case with more than one Parallax on page
-    $height = sectionHeight ? sectionHeight : innerHeight;
-    container.style.height = `${$height * sections}px`;
-    $top = container.getBoundingClientRect().top + window.pageYOffset;
+    height.set(sectionHeight ? sectionHeight : innerHeight);
+    top.set(container.getBoundingClientRect().top + window.pageYOffset);
   }
 
   export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
@@ -139,6 +138,10 @@
 <div
   {...$$restProps}
   class="parallax-container {$$restProps.class ? $$restProps.class : ''}"
+  style="
+      height: {$height * sections}px;
+      {$$restProps.style ? $$restProps.style : ''};
+    "
   bind:this={container}
 >
   <slot />
