@@ -1,7 +1,6 @@
 <script>
   import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
-  import { spring } from "svelte/motion";
   import { quadInOut } from "svelte/easing";
   import { writableSet } from "./utils/writableSet.js";
   import { contextKey } from "./utils/contextKey.js";
@@ -102,7 +101,6 @@
   });
 
   function setDimensions() {
-    // set height here for edge case with more than one Parallax on page
     height.set(sectionHeight ? sectionHeight : innerHeight);
     top.set(container.getBoundingClientRect().top + window.pageYOffset);
   }
@@ -149,6 +147,7 @@
 
 <style>
   .parallax-container {
+    position: relative;
     overflow: hidden;
     box-sizing: border-box;
   }
