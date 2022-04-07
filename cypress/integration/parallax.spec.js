@@ -7,19 +7,19 @@ describe("Parallax", () => {
   it("should translate a layer as expected", () => {
     cy.get('.parallax-layer')
       .should('have.attr', 'style')
-      .should('contain', `transform: translate3d(0, ${HEIGHT * 2}px, 0)`);
+      .should('contain', `transform: translate3d(0px, ${HEIGHT * 2}px, 0px)`);
 
     cy.scrollTo(0, HEIGHT);
 
     cy.get('.parallax-layer', {timeout: 3000})
       .should('have.attr', 'style')
-      .should('contain', `transform: translate3d(0, ${HEIGHT}px, 0)`);
+      .should('contain', `transform: translate3d(0px, ${HEIGHT}px, 0px)`);
 
     cy.scrollTo('bottom');
 
     cy.get('.parallax-layer', {timeout: 3000})
       .should('have.attr', 'style')
-      .should('contain', `transform: translate3d(0, 0px, 0)`);
+      .should('contain', `transform: translate3d(0px, 0px, 0px)`);
   });
 
   it("should scroll to the correct page with scrollTo", () => {

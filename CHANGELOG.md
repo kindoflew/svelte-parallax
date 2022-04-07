@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.5.0
+* [FEATURE]: use `$$restProps` instead of having a `style` prop. Functionality shouldn't change for the user, but this allows other arbitrary props to be passed to the components as well. ([#20](https://github.com/kindoflew/svelte-parallax/pull/20))
+* [CHORE]: removed opinionated styles from `Parallax`. ([#21](https://github.com/kindoflew/svelte-parallax/pull/21))
 ## 0.4.0
 * [FEATURE]: added `sectionHeight` prop to `Parallax`. The value still defaults to `window.innerHeight` (using Svelte's `bind:innerHeight`), but this should resolve [#17](https://github.com/kindoflew/svelte-parallax/issues/17).
 * [FEATURE]: added `onProgress` prop to `Parallax`. Takes a function that recieves a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }`. The two `<component>Progress` values are floats between `0` and `1`. Resolves [#16](https://github.com/kindoflew/svelte-parallax/issues/16).

@@ -1,8 +1,8 @@
 # svelte-parallax
 
-A spring-based parallax component for Svelte. (Well, it's actually two components.)
+A (small) spring-based parallax component library for Svelte.
 
-**NOTE**: This is at 0.4.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
+**NOTE**: This is at 0.5.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
 
 **DEPRECATED**: From v0.3.0 on, `onEnter` and `onExit` are being replaced with `threshold`. See [Parallax](#parallax) and [CHANGELOG](https://github.com/kindoflew/svelte-parallax/blob/main/CHANGELOG.md) for details.
 
@@ -73,7 +73,6 @@ The `<Parallax>` component is a container whose height will be the number of `se
 | `threshold`      | object   | `{ top: 1, bottom: 1 }`               |
 | `onProgress`     | function | `undefined`                           |
 | `disabled`       | boolean  | `false`                               |
-| `style`          | string   | `""`                                  |
 
 
 #### Details
@@ -89,7 +88,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `disabled`: Whether or not the effect is disabled (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
-* `style`: The `style` attribute of the container is exposed so you can do pretty much whatever you want. Messing with `height`, `position` or `overflow` *might* break stuff, but you do you.
+* `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container. If you're adding styles, messing with `height`, `position`, or `overflow` *might* break stuff, but you do you.
 
 ##### `onProgress`
 
@@ -111,9 +110,6 @@ The `<Parallax>` component is a container whose height will be the number of `se
 <script>
   import { Parallax, ParallaxLayer } from 'svelte-parallax';
 
-  // for bind:this. name can be anything
-  let parallax;
-
   let rotate;
   let percentScrolled;
 
@@ -129,8 +125,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 <h1 style="position: fixed;">
   {perecentScrolled}% scrolled so far!
 </h1>
-                    <!-- bind to component instance -->
-<Parallax sections={3} bind:this={parallax} onProgress={handleProgress}>
+<Parallax sections={3} onProgress={handleProgress}>
   <ParallaxLayer offset={1} style={`transform: rotate(${rotate})`} />
   ...
 </Parallax>
@@ -147,7 +142,6 @@ The `<Parallax>` component is a container whose height will be the number of `se
 | `rate`          | number  | `0.5`   |
 | `offset`        | number  | `0`     |
 | `span`          | number  | `1`     |
-| `style`         | string  | `""`    |
 
 
 #### Details
@@ -157,7 +151,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `span`: How many innerHeight-sized sections the layer will span.
 
-* `style`: Style attribute is also exposed for this component.
+* `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container.
 
 <br/>
 
@@ -227,9 +221,9 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 * `z-index`: `<ParallaxLayer>`s are absolutely positioned so they are organized on the z-axis in the order they are written in the HTML. If you don't want to mess with z-index (and who does?) make sure to place all content that should always be visible/clickable towards the bottom of `<Parallax>`. y-axis order is unaffected by this because that is decided by `offset`.
 
-* `will-change`: I decided not to set `will-change: transform` on every `<ParallaxLayer>` because you quickly hit a memory limit (atleast in Firefox) and [it's not recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change). If you have performance issues, this can be added as necessary to the `style` prop.
-
 * `scrollY`: svelte-parallax uses Svelte's `bind:scrollY` in its motion functions, so it will not work if placed inside a scrollable element (like a `div` with `overflow: scroll`). I don't have plans to change this right now, but if enough people ask for it, who knows?
+
+* optimization: We aren't adding `will-change: transform` or doing the `transform: translate3d(0,0,0)` hack anymore -- both rules can get in the way of other styles and can lead to performance problems of their own (plus, adding `will-change` to everything [isn't recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change)). However, you can add these to any components that you think need it using `style` or `class` props.
 
 <br/>
 
