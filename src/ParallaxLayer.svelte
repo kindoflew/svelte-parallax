@@ -50,7 +50,7 @@
   });
 
   // translate layer according to coordinate
-  $: translate = `translate3d(0, ${$coord}px, 0);`;
+  $: translate = `translate3d(0px, ${$coord}px, 0px);`;
 </script>
 
 <div
