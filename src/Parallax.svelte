@@ -25,8 +25,6 @@
   export let onProgress = undefined;
   /** disable parallax effect, layers will be frozen at target position */
   export let disabled = false;
-  /** style attribute for container. don't forget your semi-colons! */
-  export let style = "";
 
   /** DEPRECATED: use `threshold.top` */
   export let onEnter = undefined;
@@ -124,7 +122,7 @@
     }
 
     svelteScrollTo({
-      y: scrollTarget, 
+      y: scrollTarget,
       duration,
       easing,
       onDone: selector ? focusTarget : () => {}
@@ -134,14 +132,14 @@
 
 <svelte:window
   bind:scrollY={$y}
-  bind:innerHeight={innerHeight}
+  bind:innerHeight
   on:resize={() => setTimeout(setDimensions, 0)}
 />
 
 <div
-  class="parallax-container"
+  {...$$restProps}
+  class="parallax-container {$$restProps.class ? $$restProps.class : ''}"
   bind:this={container}
-  style="{style}"
 >
   <slot />
 </div>
