@@ -57,11 +57,11 @@
   {...$$restProps}
   class="parallax-layer {$$restProps.class ? $$restProps.class : ''}"
   style="
-      {$$restProps.style ? $$restProps.style : ''};
       height: {height}px;
-      -ms-transform: {translate}
-      -webkit-transform: {translate}
-      transform: {translate}
+      -ms-transform: {translate};
+      -webkit-transform: {translate};
+      transform: {translate};
+      {$$restProps.style ? $$restProps.style : ''};
     "
 >
   <slot />
