@@ -26,7 +26,7 @@
     <ParallaxLayer
       rate={(index + 1) / (fancy.length - 1)}
       offset={1}
-      style="margin-left: {38 +
+      style="padding-left: {38 +
         index *
           5}%; display: flex; justify-content: flex-start; align-items: center;"
     >
