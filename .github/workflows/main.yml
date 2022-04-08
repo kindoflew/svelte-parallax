@@ -15,4 +15,4 @@ jobs:
       - name: Install Test App Deps
       - run: cd ./demo && npm install
       - name: Run Tests
-        run: npm run test
+      - run: npm run test
