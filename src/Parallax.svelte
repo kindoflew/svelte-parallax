@@ -148,6 +148,7 @@
 <style>
   .parallax-container {
     position: relative;
+    transform: translate3d(0, 0, 0);
     overflow: hidden;
     box-sizing: border-box;
   }
