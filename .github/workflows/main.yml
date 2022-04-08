@@ -11,8 +11,8 @@ jobs:
         with: 
           node-version: '14'
       - name: Install Library Deps
-      - run: npm install
+        run: npm install
       - name: Install Test App Deps
-      - run: cd ./demo && npm install
+        run: cd ./demo && npm install
       - name: Run Tests
-      - run: npm run test
+        run: npm run test
