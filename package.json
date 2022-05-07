@@ -1,11 +1,12 @@
 {
   "name": "svelte-parallax",
   "author": "Lewis DAvanzo",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "license": "MIT",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
+  "types": "index.d.ts",
   "repository": "https://github.com/kindoflew/svelte-parallax",
   "scripts": {
     "dev": "cd ./demo && npm run dev",
@@ -34,7 +35,8 @@
   ],
   "files": [
     "src",
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "dependencies": {
     "focus-options-polyfill": "^1.6.0"

@@ -1,6 +1,10 @@
 # CHANGELOG
 
 ## main (unreleased)
+
+## 0.5.1
+* [FEATURE]: add type declarations ([#27](https://github.com/kindoflew/svelte-parallax/pull/27))
+## 0.5.0
 * [FEATURE]: use `$$restProps` instead of having a `style` prop. Functionality shouldn't change for the user, but this allows other arbitrary props to be passed to the components as well. ([#20](https://github.com/kindoflew/svelte-parallax/pull/20))
 * [CHORE]: removed opinionated styles from `Parallax`. ([#21](https://github.com/kindoflew/svelte-parallax/pull/21))
 * [BUGFIX]: style fixes ($$restProps `style` was clobbering `Parallax` height). ([#22](https://github.com/kindoflew/svelte-parallax/pull/22))
