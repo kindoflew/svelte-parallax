@@ -53,7 +53,7 @@ declare module 'svelte-parallax' {
       /** optional scroll animation config object */
       opts?: {
         /** valid CSS selector to focus on after scroll */
-        selector?: number;
+        selector?: string;
         /** duration of scroll in milliseconds */
         duration?: number;
         /** easing function, import from `'svelte/easing'` */

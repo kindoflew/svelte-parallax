@@ -2,6 +2,8 @@
 
 ## main (unreleased)
 
+## 0.5.2
+* [BUGFIX]: correct type for `selector` in `scrollTo` function
 ## 0.5.1
 * [FEATURE]: add type declarations ([#27](https://github.com/kindoflew/svelte-parallax/pull/27))
 ## 0.5.0
