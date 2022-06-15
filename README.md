@@ -191,7 +191,7 @@ Rather than have a click listener on an entire `<ParallaxLayer>` (which I think 
 | Parameters          | Type                                                                    | Description                     |
 | ------------------- | ----------------------------------------------------------------------- | ------------------------------- |
 | `section`           | `number`                                                                | The section to scroll to        |
-| `config` (optional) | <pre>{<br/>&nbsp;&nbsp;selector?: string;<br/>&nbsp;&nbsp;duration?: number;<br/>&nbsp;&nbsp;easing?: (number) => number;<br/>}</pre> | See below |  
+| `config` (optional) | <pre>{<br/> selector?: string;<br/> duration?: number;<br/> easing?: (number) => number;<br/>}</pre> | See below |  
 
 
 <br/>
