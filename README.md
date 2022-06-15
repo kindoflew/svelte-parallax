@@ -65,14 +65,14 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 ### `<Parallax>`
 
-| Props            | Type     | Default                               |
-| ---------------- | -------- | ------------------------------------- |
-| `sections`       | number   | `1`                                   |
-| `sectionHeight`  | number   | `window.innerHeight`                  |
-| `config`         | object   | `{ stiffness: 0.017, damping: 0.26 }` |
-| `threshold`      | object   | `{ top: 1, bottom: 1 }`               |
-| `onProgress`     | function | `undefined`                           |
-| `disabled`       | boolean  | `false`                               |
+| Props            | Type                                                       | Default                               |
+| ---------------- | ---------------------------------------------------------- | ------------------------------------- |
+| `sections`       | `number`                                                   | `1`                                   |
+| `sectionHeight`  | `number`                                                   | `window.innerHeight`                  |
+| `config`         | `{ stiffness?: number, damping?: number, hard?: boolean }` | `{ stiffness: 0.017, damping: 0.26 }` |
+| `threshold`      | `{ top: number, bottom: number }`                          | `{ top: 1, bottom: 1 }`               |
+| `onProgress`     | `(progress: Progress) => void` (see below)                 | `undefined`                           |
+| `disabled`       | `boolean`                                                  | `false`                               |
 
 
 #### Details
@@ -90,13 +90,13 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container. If you're adding styles, messing with `height`, `position`, or `overflow` *might* break stuff, but you do you.
 
-##### `onProgress`
+#### `onProgress`
 
-| Property              | Type   |
-| --------------------- | ------ |
-| `parallaxProgress`    | float  |
-| `section`             | number |
-| `sectionProgress`     | float  |
+| Property              | Type      |
+| --------------------- | --------- |
+| `parallaxProgress`    | `number`  |
+| `section`             | `number`  |
+| `sectionProgress`     | `number`  |
 
 * `parallaxProgress`: Represents the progress of the entire `Parallax` container scrolled, represented as a float between `0` and `1`. Starts at `0` when the top of the `Parallax` container is at the top of the viewport, ends at `1` when the bottom of the `Parallax` container is at the bottom of the viewport.
 
@@ -110,21 +110,20 @@ The `<Parallax>` component is a container whose height will be the number of `se
 <script>
   import { Parallax, ParallaxLayer } from 'svelte-parallax';
 
-  let rotate;
   let percentScrolled;
+  let currentSection;
 
   const handleProgress = (progress) => {
     const { parallaxProgress, section, sectionProgress } = progress;
 
-    if (section === 2) {
-      rotate = sectionProgress * 360;
-    }
+    currentSection = section;
     percentScrolled = Math.floor(parallaxProgress * 100);
   };
 </script>
-<h1 style="position: fixed;">
+<div style="position: fixed;">
   {perecentScrolled}% scrolled so far!
-</h1>
+  Currently in section {currentSection}!
+</div>
 <Parallax sections={3} onProgress={handleProgress}>
   <ParallaxLayer offset={1} style={`transform: rotate(${rotate})`} />
   ...
@@ -137,11 +136,12 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 ### `<ParallaxLayer>`
 
-| Props           | Type    | Default |
-| --------------- | ------- | ------- |
-| `rate`          | number  | `0.5`   |
-| `offset`        | number  | `0`     |
-| `span`          | number  | `1`     |
+| Props                 | Type                | Default     |
+| --------------------- | ------------------- | ------------|
+| `rate`                | `number`            | `0.5`       |
+| `offset`              | `number`            | `0`         |
+| `span`                | `number`            | `1`         |
+| `onProgress`          | `(number) => void`  | `undefined` |
 
 
 #### Details
@@ -151,7 +151,35 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `span`: How many innerHeight-sized sections the layer will span.
 
+* `onProgress`: Takes a function that recieves a number between `0` and `1` that represents the layer's intersecting progress. Starts at `0` when a layer enters the viewport and ends at `1` when a layer exits the viewport.
+
 * `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container.
+
+**`ParallaxLayer` `onProgress` Example Usage:**
+
+```HTML
+<script>
+  import { Parallax, ParallaxLayer } from 'svelte-parallax';
+
+  let rotate = 0;
+
+  const handleProgress = (progress) => {
+    rotate = progress * 360;
+  };
+</script>
+
+<Parallax sections={3}>
+  <ParallaxLayer
+    offset={1}
+    onProgress={handleProgress}
+  >
+    <div style={`transform: rotate(${rotate}deg)`}>
+      I'm spinning!
+    </div>
+  </ParallaxLayer>
+  ...
+</Parallax>
+```
 
 <br/>
 
@@ -161,20 +189,20 @@ Rather than have a click listener on an entire `<ParallaxLayer>` (which I think 
 `scrollTo` uses a fork of [svelte-scrollto](https://github.com/langbamit/svelte-scrollto) to animate scrolling, instead of relying on the native browser implementation. Because of this, you can have smooth, custom scrolling regardless of browser support for `scroll-behavior`.
 
 
-| Parameters          | Type   | Description                     |
-| ------------------- | ------ | ------------------------------- |
-| `section`           | number | The section to scroll to        |
-| `config` (optional) | object | Scroll animation config options |  
+| Parameters          | Type                                                                    | Description                     |
+| ------------------- | ----------------------------------------------------------------------- | ------------------------------- |
+| `section`           | `number`                                                                | The section to scroll to        |
+| `config` (optional) | `{ selector?: string, duration?: number, easing?: (number) => number }` | Scroll animation config options |  
 
 
 <br/>
 
 #### `config` object:
-| Key        | Type     | Description                                      | Default     |
-| ---------- | -------- | ------------------------------------------------ | ----------- |
-| `selector` | string   | CSS selector of element to focus on after scroll | `""`        |
-| `duration` | number   | Duration of scroll in milliseconds               | `500`       |
-| `easing`   | function | Easing function (import from 'svelte/easing')    | `quadInOut` |
+| Key        | Type                 | Description                                        | Default     |
+| ---------- | -------------------- | -------------------------------------------------- | ----------- |
+| `selector` | `string`             | CSS selector of element to focus on after scroll   | `""`        |
+| `duration` | `number`             | Duration of scroll in milliseconds                 | `500`       |
+| `easing`   | `(number) => number` | Easing function (import from `'svelte/easing'`)    | `quadInOut` |
 
 <br/>
 

@@ -8,6 +8,8 @@ declare module 'svelte-parallax' {
     offset?: number;
     /** how many sections the layer spans */
     span?: number;
+    /** a function that recieves a number representing the intersecting progress of a layer */
+    onProgress?: (progress: number) => void;
     // $$restProps
     [key: string]: any;
   }

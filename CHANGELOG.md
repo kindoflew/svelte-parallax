@@ -1,6 +1,7 @@
 # CHANGELOG
 
 ## main (unreleased)
+* [FEATURE]: add `onProgress` prop to `ParallaxLayer`
 
 ## 0.5.2
 * [BUGFIX]: correct type for `selector` in `scrollTo` function
