@@ -69,7 +69,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 | ---------------- | ---------------------------------------------------------- | ------------------------------------- |
 | `sections`       | `number`                                                   | `1`                                   |
 | `sectionHeight`  | `number`                                                   | `window.innerHeight`                  |
-| `config`         | `{ stiffness?: number, damping?: number, hard?: boolean }` | `{ stiffness: 0.017, damping: 0.26 }` |
+| `config`         | <pre>{<br/> stiffness?: number;<br/> damping?: number;<br/> hard?: boolean;<br/>}</pre> | `{ stiffness: 0.017, damping: 0.26 }` |
 | `threshold`      | `{ top: number, bottom: number }`                          | `{ top: 1, bottom: 1 }`               |
 | `onProgress`     | `(progress: Progress) => void` (see below)                 | `undefined`                           |
 | `disabled`       | `boolean`                                                  | `false`                               |
@@ -125,7 +125,6 @@ The `<Parallax>` component is a container whose height will be the number of `se
   Currently in section {currentSection}!
 </div>
 <Parallax sections={3} onProgress={handleProgress}>
-  <ParallaxLayer offset={1} style={`transform: rotate(${rotate})`} />
   ...
 </Parallax>
 ```
@@ -192,7 +191,7 @@ Rather than have a click listener on an entire `<ParallaxLayer>` (which I think 
 | Parameters          | Type                                                                    | Description                     |
 | ------------------- | ----------------------------------------------------------------------- | ------------------------------- |
 | `section`           | `number`                                                                | The section to scroll to        |
-| `config` (optional) | `{ selector?: string, duration?: number, easing?: (number) => number }` | Scroll animation config options |  
+| `config` (optional) | <pre>{<br/>&nbsp;&nbsp;selector?: string;<br/>&nbsp;&nbsp;duration?: number;<br/>&nbsp;&nbsp;easing?: (number) => number;<br/>}</pre> | See below |  
 
 
 <br/>
