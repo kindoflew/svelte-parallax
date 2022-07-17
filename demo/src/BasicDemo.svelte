@@ -64,7 +64,7 @@
   </ParallaxLayer>
 {#if show}
   <ParallaxLayer
-    rate="1"
+    rate={1}
     style="background-color: pink; display: flex; justify-content: center; align-items: center; flex-direction: column;"
   >
     <h1>svelte-parallax!</h1>
@@ -78,8 +78,8 @@
   </ParallaxLayer>
 {/if}
   <ParallaxLayer
-    offset="2"
-    rate="2"
+    offset={2}
+    rate={2}
     style="background-color: pink; display: flex; justify-content: center; align-items: center;"
   >
     <button
