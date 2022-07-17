@@ -2,8 +2,7 @@
   import { setContext, onMount } from "svelte";
   import { writable, derived } from "svelte/store";
   import { quadInOut } from "svelte/easing";
-  import { writableSet } from "./utils/writableSet.js";
-  import { contextKey } from "./utils/contextKey.js";
+  import { writableSet, contextKey, clamp } from "./utils";
   import { scrollTo as svelteScrollTo } from "./scroll-fork/svelteScrollTo.js";
   import "focus-options-polyfill";
 
@@ -48,8 +47,7 @@
     const dy = $y - $top;
     const min = 0 - $height + $height * enter;
     const max = $height * sections - $height * exit;
-    // sorry
-    const step = dy < min ? min : dy > max ? max : dy;
+    const step = clamp(dy, min, max);
     set(step);
   });
 
@@ -137,9 +135,9 @@
   {...$$restProps}
   class="parallax-container {$$restProps.class ? $$restProps.class : ''}"
   style="
-      height: {$height * sections}px;
-      {$$restProps.style ? $$restProps.style : ''};
-    "
+    height: {$height * sections}px;
+    {$$restProps.style ? $$restProps.style : ''};
+  "
   bind:this={container}
 >
   <slot />

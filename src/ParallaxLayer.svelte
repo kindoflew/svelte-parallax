@@ -1,7 +1,7 @@
 <script>
   import { getContext, onMount } from "svelte";
   import { spring } from "svelte/motion";
-  import { contextKey } from "./utils/contextKey.js";
+  import { contextKey, clamp } from "./utils";
 
   /** rate that the layer scrolls relative to `scrollY` */
   export let rate = 0.5;
@@ -9,9 +9,11 @@
   export let offset = 0;
   /** how many sections the layer spans */
   export let span = 1;
+  /** a function that recieves a number between 0 and 1, representing the progress of the layer */
+  export let onProgress = undefined;
 
   // get context from Parallax
-  let {
+  const {
     config,
     addLayer,
     removeLayer
@@ -19,23 +21,40 @@
 
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
+  // and one to hold intersecting progress
+  const progress = spring(undefined, config);
   // layer height
   let height;
 
-  const layer = {
-    setPosition: (scrollTop, innerHeight, disabled) => {
-      // amount to scroll before layer is at target position
-      const targetScroll = Math.floor(offset) * innerHeight;
-      // distance to target position
-      const distance = offset * innerHeight + targetScroll * rate;
-      const current = disabled
-        ? offset * innerHeight
-        : -(scrollTop * rate) + distance;
+  const getProgress = (scrollTop, rate, distance, sectionHeight) => {
+    const apparentRate = rate + 1;
+    const halfWay = distance / apparentRate;
+    const direction = rate >= 0 ? 1 : -1;
+    const scrollDistance = (sectionHeight / apparentRate) * direction;
+    const start = halfWay - scrollDistance;
+    const end = halfWay + (scrollDistance * span);
+    const progress = (scrollTop - start) / (end - start);
+    return clamp(progress, 0, 1);
+  };
 
-      coord.set(current, { hard: disabled });
+  const layer = {
+    setPosition: (scrollTop, sectionHeight, disabled) => {
+      if (disabled) {
+        coord.set(offset * sectionHeight, { hard: true });
+        return;
+      }
+      // amount to scroll before layer is at target position
+      const targetScroll = Math.floor(offset) * sectionHeight;
+      // distance to target position
+      const distance = offset * sectionHeight + targetScroll * rate;
+      coord.set(-(scrollTop * rate) + distance);
+
+      if (onProgress) {
+        $progress = getProgress(scrollTop, rate, distance, sectionHeight);
+      }
     },
-    setHeight: (innerHeight) => {
-      height = span * innerHeight;
+    setHeight: (sectionHeight) => {
+      height = span * sectionHeight;
     }
   };
 
@@ -51,18 +70,19 @@
 
   // translate layer according to coordinate
   $: translate = `translate3d(0px, ${$coord}px, 0px);`;
+  $: if (onProgress) onProgress($progress ?? 0);
 </script>
 
 <div
   {...$$restProps}
   class="parallax-layer {$$restProps.class ? $$restProps.class : ''}"
   style="
-      height: {height}px;
-      -ms-transform: {translate};
-      -webkit-transform: {translate};
-      transform: {translate};
-      {$$restProps.style ? $$restProps.style : ''};
-    "
+    height: {height}px;
+    -ms-transform: {translate};
+    -webkit-transform: {translate};
+    transform: {translate};
+    {$$restProps.style ? $$restProps.style : ''};
+  "
 >
   <slot />
 </div>

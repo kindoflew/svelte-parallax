@@ -7,7 +7,10 @@
   let show = true;
   let fancy = "fancy".split("");
   const handleProgress = (progress) => {
-    console.log(progress.parallaxProgress, progress.section, progress.sectionProgress);
+    // console.log(progress.parallaxProgress, progress.section, progress.sectionProgress);
+  };
+  const handleLayerProgress = (progress) => {
+    // console.log(progress);
   };
   // disabled = !disabled show = !show
 </script>
@@ -26,9 +29,12 @@
     <ParallaxLayer
       rate={(index + 1) / (fancy.length - 1)}
       offset={1}
-      style="padding-left: {38 +
-        index *
-          5}%; display: flex; justify-content: flex-start; align-items: center;"
+      style="
+        padding-left: {38 + index * 5}%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      "
     >
       <p class="fancy">
         {char}
@@ -50,6 +56,7 @@
     offset={1}
     rate={2.5}
     style="display: flex; justify-content: flex-start;"
+    onProgress={handleLayerProgress}
   >
     <div
       style="background-color: yellow; opacity: 0.5; width: 50%; height: 100%;"
@@ -57,7 +64,7 @@
   </ParallaxLayer>
 {#if show}
   <ParallaxLayer
-    rate="1"
+    rate={1}
     style="background-color: pink; display: flex; justify-content: center; align-items: center; flex-direction: column;"
   >
     <h1>svelte-parallax!</h1>
@@ -71,8 +78,8 @@
   </ParallaxLayer>
 {/if}
   <ParallaxLayer
-    offset="2"
-    rate="2"
+    offset={2}
+    rate={2}
     style="background-color: pink; display: flex; justify-content: center; align-items: center;"
   >
     <button
