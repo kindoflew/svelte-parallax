@@ -22,7 +22,7 @@
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
   // and one to hold intersecting progress
-  const progress = spring(0, config);
+  const progress = spring(undefined, config);
   // layer height
   let height;
 
@@ -70,7 +70,7 @@
 
   // translate layer according to coordinate
   $: translate = `translate3d(0px, ${$coord}px, 0px);`;
-  $: if (onProgress) onProgress($progress);
+  $: if (onProgress) onProgress($progress ?? 0);
 </script>
 
 <div
