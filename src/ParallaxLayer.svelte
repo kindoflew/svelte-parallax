@@ -1,8 +1,7 @@
 <script>
   import { getContext, onMount } from "svelte";
   import { spring } from "svelte/motion";
-  import { contextKey } from "./utils/contextKey.js";
-  import { clamp } from "./utils/clamp.js";
+  import { contextKey, clamp } from "./utils";
 
   /** rate that the layer scrolls relative to `scrollY` */
   export let rate = 0.5;
