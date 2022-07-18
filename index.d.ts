@@ -15,6 +15,16 @@ declare module 'svelte-parallax' {
   }
   export class ParallaxLayer extends SvelteComponentTyped<ParallaxLayerProps> {}
 
+	interface StickyLayerProps {
+    /** offset bounds where layer is sticky */
+    offset?: { top?: number, bottom?: number };
+    /** a function that recieves a number representing the sticky progress of a layer */
+    onProgress?: (progress: number) => void;
+    // $$restProps
+    [key: string]: any;
+  }
+  export class StickyLayer extends SvelteComponentTyped<StickyLayerProps> {}
+
   interface Progress {
     parallaxProgress: number;
     section: number;

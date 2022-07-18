@@ -22,7 +22,7 @@
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
   // and one to hold intersecting progress
-  const progress = spring(undefined, config);
+  const progress = spring(undefined, {...config, precision: 0.001 });
   // layer height
   let height;
 
@@ -48,10 +48,7 @@
       // distance to target position
       const distance = offset * sectionHeight + targetScroll * rate;
       coord.set(-(scrollTop * rate) + distance);
-
-      if (onProgress) {
-        $progress = getProgress(scrollTop, rate, distance, sectionHeight);
-      }
+      progress.set(getProgress(scrollTop, rate, distance, sectionHeight));
     },
     setHeight: (sectionHeight) => {
       height = span * sectionHeight;
@@ -77,14 +74,14 @@
   {...$$restProps}
   class="parallax-layer {$$restProps.class ? $$restProps.class : ''}"
   style="
+    {$$restProps.style ? $$restProps.style : ''};
     height: {height}px;
     -ms-transform: {translate};
     -webkit-transform: {translate};
     transform: {translate};
-    {$$restProps.style ? $$restProps.style : ''};
   "
 >
-  <slot />
+  <slot progress={$progress}/>
 </div>
 
 <style>
