@@ -1,10 +1,10 @@
 <script>
-  import { setContext, onMount } from "svelte";
-  import { writable, derived } from "svelte/store";
-  import { quadInOut } from "svelte/easing";
-  import { writableSet, contextKey, clamp } from "./utils";
-  import { scrollTo as svelteScrollTo } from "./scroll-fork/svelteScrollTo.js";
-  import "focus-options-polyfill";
+  import { setContext, onMount } from 'svelte';
+  import { writable, derived } from 'svelte/store';
+  import { quadInOut } from 'svelte/easing';
+  import { writableSet, contextKey, clamp } from './utils';
+  import { scrollTo as svelteScrollTo } from './scroll-fork/svelteScrollTo.js';
+  import 'focus-options-polyfill';
 
   // bind:this
   let container;
@@ -53,11 +53,11 @@
 
   const getProgress = (scrollTop, height) => {
     // subtract height because progress doesn't start until top of container is at top of viewport
-    const scrollHeight = (height * sections) - height;
+    const scrollHeight = height * sections - height;
     const parallaxProgress = scrollTop / scrollHeight;
     const containerHeight = height * sections;
     const section = Math.floor((scrollTop / containerHeight) * sections);
-    const sectionScrollTop = scrollTop - (height * section);
+    const sectionScrollTop = scrollTop - height * section;
     const sectionProgress = sectionScrollTop / height;
 
     // stop updating parallaxProgress to avoid values greater than 1
@@ -68,20 +68,21 @@
       parallaxProgress: end ? 1 : parallaxProgress,
       section: end ? sections : section + 1,
       sectionProgress,
-    })
+    });
   };
 
-  $: if (onProgress && $height > 0 && $scrollTop >= 0) getProgress($scrollTop, $height);
+  $: if (onProgress && $height > 0 && $scrollTop >= 0)
+    getProgress($scrollTop, $height);
 
   // eventually filled with ParallaxLayer objects
   const layers = writableSet(new Set());
   // update ParallaxLayers from parent
-  $: $layers.forEach(layer => {
-       layer.setHeight($height);
-     });
-  $: $layers.forEach(layer => {
-       layer.setPosition($scrollTop, $height, disabled);
-     });
+  $: $layers.forEach((layer) => {
+    layer.setHeight($height);
+  });
+  $: $layers.forEach((layer) => {
+    layer.setPosition($scrollTop, $height, disabled);
+  });
   $: if ($height !== 0) (sectionHeight, setDimensions());
 
   setContext(contextKey, {
@@ -91,7 +92,7 @@
     },
     removeLayer: (layer) => {
       layers.delete(layer);
-    }
+    },
   });
 
   onMount(() => {
@@ -103,12 +104,15 @@
     top.set(container.getBoundingClientRect().top + window.pageYOffset);
   }
 
-  export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
-    const scrollTarget = $top + ($height * (section - 1));
+  export function scrollTo(
+    section,
+    { selector = '', duration = 500, easing = quadInOut } = {}
+  ) {
+    const scrollTarget = $top + $height * (section - 1);
 
     const focusTarget = () => {
       document.querySelector(selector).focus({ preventScroll: true });
-    }
+    };
     // don't animate scroll if disabled
     if (disabled) {
       window.scrollTo({ top: scrollTarget });
@@ -120,7 +124,7 @@
       y: scrollTarget,
       duration,
       easing,
-      onDone: selector ? focusTarget : () => {}
+      onDone: selector ? focusTarget : () => {},
     });
   }
 </script>
