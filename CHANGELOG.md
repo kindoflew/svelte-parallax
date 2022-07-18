@@ -2,6 +2,8 @@
 
 ## main (unreleased)
 * [FEATURE]: add `onProgress` prop to `ParallaxLayer`
+* [FEATURE]: add `StickyLayer` component
+* [FEATURE]: add `let:progress` directive to `ParallaxLayer` as an alternative to using `onProgress` prop
 
 ## 0.5.2
 * [BUGFIX]: correct type for `selector` in `scrollTo` function

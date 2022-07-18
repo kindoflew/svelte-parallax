@@ -13,6 +13,8 @@ A (small) spring-based parallax component library for Svelte.
 * [svelte-parallax](#svelte-parallax)
   * [`<Parallax>`](#parallax)
   * [`<ParallaxLayer>`](#parallaxlayer)
+  * [`<StickyLayer>`](#stickylayer)
+  * [Using `progress` in `ParallaxLayer` and `StickyLayer`](#using-progress-in-parallaxlayer-and-stickylayer)
   * [`scrollTo`](#scrollto)
   * [Tips](#tips)
   * [Differences from react-spring/parallax](#differences-from-react-springparallax)
@@ -39,15 +41,15 @@ The API is very similar and it functions (mostly) the same under the hood (See [
 
 <br/>
 
-The `<Parallax>` component is a container whose height will be the number of `sections` you choose multiplied by the `sectionHeight` prop (defaults to `window.innerHeight`, which should be good for most use cases). `<ParallaxLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
+The `<Parallax>` component is a container whose height will be the number of `sections` you choose multiplied by the `sectionHeight` prop (defaults to `window.innerHeight`, which should be good for most use cases). `<ParallaxLayer>` and `<StickyLayer>` components contain anything you want to be affected and are nested inside `<Parallax>`. A simple set-up may look like this:
 
 ```html
 <script>
-  import { Parallax, ParallaxLayer } from 'svelte-parallax';
+  import { Parallax, ParallaxLayer, StickyLayer } from 'svelte-parallax';
 </script>
 
 <Parallax sections={3} config={{stiffness: 0.2, damping: 0.3}}>
-  <ParallaxLayer rate={0} span={3} style={"background-color: orange;"} />
+  <ParallaxLayer rate={0} span={3} style="background-color: orange;" />
 
   <ParallaxLayer rate={-0.5} offset={1}>
     <img src='horse.jpg' alt='a horse'>
@@ -57,7 +59,11 @@ The `<Parallax>` component is a container whose height will be the number of `se
     <img src='bird.jpg' alt='a bird'>
   </ParallaxLayer>
 
-  <ParallaxLayer rate={2} offset={2} style={"background-color: lightblue;"} />
+  <StickyLayer offset={{ top: 0.5, bottom: 2 }}>
+    <p>A description of a horse and a bird.</p>
+  </StickyLayer>
+
+  <ParallaxLayer rate={2} offset={2} style="background-color: lightblue;" />
 </Parallax>
 ```
 
@@ -69,7 +75,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 | ---------------- | ---------------------------------------------------------- | ------------------------------------- |
 | `sections`       | `number`                                                   | `1`                                   |
 | `sectionHeight`  | `number`                                                   | `window.innerHeight`                  |
-| `config`         | <pre>{<br/> stiffness?: number;<br/> damping?: number;<br/> hard?: boolean;<br/>}</pre> | `{ stiffness: 0.017, damping: 0.26 }` |
+| `config`         | <pre>{<br/> stiffness?: number;<br/> damping?: number;<br/> precision?: number;<br/>}</pre> | `{ stiffness: 0.017, damping: 0.26 }` |
 | `threshold`      | `{ top: number, bottom: number }`                          | `{ top: 1, bottom: 1 }`               |
 | `onProgress`     | `(progress: Progress) => void` (see below)                 | `undefined`                           |
 | `disabled`       | `boolean`                                                  | `false`                               |
@@ -150,37 +156,86 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `span`: How many innerHeight-sized sections the layer will span.
 
-* `onProgress`: Takes a function that recieves a number between `0` and `1` that represents the layer's intersecting progress. Starts at `0` when a layer enters the viewport and ends at `1` when a layer exits the viewport.
+* `onProgress`: Takes a function that recieves a number between `0` and `1` that represents the layer's intersecting progress. Starts at `0` when a layer enters the viewport and ends at `1` when a layer exits the viewport (See [usage tips below](#using-progress-in-parallaxlayer-and-stickylayer)).
 
 * `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container.
 
-**`ParallaxLayer` `onProgress` Example Usage:**
+
+<br/>
+
+### `<StickyLayer>`
+
+| Props                 | Type                                | Default     |
+| --------------------- | ----------------------------------- | ------------|
+| `offset`              | `{ top?: number, bottom?: number }` | `0`         |
+| `onProgress`          | `(number) => void`                  | `undefined` |
+
+
+#### Details
+* `offset`: An object that contains the offset bounds for when the layer starts/stops being sticky (it is zero-indexed, like `ParallaxLayer`'s `offset`).
+
+* `onProgress`: Takes a function that recieves a number between `0` and `1` that represents the layer's sticky progress. Starts at `0` when a layer becomes sticky and ends at `1` when it stops being sticky. (See [usage tips below](#using-progress-in-parallaxlayer-and-stickylayer)).
+
+* `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container.
+
+<br/>
+
+
+### Using `progress` in `ParallaxLayer` and `StickyLayer`
+
+Both of these components expose `progress` in two different ways. The first way is through their `onProgress` prop. The example below is using `progress` to dynamically change the `background-color` of `Parallax` as the `ParallaxLayer` crosses the viewport:
 
 ```HTML
 <script>
   import { Parallax, ParallaxLayer } from 'svelte-parallax';
 
-  let rotate = 0;
+  const [red, green, blue] = [100, 100, 200];
+  let backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 
   const handleProgress = (progress) => {
-    rotate = progress * 360;
+    const p = 1 + progress;
+    backgroundColor = `rgb(${red * p}, ${green * p}, ${blue * p})`;
   };
 </script>
 
-<Parallax sections={3}>
+<Parallax sections={3} style="background-color: {backgroundColor}">
   <ParallaxLayer
     offset={1}
     onProgress={handleProgress}
   >
-    <div style={`transform: rotate(${rotate}deg)`}>
-      I'm spinning!
+    <div>
+      I'm changing the background color!
     </div>
   </ParallaxLayer>
   ...
 </Parallax>
 ```
 
+The second way is using `let:progress`. This example is rotating a `div` inside `StickyLayer` while it is sticky:
+
+```HTML
+<script>
+  import { Parallax, StickyLayer } from 'svelte-parallax';
+</script>
+
+<Parallax sections={3}>
+  <StickyLayer
+    offset={{ top: 1, bottom: 2 }}
+    let:progress
+  >
+    <div style="transform: rotate({progress * 360}deg)">
+      I'm spinning!
+    </div>
+  </StickyLayer>
+  ...
+</Parallax>
+```
+
+Which one you use is up to you, but I think `onProgress` probably makes the most sense when the value will be used in something *outside* of the layer it comes from and `let:progress` is more useful when you want to use the value *inside* the layer it comes from.
+
+
 <br/>
+
 
 ### `scrollTo`
 Rather than have a click listener on an entire `<ParallaxLayer>` (which I think is bad for a11y because a page sized `<div>` probably shouldn't be a button), `<Parallax>` exports a `scrollTo` function for click-to-scroll so you can use semantic HTML. It takes a little set-up because of this, but I believe the benefits outweigh a little boilerplate. 
@@ -243,6 +298,7 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 <br/>
 
+
 ### Tips
 * `rate`: The `rate` prop will affect the initial position of `<ParallaxLayer>` because of the way the motion formulas work. A suggested workflow would be intially setting `disabled=true` on `<Parallax>` and placing content where you want it to *end up*. After that, remove `disabled` and then tweak rate and style until the motion is how you'd like it.
 
@@ -261,7 +317,7 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 
 * react-spring/parallax has a `horizontal` prop on the container component, svelte-parallax does not. This is mostly because of the point mentioned above — this is not a scrollable container, so you'd have to scroll the actual browser window horizontally, which is gross to me.
 
-* react-spring/parallax has a `sticky` prop on `ParallaxLayer` (that I implemented!), svelte-parallax does not. I'm working on bringing it here too, but it's tricky because CSS hates fun.
+* react-spring/parallax has a `sticky` prop on `ParallaxLayer` (that I implemented!), svelte-parallax has a `StickyLayer` component.
 
 
 All that being said, I'd like to thank anyone and everyone who made react-spring/parallax, without whom this package would not exist.
