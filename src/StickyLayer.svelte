@@ -18,7 +18,7 @@
   // layer height
   let height;
   // spring store to hold progress value
-  const progress = spring(0, {...config, precision: 0.001 });
+  const progress = spring(0, { ...config, precision: 0.001 });
 
   const layer = {
     setPosition: (scrollTop, sectionHeight, disabled) => {

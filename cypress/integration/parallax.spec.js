@@ -1,14 +1,14 @@
-describe("Parallax", () => {
+describe('Parallax', () => {
   const HEIGHT = Cypress.config('viewportHeight');
   beforeEach(() => {
     cy.visit('/test-demo');
   });
 
-  it("should translate a layer as expected", () => {
+  it('should translate a layer as expected', () => {
     cy.get('.parallax-layer')
       .should('have.attr', 'style')
       .should('contain', `transform: translate3d(0px, ${HEIGHT * 2}px, 0px)`);
-    
+
     cy.get('.sticky-layer')
       .should('have.attr', 'style')
       .should('contain', 'position: absolute')
@@ -16,10 +16,10 @@ describe("Parallax", () => {
 
     cy.scrollTo(0, HEIGHT);
 
-    cy.get('.parallax-layer', {timeout: 3000})
+    cy.get('.parallax-layer', { timeout: 3000 })
       .should('have.attr', 'style')
       .should('contain', `transform: translate3d(0px, ${HEIGHT}px, 0px)`);
-    
+
     cy.get('.sticky-layer')
       .should('have.attr', 'style')
       .should('contain', 'position: fixed')
@@ -27,7 +27,7 @@ describe("Parallax", () => {
 
     cy.scrollTo('bottom');
 
-    cy.get('.parallax-layer', {timeout: 3000})
+    cy.get('.parallax-layer', { timeout: 3000 })
       .should('have.attr', 'style')
       .should('contain', `transform: translate3d(0px, 0px, 0px)`);
 
@@ -37,13 +37,13 @@ describe("Parallax", () => {
       .should('contain', `transform: translate3d(0px, ${HEIGHT * 1.5}px, 0px)`);
   });
 
-  it("should scroll to the correct page with scrollTo", () => {
+  it('should scroll to the correct page with scrollTo', () => {
     cy.get('button').click();
     cy.wait(3000);
     cy.window().its('scrollY').should('equal', HEIGHT);
   });
 
-  it("onProgress and let:progress should have expected values", () => {
+  it('onProgress and let:progress should have expected values', () => {
     cy.get('.parallax-progress-details').should('contain', '0 1 0');
     cy.get('.layer-progress-details').should('contain', '0');
     cy.get('.layer-let-progress').should('contain', '0');

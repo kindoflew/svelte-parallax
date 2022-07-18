@@ -1,17 +1,17 @@
-// temporary fork of https://github.com/langbamit/svelte-scrollto
-let supportsPassive = false
+// fork of https://github.com/langbamit/svelte-scrollto
+let supportsPassive = false;
 try {
   let opts = Object.defineProperty({}, 'passive', {
-    get: function() {
-      supportsPassive = true
+    get: function () {
+      supportsPassive = true;
     },
-  })
-  window.addEventListener('test', null, opts)
+  });
+  window.addEventListener('test', null, opts);
 } catch (e) {}
 
 export default {
   $(selector) {
-    if (typeof selector === "string") {
+    if (typeof selector === 'string') {
       return document.querySelector(selector);
     }
     return selector;
@@ -21,24 +21,24 @@ export default {
   },
   addListeners(element, events, handler, opts = { passive: false }) {
     if (!(events instanceof Array)) {
-     events = [events]
-   }
-   for (let i = 0; i < events.length; i++) {
-     element.addEventListener(
-       events[i],
-       handler,
-       supportsPassive ? opts : false
-     )
-   }
- },
- removeListeners(element, events, handler) {
-   if (!(events instanceof Array)) {
-     events = [events]
-   }
-   for (let i = 0; i < events.length; i++) {
-     element.removeEventListener(events[i], handler)
-   }
- },
+      events = [events];
+    }
+    for (let i = 0; i < events.length; i++) {
+      element.addEventListener(
+        events[i],
+        handler,
+        supportsPassive ? opts : false
+      );
+    }
+  },
+  removeListeners(element, events, handler) {
+    if (!(events instanceof Array)) {
+      events = [events];
+    }
+    for (let i = 0; i < events.length; i++) {
+      element.removeEventListener(events[i], handler);
+    }
+  },
   cumulativeOffset(element) {
     let top = 0;
     let left = 0;
@@ -51,7 +51,7 @@ export default {
 
     return {
       top: top,
-      left: left
+      left: left,
     };
   },
   directScroll(element) {
@@ -76,11 +76,12 @@ export default {
       return inSetter ? (element.scrollLeft = value) : element.scrollLeft;
     } else {
       return inSetter
-        ? (document.documentElement.scrollLeft = document.body.scrollLeft = value)
+        ? (document.documentElement.scrollLeft = document.body.scrollLeft =
+            value)
         : window.pageXOffset ||
             document.documentElement.scrollLeft ||
             document.body.scrollLeft ||
             0;
     }
-  }
+  },
 };

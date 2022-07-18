@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { writable } from 'svelte/store';
 
 export function writableSet(value = new Set()) {
   const store = writable(value);
@@ -15,7 +15,7 @@ export function writableSet(value = new Set()) {
   };
   return {
     ...store,
-    add: wrap("add"),
-    delete: wrap("delete"),
+    add: wrap('add'),
+    delete: wrap('delete'),
   };
 }

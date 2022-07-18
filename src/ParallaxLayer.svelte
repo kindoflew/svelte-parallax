@@ -1,7 +1,7 @@
 <script>
-  import { getContext, onMount } from "svelte";
-  import { spring } from "svelte/motion";
-  import { contextKey, clamp } from "./utils";
+  import { getContext, onMount } from 'svelte';
+  import { spring } from 'svelte/motion';
+  import { contextKey, clamp } from './utils';
 
   /** rate that the layer scrolls relative to `scrollY` */
   export let rate = 0.5;
@@ -13,29 +13,14 @@
   export let onProgress = undefined;
 
   // get context from Parallax
-  const {
-    config,
-    addLayer,
-    removeLayer
-  } = getContext(contextKey);
+  const { config, addLayer, removeLayer } = getContext(contextKey);
 
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
   // and one to hold intersecting progress
-  const progress = spring(undefined, {...config, precision: 0.001 });
+  const progress = spring(undefined, { ...config, precision: 0.001 });
   // layer height
   let height;
-
-  const getProgress = (scrollTop, rate, distance, sectionHeight) => {
-    const apparentRate = rate + 1;
-    const halfWay = distance / apparentRate;
-    const direction = rate >= 0 ? 1 : -1;
-    const scrollDistance = (sectionHeight / apparentRate) * direction;
-    const start = halfWay - scrollDistance;
-    const end = halfWay + (scrollDistance * span);
-    const progress = (scrollTop - start) / (end - start);
-    return clamp(progress, 0, 1);
-  };
 
   const layer = {
     setPosition: (scrollTop, sectionHeight, disabled) => {
@@ -52,7 +37,18 @@
     },
     setHeight: (sectionHeight) => {
       height = span * sectionHeight;
-    }
+    },
+  };
+
+  const getProgress = (scrollTop, rate, distance, sectionHeight) => {
+    const apparentRate = rate + 1;
+    const halfWay = distance / apparentRate;
+    const direction = rate >= 0 ? 1 : -1;
+    const scrollDistance = (sectionHeight / apparentRate) * direction;
+    const start = halfWay - scrollDistance;
+    const end = halfWay + scrollDistance * span;
+    const progress = (scrollTop - start) / (end - start);
+    return clamp(progress, 0, 1);
   };
 
   onMount(() => {
@@ -62,7 +58,7 @@
     return () => {
       // clean up
       removeLayer(layer);
-    }
+    };
   });
 
   // translate layer according to coordinate
@@ -81,7 +77,7 @@
     transform: {translate};
   "
 >
-  <slot progress={$progress}/>
+  <slot progress={$progress} />
 </div>
 
 <style>
