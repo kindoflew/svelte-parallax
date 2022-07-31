@@ -25,12 +25,6 @@ declare module 'svelte-parallax' {
   }
   export class StickyLayer extends SvelteComponentTyped<StickyLayerProps> {}
 
-  interface Progress {
-    parallaxProgress: number;
-    section: number;
-    sectionProgress: number;
-  }
-
   interface ParallaxProps {
     /** the number of sections the container spans */
     sections?: number;
@@ -46,14 +40,12 @@ declare module 'svelte-parallax' {
       top?: number;
       bottom?: number;
     };
-    /** a function that receives a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }` */
-    onProgress?: (progress: Progress) => void;
+    /** a function that receives a number representing the scroll progress of the container */
+    onProgress?: (progress: number) => void;
+    /** a function that receives "scrollTop" -- the number of pixels scrolled between each threshold */
+    onScroll?: (scrollTop: number) => void;
     /** disable parallax effect, layers will be frozen at target position */
     disabled?: boolean;
-    /** DEPRECATED: use `threshold.top` */
-    onEnter?: boolean;
-    /** DEPRECATED: use `threshold.bottom` */
-    onExit?: boolean;
     // $$restProps
     [key: string]: any;
   }

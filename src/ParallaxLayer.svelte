@@ -9,7 +9,7 @@
   export let offset = 0;
   /** how many sections the layer spans */
   export let span = 1;
-  /** a function that recieves a number between 0 and 1, representing the progress of the layer */
+  /** a function that receives a number between 0 and 1, representing the progress of the layer */
   export let onProgress = undefined;
 
   // get context from Parallax

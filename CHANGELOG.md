@@ -4,6 +4,8 @@
 * [FEATURE]: add `onProgress` prop to `ParallaxLayer`
 * [FEATURE]: add `StickyLayer` component
 * [FEATURE]: add `let:progress` directive to `ParallaxLayer` as an alternative to using `onProgress` prop
+* [FEATURE]: add `onScroll` prop to `Parallax`
+* [BREAKING CHANGE]: change the parameters passed to `onProgress` in `Parallax` -- it is now just the percent scrolled (represented as a float between `0` and `1`) to be in line with the other two `onProgress` props in the layer components. It is also now a `spring` store, so it will update in-sync with the parallaxing layers. I removed `sectionProgress` and `section` because they are mostly used as references for `ParallaxLayer` motion. And with the addition of `onProgress` for layers, I didn't see much of a use case for them because their values aren't really relevant to how a layer appears in the viewport (ie, if a `ParallaxLayer` is in the viewport for more than one `section`, the values become less helpful). If users want these values back, we could add them back with something like an `onSectionProgress` prop. You can also get the current section using `onScroll` by doing something like `const section = Math.floor(scrollTop / height) + 1` where `height` is `sectionHeight` (default `window.innerHeight`) multiplied by `sections`.
 
 ## 0.5.2
 * [BUGFIX]: correct type for `selector` in `scrollTo` function
