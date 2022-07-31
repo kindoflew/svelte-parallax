@@ -19,7 +19,7 @@
   export let config = { stiffness: 0.017, damping: 0.26 };
   /** threshold of effect start/end when container enters/exits viewport */
   export let threshold = { top: 1, bottom: 1 };
-  /** a function that recieves a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }` */
+  /** a function that receives a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }` */
   export let onProgress = undefined;
   /** disable parallax effect, layers will be frozen at target position */
   export let disabled = false;

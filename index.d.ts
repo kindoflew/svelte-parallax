@@ -8,7 +8,7 @@ declare module 'svelte-parallax' {
     offset?: number;
     /** how many sections the layer spans */
     span?: number;
-    /** a function that recieves a number representing the intersecting progress of a layer */
+    /** a function that receives a number representing the intersecting progress of a layer */
     onProgress?: (progress: number) => void;
     // $$restProps
     [key: string]: any;
@@ -18,7 +18,7 @@ declare module 'svelte-parallax' {
 	interface StickyLayerProps {
     /** offset bounds where layer is sticky */
     offset?: { top?: number, bottom?: number };
-    /** a function that recieves a number representing the sticky progress of a layer */
+    /** a function that receives a number representing the sticky progress of a layer */
     onProgress?: (progress: number) => void;
     // $$restProps
     [key: string]: any;
@@ -46,7 +46,7 @@ declare module 'svelte-parallax' {
       top?: number;
       bottom?: number;
     };
-    /** a function that recieves a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }` */
+    /** a function that receives a progress object: `{ parallaxProgress: float, section: number, sectionProgress: float }` */
     onProgress?: (progress: Progress) => void;
     /** disable parallax effect, layers will be frozen at target position */
     disabled?: boolean;
