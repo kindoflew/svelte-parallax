@@ -8,9 +8,9 @@
   let fancy = "fancy".split("");
   const handleScroll = (scrollTop) => {
     // console.log(scrollTop)
-    const sections = 3;
-    const height = window.innerHeight;
-    console.log(Math.floor((scrollTop / height)) + 1);
+    // const sections = 3;
+    // const height = window.innerHeight;
+    // console.log(Math.floor((scrollTop / height)) + 1);
   };
   const handleProgress = (progress) => {
     // console.log(progress);
@@ -23,7 +23,7 @@
 
 <button class="disable" on:click={() => (disabled = !disabled)}>disable</button>
 
-<div style="height:20rem; width: 30rem;"></div>
+<!-- <div style="height:20rem; width: 30rem;"></div> -->
 
 <Parallax
   sections={3} 
