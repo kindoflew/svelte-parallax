@@ -2,7 +2,7 @@
 
 A (small) spring-based parallax component library for Svelte.
 
-**NOTE**: This is at 0.5.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
+**NOTE**: This is at 0.6.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
 
 **BREAKING CHANGE**: From `v0.6.0` on, the `onProgress` prop in `Parallax` receives a number representing scroll progress, instead of an object with several fields. See [CHANGELOG](https://github.com/kindoflew/svelte-parallax/blob/main/CHANGELOG.md) for details.
 

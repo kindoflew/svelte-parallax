@@ -1,7 +1,7 @@
 {
   "name": "svelte-parallax",
   "author": "Lewis DAvanzo",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "license": "MIT",
   "svelte": "src/index.js",
   "module": "dist/index.mjs",
