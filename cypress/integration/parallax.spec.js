@@ -44,7 +44,7 @@ describe('Parallax', () => {
   });
 
   it('onProgress and let:progress should have expected values', () => {
-    cy.get('.parallax-progress-details').should('contain', '0 1 0');
+    cy.get('.parallax-progress-details').should('contain', '0');
     cy.get('.layer-progress-details').should('contain', '0');
     cy.get('.layer-let-progress').should('contain', '0');
     cy.get('.sticky-progress-details').should('contain', '0');
@@ -52,7 +52,7 @@ describe('Parallax', () => {
 
     cy.scrollTo(0, HEIGHT / 2);
 
-    cy.get('.parallax-progress-details').should('contain', '0.25 1 0.5');
+    cy.get('.parallax-progress-details').should('contain', '0.25');
     cy.get('.layer-progress-details').should('contain', '0');
     cy.get('.layer-let-progress').should('contain', '0');
     cy.get('.sticky-progress-details').should('contain', '0');
@@ -60,7 +60,7 @@ describe('Parallax', () => {
 
     cy.scrollTo(0, HEIGHT);
 
-    cy.get('.parallax-progress-details').should('contain', '0.5 2 0');
+    cy.get('.parallax-progress-details').should('contain', '0.5');
     cy.get('.layer-progress-details').should('contain', '0.5');
     cy.get('.layer-let-progress').should('contain', '0.5');
     cy.get('.sticky-progress-details').should('contain', '0.5');
@@ -68,7 +68,7 @@ describe('Parallax', () => {
 
     cy.scrollTo('bottom');
 
-    cy.get('.parallax-progress-details').should('contain', '1 3 0');
+    cy.get('.parallax-progress-details').should('contain', '1');
     cy.get('.layer-progress-details').should('contain', '1');
     cy.get('.layer-let-progress').should('contain', '1');
     cy.get('.sticky-progress-details').should('contain', '1');

@@ -6,8 +6,14 @@
   let disabled = false;
   let show = true;
   let fancy = "fancy".split("");
+  const handleScroll = (scrollTop) => {
+    // console.log(scrollTop)
+    // const sections = 3;
+    // const height = window.innerHeight;
+    // console.log(Math.floor((scrollTop / height)) + 1);
+  };
   const handleProgress = (progress) => {
-    // console.log(progress.parallaxProgress, progress.section, progress.sectionProgress);
+    // console.log(progress);
   };
   const handleLayerProgress = (progress) => {
     // console.log(progress);
@@ -19,10 +25,12 @@
 
 <!-- <div style="height:20rem; width: 30rem;"></div> -->
 
-<Parallax 
+<Parallax
   sections={3} 
   style="background-color: #0bdb8c;" 
-  bind:this={parallax} {disabled} 
+  bind:this={parallax}
+  {disabled}
+  onScroll={handleScroll}
   onProgress={handleProgress}
 >
   {#each fancy as char, index (index)}

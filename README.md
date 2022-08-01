@@ -4,7 +4,7 @@ A (small) spring-based parallax component library for Svelte.
 
 **NOTE**: This is at 0.5.x and I'm still working on stuff. Something could break and while I'm not *trying* to remove anything from the API it's still a possibility (I'll post a deprecation notice first instead of outright yanking something). If anything is weird, open an issue and let me know!
 
-**DEPRECATED**: From v0.3.0 on, `onEnter` and `onExit` are being replaced with `threshold`. See [Parallax](#parallax) and [CHANGELOG](https://github.com/kindoflew/svelte-parallax/blob/main/CHANGELOG.md) for details.
+**BREAKING CHANGE**: From `v0.6.0` on, the `onProgress` prop in `Parallax` receives a number representing scroll progress, instead of an object with several fields. See [CHANGELOG](https://github.com/kindoflew/svelte-parallax/blob/main/CHANGELOG.md) for details.
 
 <br/>
 
@@ -33,7 +33,7 @@ npm i -D svelte-parallax
 
 ## svelte-parallax
 This package is based on [react-spring/parallax](https://github.com/pmndrs/react-spring/tree/master/packages/parallax).
-The API is very similar and it functions (mostly) the same under the hood (See [differences](#differences-from-react-spring/parallax) between them).
+The API is pretty similar and it functions (mostly) the same under the hood (See [differences](#differences-from-react-spring/parallax) between them).
 
 <br/>
 
@@ -77,7 +77,8 @@ The `<Parallax>` component is a container whose height will be the number of `se
 | `sectionHeight`  | `number`                                                   | `window.innerHeight`                  |
 | `config`         | <pre>{<br/> stiffness?: number;<br/> damping?: number;<br/> precision?: number;<br/>}</pre> | `{ stiffness: 0.017, damping: 0.26 }` |
 | `threshold`      | `{ top: number, bottom: number }`                          | `{ top: 1, bottom: 1 }`               |
-| `onProgress`     | `(progress: Progress) => void` (see below)                 | `undefined`                           |
+| `onProgress`     | `(number) => void`                                         | `undefined`                           |
+| `onScroll`       | `(number) => void`                                         | `undefined`                           |
 | `disabled`       | `boolean`                                                  | `false`                               |
 
 
@@ -88,54 +89,16 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `config`: Optional [Svelte spring store](https://svelte.dev/docs#spring) configuration, if you want more control over parallax physics.
 
-* `threshold`: Adds a threshold above/below `Parallax` that is equal to the height of the viewport multiplied by the value, each one should be a number between `0` and `1`. `threshold.top = 1`: the effect will be active whenever the top of the container is at or above the *top* of the viewport, `threshold.top = 0`: effect will be active whenever the top of the container is at or above the *bottom* of the viewport. `threshold.bottom` is similar, but on the other end -- `1`: active when bottom of container is at or below the *bottom* of the viewport, `0`: active when bottom is at or below the *top* of the viewport.
+* `threshold`: Adds a threshold above/below `Parallax` that is equal to the height of the viewport multiplied by the value, each one should be a number between `0` and `1`. `threshold.top = 1`: the effect will be active whenever the top of the container is at or above the *top* of the viewport, `threshold.top = 0`: effect will be active whenever the top of the container is at or above the *bottom* of the viewport. `threshold.bottom` is similar, but on the other end -- `1`: active when bottom of container is at or below the *bottom* of the viewport, `0`: active when bottom is at or below the *top* of the viewport. Not really sure what happens if either is `< 0` or `> 1` -- I never checked.
 
-* `onProgress`: Takes a function that recieves a `progress` object ([See below](#onprogress)).
+* `onProgress`: Takes a function that receives a number between `0` and `1` that represents the scroll progress of the container. Starts at `0` when the top of the `Parallax` container is at the top of the viewport, ends at `1` when the bottom of the `Parallax` container is at the bottom of the viewport. The number is set using a `spring` store, so it will update in-sync with the parallaxing layers.
+
+* `onScroll`: Takes a function that receives `scrollTop` -- the number of pixels scrolled from when the parallax effect starts until it ends. If `threshold` is not set, that means this number starts at `0` when the top of the container is at the top of the viewport and ends at its max value when the bottom of the container is at the bottom of the viewport. If either`threshold` value is set below `1`, this function will be start being called earlier (`threshold.top`) or continue being called later (`threshold.bottom`).
 
 * `disabled`: Whether or not the effect is disabled (for a11y, etc. see [Prefers-reduced-motion](#prefers-reduced-motion)). When `disabled = true`, layers will stay at their target positions.
 
 * `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container. If you're adding styles, messing with `height`, `position`, or `overflow` *might* break stuff, but you do you.
 
-#### `onProgress`
-
-| Property              | Type      |
-| --------------------- | --------- |
-| `parallaxProgress`    | `number`  |
-| `section`             | `number`  |
-| `sectionProgress`     | `number`  |
-
-* `parallaxProgress`: Represents the progress of the entire `Parallax` container scrolled, represented as a float between `0` and `1`. Starts at `0` when the top of the `Parallax` container is at the top of the viewport, ends at `1` when the bottom of the `Parallax` container is at the bottom of the viewport.
-
-* `section`: the number of the current section
-
-* `sectionProgress`: Represents the scroll progress of the current `section`, represented as a float between `0` and `1`. Starts at `0` when the top of the `section` is at the top of the viewport, ends at `1` when the bottom of the `section` is at the top of the viewport (**NOTE**: not the same behavior as `parallaxProgress`).
-
-**Example Usage**:
-
-```HTML
-<script>
-  import { Parallax, ParallaxLayer } from 'svelte-parallax';
-
-  let percentScrolled;
-  let currentSection;
-
-  const handleProgress = (progress) => {
-    const { parallaxProgress, section, sectionProgress } = progress;
-
-    currentSection = section;
-    percentScrolled = Math.floor(parallaxProgress * 100);
-  };
-</script>
-<div style="position: fixed;">
-  {perecentScrolled}% scrolled so far!
-  Currently in section {currentSection}!
-</div>
-<Parallax sections={3} onProgress={handleProgress}>
-  ...
-</Parallax>
-```
-
-**NOTE**: `parallaxProgress` will be `0` whenever the top of the container is at or *below* the top of the viewport. It will be `1` when the bottom of the container is at or *above* the bottom of the viewport.
 
 <br/>
 
@@ -156,7 +119,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 
 * `span`: How many innerHeight-sized sections the layer will span.
 
-* `onProgress`: Takes a function that recieves a number between `0` and `1` that represents the layer's intersecting progress. Starts at `0` when a layer enters the viewport and ends at `1` when a layer exits the viewport (See [usage tips below](#using-progress-in-parallaxlayer-and-stickylayer)).
+* `onProgress`: Takes a function that receives a number between `0` and `1` that represents the layer's intersecting progress. Starts at `0` when a layer enters the viewport and ends at `1` when a layer exits the viewport. It is also set using a `spring` store. (See [usage tips below](#using-progress-in-parallaxlayer-and-stickylayer)).
 
 * `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container.
 
@@ -174,7 +137,7 @@ The `<Parallax>` component is a container whose height will be the number of `se
 #### Details
 * `offset`: An object that contains the offset bounds for when the layer starts/stops being sticky (it is zero-indexed, like `ParallaxLayer`'s `offset`).
 
-* `onProgress`: Takes a function that recieves a number between `0` and `1` that represents the layer's sticky progress. Starts at `0` when a layer becomes sticky and ends at `1` when it stops being sticky. (See [usage tips below](#using-progress-in-parallaxlayer-and-stickylayer)).
+* `onProgress`: Takes a function that receives a number between `0` and `1` that represents the layer's sticky progress. Starts at `0` when a layer becomes sticky and ends at `1` when it stops being sticky. It is also set using a `spring` store. (See [usage tips below](#using-progress-in-parallaxlayer-and-stickylayer)).
 
 * `$$restProps`: You can add any other props you need (including `style` or `class`) and they will be passed to the underlying `div` container.
 
@@ -232,6 +195,8 @@ The second way is using `let:progress`. This example is rotating a `div` inside 
 ```
 
 Which one you use is up to you, but I think `onProgress` probably makes the most sense when the value will be used in something *outside* of the layer it comes from and `let:progress` is more useful when you want to use the value *inside* the layer it comes from.
+
+**NOTE**: In the `Parallax` container, `progress` is only accessible through the `onProgress` prop. This is mostly because I'm not exactly sure how `svelte` handles shadowing `let` variables (they are all named `progress` to have a unified API), and I'd rather not introduce a feature that could accidentally rely on internal `svelte` behavior that could change. The general usage of `onProgress` in `Parallax` is the same as that of the two layer components.
 
 
 <br/>
@@ -305,6 +270,8 @@ If you *really* need to use something besides buttons for `scrollTo` make sure t
 * `z-index`: `<ParallaxLayer>`s are absolutely positioned so they are organized on the z-axis in the order they are written in the HTML. If you don't want to mess with z-index (and who does?) make sure to place all content that should always be visible/clickable towards the bottom of `<Parallax>`. y-axis order is unaffected by this because that is decided by `offset`.
 
 * `scrollY`: svelte-parallax uses Svelte's `bind:scrollY` in its motion functions, so it will not work if placed inside a scrollable element (like a `div` with `overflow: scroll`). I don't have plans to change this right now, but if enough people ask for it, who knows?
+
+* `onScroll`: related to the point above, we use an `onScroll` prop instead of `on:scroll` because the scroll event isn't actually being fired from the container -- it's based on `window.scrollY`. Because of this, I thought that `on:scroll` would be misleading.
 
 * optimization: We aren't adding `will-change: transform` or doing the `transform: translate3d(0,0,0)` hack anymore -- both rules can get in the way of other styles and can lead to performance problems of their own (plus, adding `will-change` to everything [isn't recommended anyways](https://developer.mozilla.org/en-US/docs/Web/CSS/will-change)). However, you can add these to any components that you think need it using `style` or `class` props.
 
@@ -393,6 +360,37 @@ You could even have multiple parallaxing layers with static divs in between like
   </ParallaxLayer>
        <!-- Rate is 0, offset is between the two parallaxing layers above -->
   <ParallaxLayer rate={0} offset={1} style={"background-color:lightblue;"} />
+</Parallax>
+```
+
+### Get current section
+
+If you want to get the current section that is being scrolled, you can do something like this (starts when the section is at the top of the viewport; changes when the next section reaches the top of the viewport -- you can adjust the math to suit your specific needs):
+
+```html
+<script>
+  import { Parallax, ParallaxLayer } from 'svelte-parallax';
+
+  // bind:innerHeight
+  let innerHeight;
+  // `section` prop passed to `Parallax`
+  const sections = 3;
+
+  let section;
+  const handleScroll = (scrollTop) => {
+    // add 1 so section isn't zero-indexed
+    section = Math.floor(scrollTop / innerHeight) + 1;
+  };
+</script>
+
+<svelte:window bind:innerHeight />
+
+<div style="position: fixed;">
+  Currently in section {section}!
+</div>
+
+<Parallax sections={sections} onScroll={handleScroll}>
+  <!-- your stuff here -->
 </Parallax>
 ```
 

@@ -9,11 +9,10 @@
 	import StickyLayer from "../../src/StickyLayer.svelte";
 
   let parallax;
+
   let parallaxProgress;
-  let section;
-  let sectionProgress;
   const handleProgress = (progress) => {
-    ({ parallaxProgress, section, sectionProgress } = progress);
+    parallaxProgress = progress;
   };
   let layerProgress;
   const handleLayerProgress = (progress) => {
@@ -28,7 +27,7 @@
 <button on:click={parallax.scrollTo(2)}>Scroll</button>
 <h1 >
   <div class='parallax-progress-details'>
-    {`${parallaxProgress} ${section} ${sectionProgress}`}
+    {parallaxProgress}
   </div>
   <div class='layer-progress-details'>
     {layerProgress}

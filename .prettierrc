@@ -1,5 +1,6 @@
 {
   "svelteSortOrder": "scripts-markup-styles",
   "svelteBracketNewLine": true,
-  "singleQuote": true
+  "singleQuote": true,
+  "printWidth": 100
 }
