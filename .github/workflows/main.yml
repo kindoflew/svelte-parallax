@@ -13,6 +13,6 @@ jobs:
       - name: Install Library Deps
         run: npm install
       - name: Install Test App Deps
-        run: cd ./demo && npm install
+        run: cd ./sandbox && npm install
       - name: Run Tests
         run: npm run test

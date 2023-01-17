@@ -405,13 +405,13 @@ To work locally:
 git clone git@github.com:kindoflew/svelte-parallax
 cd svelte-parallax
 npm install
-# if you want to use the demo app
-cd demo
+# if you want to use the sandbox app
+cd sandbox
 npm install
 npm run dev # can also be run from root folder once installed
 ```
 
-This will run a dev server on localhost:5000. The source lives in `src` and `demo` is there for live feedback while working.
+This will run a dev server on localhost:3000. The source lives in `src` and `sandbox` is there for live feedback while working.
 
 Things I Probably Need:
 

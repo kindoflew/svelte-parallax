@@ -1,11 +1,11 @@
 <script>
-  import Parallax from "../../src/Parallax.svelte";
-  import ParallaxLayer from "../../src/ParallaxLayer.svelte";
+  import Parallax from '../../../src/Parallax.svelte';
+  import ParallaxLayer from '../../../src/ParallaxLayer.svelte';
 
   let parallax;
   let disabled = false;
   let show = true;
-  let fancy = "fancy".split("");
+  let fancy = 'fancy'.split('');
   const handleScroll = (scrollTop) => {
     // console.log(scrollTop)
     // const sections = 3;
@@ -26,8 +26,8 @@
 <!-- <div style="height:20rem; width: 30rem;"></div> -->
 
 <Parallax
-  sections={3} 
-  style="background-color: #0bdb8c;" 
+  sections={3}
+  style="background-color: #0bdb8c;"
   bind:this={parallax}
   {disabled}
   onScroll={handleScroll}
@@ -50,14 +50,8 @@
     </ParallaxLayer>
   {/each}
 
-  <ParallaxLayer
-    offset={1}
-    rate={-2.5}
-    style="display: flex; justify-content: flex-end;"
-  >
-    <div
-      style="background-color: lightblue; opacity: 0.5; width: 50%; height: 100%;"
-    />
+  <ParallaxLayer offset={1} rate={-2.5} style="display: flex; justify-content: flex-end;">
+    <div style="background-color: lightblue; opacity: 0.5; width: 50%; height: 100%;" />
   </ParallaxLayer>
 
   <ParallaxLayer
@@ -66,25 +60,22 @@
     style="display: flex; justify-content: flex-start;"
     onProgress={handleLayerProgress}
   >
-    <div
-      style="background-color: yellow; opacity: 0.5; width: 50%; height: 100%;"
-    />
+    <div style="background-color: yellow; opacity: 0.5; width: 50%; height: 100%;" />
   </ParallaxLayer>
-{#if show}
-  <ParallaxLayer
-    rate={1}
-    style="background-color: pink; display: flex; justify-content: center; align-items: center; flex-direction: column;"
-  >
-    <h1>svelte-parallax!</h1>
-    <button
-      class="bottom-btn"
-      on:click={() =>
-        parallax.scrollTo(3, { selector: ".top-btn", duration: 4000 })}
+  {#if show}
+    <ParallaxLayer
+      rate={1}
+      style="background-color: pink; display: flex; justify-content: center; align-items: center; flex-direction: column;"
     >
-      Click me!
-    </button>
-  </ParallaxLayer>
-{/if}
+      <h1>svelte-parallax!</h1>
+      <button
+        class="bottom-btn"
+        on:click={() => parallax.scrollTo(3, { selector: '.top-btn', duration: 4000 })}
+      >
+        Click me!
+      </button>
+    </ParallaxLayer>
+  {/if}
   <ParallaxLayer
     offset={2}
     rate={2}
@@ -92,8 +83,7 @@
   >
     <button
       class="top-btn"
-      on:click={() =>
-        parallax.scrollTo(1, { selector: ".bottom-btn", duration: 1000 })}
+      on:click={() => parallax.scrollTo(1, { selector: '.bottom-btn', duration: 1000 })}
     >
       Scroll to top
     </button>

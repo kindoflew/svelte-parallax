@@ -1,7 +1,9 @@
+import TestDemo from '../../sandbox/src/lib/TestDemo.svelte';
+
 describe('Parallax', () => {
   const HEIGHT = Cypress.config('viewportHeight');
   beforeEach(() => {
-    cy.visit('/test-demo');
+    cy.mount(TestDemo);
   });
 
   it('should translate a layer as expected', () => {

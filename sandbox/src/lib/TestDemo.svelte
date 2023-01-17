@@ -4,9 +4,9 @@
 <!-- ################################################# -->
 <!-- ################################################# -->
 <script>
-  import Parallax from "../../src/Parallax.svelte";
-  import ParallaxLayer from "../../src/ParallaxLayer.svelte";
-	import StickyLayer from "../../src/StickyLayer.svelte";
+  import Parallax from '../../../src/Parallax.svelte';
+  import ParallaxLayer from '../../../src/ParallaxLayer.svelte';
+	import StickyLayer from '../../../src/StickyLayer.svelte';
 
   let parallax;
 
