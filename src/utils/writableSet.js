@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
-export function writableSet(value = new Set()) {
-  const store = writable(value);
+export function writableSet() {
+  const store = writable(new Set());
 
   const wrap = (method) => {
     return (...args) => {
