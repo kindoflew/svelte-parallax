@@ -6,7 +6,7 @@
 <script>
   import Parallax from '../../../src/Parallax.svelte';
   import ParallaxLayer from '../../../src/ParallaxLayer.svelte';
-	import StickyLayer from '../../../src/StickyLayer.svelte';
+  import StickyLayer from '../../../src/StickyLayer.svelte';
 
   let parallax;
 
@@ -65,6 +65,7 @@
     margin: 0;
     z-index: 10;
   }
+
   h1 {
     position: fixed;
     z-index: 10;
