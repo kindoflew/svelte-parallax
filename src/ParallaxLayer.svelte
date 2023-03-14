@@ -43,8 +43,7 @@
   const getProgress = (scrollTop, rate, distance, sectionHeight) => {
     const apparentRate = rate + 1;
     const halfWay = distance / apparentRate;
-    const direction = rate >= 0 ? 1 : -1;
-    const scrollDistance = (sectionHeight / apparentRate) * direction;
+    const scrollDistance = Math.abs(sectionHeight / apparentRate);
     const start = halfWay - scrollDistance;
     const end = halfWay + scrollDistance * span;
     const progress = (scrollTop - start) / (end - start);
@@ -62,8 +61,10 @@
   });
 
   // translate layer according to coordinate
-  $: translate = `translate3d(0px, ${$coord}px, 0px);`;
+  $: translate = `translate3d(0px, ${$coord ?? 0}px, 0px);`;
   $: if (onProgress) onProgress($progress ?? 0);
+  $: isIntersecting = $progress > 0 && $progress < 1;
+  $: visibility = isIntersecting ? 'visible' : 'hidden';
 </script>
 
 <div
@@ -75,6 +76,7 @@
     -ms-transform: {translate};
     -webkit-transform: {translate};
     transform: {translate};
+    visibility: {visibility};
   "
 >
   <slot progress={$progress} />
