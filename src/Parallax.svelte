@@ -23,25 +23,29 @@
   export let disabled = false;
 
   /** instance method to animate scroll to Parallax sections */
-  export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut } = {}) {
+  export function scrollTo(section, { selector = '', duration = 500, easing = quadInOut, onDone = undefined, hard = false } = {}) {
     const scrollTarget = $top + $height * (section - 1);
 
     const focusTarget = () => {
-      if (!selector) return;
       document.querySelector(selector).focus({ preventScroll: true });
     };
     // don't animate scroll if disabled
-    if (disabled) {
+    if (disabled || hard) {
       window.scrollTo({ top: scrollTarget });
       focusTarget();
       return;
     }
 
+    const handleDone = () => {
+      if (onDone) onDone();
+      if (selector) focusTarget();
+    };
+
     svelteScrollTo({
       y: scrollTarget,
       duration,
       easing,
-      onDone: focusTarget,
+      onDone: handleDone,
     });
   }
 
