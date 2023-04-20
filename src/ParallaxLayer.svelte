@@ -18,7 +18,7 @@
   // spring store to hold changing scroll coordinate
   const coord = spring(undefined, config);
   // and one to hold intersecting progress
-  const progress = spring(undefined, { ...config, precision: 0.001 });
+  const progress = spring(undefined, { ...config, precision: 0.0001 });
   // layer height
   let height;
 
