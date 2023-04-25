@@ -62,7 +62,7 @@
   });
 
   // translate layer according to coordinate
-  $: translate = `translate3d(0px, ${$coord}px, 0px);`;
+  $: translate = `translate3d(0px, ${$coord ?? 0}px, 0px);`;
   $: if (onProgress) onProgress($progress ?? 0);
 </script>
 

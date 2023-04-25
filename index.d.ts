@@ -62,6 +62,10 @@ declare module 'svelte-parallax' {
         duration?: number;
         /** easing function, import from `'svelte/easing'` */
         easing?: (t: number) => number;
+        /** function to be called when scrolling finishes */
+        onDone?: () => void;
+        /** if `true`, scrolls instantly instead of animating */
+        hard?: boolean;
       }
     ): void;
   }
