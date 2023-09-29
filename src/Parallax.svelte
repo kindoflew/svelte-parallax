@@ -27,8 +27,10 @@
   /** disable parallax effect, layers will be frozen at target position */
   export let disabled = false;
   
-  export const y = writable(0);
+  export let scroll = undefined; 
 
+  // bind:scrollY
+  const y = (scroll) ? scroll : writable(0);
   // top coord of Parallax container
   const top = writable(0);
   // height of a section
