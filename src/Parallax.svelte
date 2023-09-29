@@ -26,9 +26,9 @@
   export let onScroll = undefined;
   /** disable parallax effect, layers will be frozen at target position */
   export let disabled = false;
+  
+  export const y = writable(0);
 
-  // bind:scrollY
-  const y = writable(0);
   // top coord of Parallax container
   const top = writable(0);
   // height of a section
