@@ -1,7 +1,8 @@
 declare module 'svelte-parallax' {
-  import { SvelteComponentTyped } from 'svelte';
+  import { SvelteComponent } from 'svelte';
+  import { Writable } from "svelte/store";
 
-  interface ParallaxLayerProps {
+  export class ParallaxLayer extends SvelteComponent {
     /** rate that the layer scrolls relative to `scrollY` */
     rate?: number;
     /** offset from top of container when layer is in viewport */
@@ -13,9 +14,8 @@ declare module 'svelte-parallax' {
     // $$restProps
     [key: string]: any;
   }
-  export class ParallaxLayer extends SvelteComponentTyped<ParallaxLayerProps> {}
 
-	interface StickyLayerProps {
+  export class StickyLayer extends SvelteComponent {
     /** offset bounds where layer is sticky */
     offset?: { top?: number, bottom?: number };
     /** a function that receives a number representing the sticky progress of a layer */
@@ -23,9 +23,8 @@ declare module 'svelte-parallax' {
     // $$restProps
     [key: string]: any;
   }
-  export class StickyLayer extends SvelteComponentTyped<StickyLayerProps> {}
 
-  interface ParallaxProps {
+  export class Parallax extends SvelteComponent {
     /** the number of sections the container spans */
     sections?: number;
     /** the height of a section, defaults to `window.innerHeight` */
@@ -48,8 +47,8 @@ declare module 'svelte-parallax' {
     disabled?: boolean;
     // $$restProps
     [key: string]: any;
-  }
-  export class Parallax extends SvelteComponentTyped<ParallaxProps> {
+    /** external scroll store **/
+    scroll?: Writable<number>;
     /** instance method for auto-scrolling to a section */
     scrollTo(
       /** the section to scroll to (not zero-indexed) */
