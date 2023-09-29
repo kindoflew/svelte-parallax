@@ -30,7 +30,7 @@
   export let scroll = undefined; 
 
   // bind:scrollY
-  const y = (scroll) ? scroll : writable(0);
+  const y = (scroll) ? derived(scroll, ($scroll) => $scroll) : writable(0);
   // top coord of Parallax container
   const top = writable(0);
   // height of a section
@@ -83,6 +83,11 @@
 
   onMount(() => {
     setDimensions();
+    if(!scroll) {
+      window.addEventListener("onscroll", (e) => {
+        $y = e.scrollY;
+      })
+    }
   });
 
   const setDimensions = () => {
@@ -113,7 +118,6 @@
 </script>
 
 <svelte:window
-  bind:scrollY={$y}
   bind:innerHeight
   on:resize={() => setTimeout(setDimensions, 0)}
 />
