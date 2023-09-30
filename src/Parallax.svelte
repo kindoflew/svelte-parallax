@@ -117,6 +117,7 @@
   }
 </script>
 
+<svelte:options accessors={true} />
 <svelte:window
   bind:innerHeight
   on:resize={() => setTimeout(setDimensions, 0)}
